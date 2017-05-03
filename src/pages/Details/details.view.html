@@ -1,0 +1,98 @@
+<ion-header dir="{{dirByLang}}">
+  <ion-navbar hideBackButton="true">
+    <ion-title>{{form.title}}</ion-title>
+    <ion-buttons start>
+      <button ion-button icon-only (click)="leavePage()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons end>
+       <button ion-button  class="text-only" (click)="saveRow()">
+       {{saveBtnText}}
+      </button>
+      <button ion-button icon-only *ngIf="!selectedItem.isNewRow" (click)="deleteRow()">
+         <ion-icon name="trash"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div class="waiting-spinner" *ngIf="isShowWaitingDots" >
+     <ion-spinner name="dots"></ion-spinner>
+</div>
+<ion-list margin-top>
+    <ion-item *ngFor="let column of form.columns | objToIterable | Filter:isShowColumn | Sort:sort ; let ind=index"
+         class="details-input"
+         dir="{{dirByLang}}" >
+
+        <ion-label stacked 
+            [readonly]="isReadOnly(column)"
+            *ngIf="isShowFieldName(column)">
+            {{ column.title}}
+            <!--Validation error text-->
+            <p class="error-label">{{column.errorMsg}}</p>
+        </ion-label>
+
+        <!-- Input Field -->
+        javascript<ion-input 
+           [(ngModel)]="selectedItem[column.key]"
+           type="text"
+           [update-field]="column"
+           [validation]="column"
+           (click)="chooseInputClick(column)"
+           [disabled]="isReadOnly(column)"
+           dir="{{columnDirection(column)}}"
+           class="{{dirByLang}}"
+           *ngIf="!isDateOrTimeColumn(column) && !isBoolColumn(column)"
+        ></ion-input>
+
+        <!-- Boolean Field -->
+        <ion-toggle
+            [(ngModel)]="selectedItem[column.key]"
+            [boolean] 
+            [update-field]="column"
+            [disabled]="isReadOnly(column)"
+            dir="{{dirByLang}}"
+            *ngIf="isBoolColumn(column)"
+        ></ion-toggle>
+
+        <!-- Date field-->
+        <ion-label
+            class="datetime-label"
+            *ngIf="isDateOrTimeColumn(column)">
+            <date-time
+              [value]="getValue(column)"
+              [column]="column"
+            ></date-time>
+        </ion-label>
+
+        <!--column action icons-->
+        <button
+            clear
+            ion-button
+            item-right
+            dir="{{dirByLang}}"
+            *ngIf="isShowColumnIcon(column)"
+            (click)="columnIconClicked($event,column)">
+            <ion-icon 
+              name="{{getColumnIconName(column)}}"
+              >
+            </ion-icon>
+        </button>
+      
+    </ion-item>
+
+</ion-list>
+
+<!--Sub Forms -->
+<sub-list
+    dir="{{dirByLang}}"
+    *ngFor="let subform of subforms | Sort:sort"
+    [Subform]="subform"
+    (expandList)="expandSubformList($event)"
+    (goToSubform)="goToSubform($event)">  
+</sub-list>
+
+</ion-content>
+
+<file-uploader [Form]=form [style.display]="none"></file-uploader>

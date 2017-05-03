@@ -1,0 +1,145 @@
+
+.detailed-page ion-list:first-of-type {
+  padding: 0 20px;
+}
+
+.details-input.item-block {
+  margin-bottom: 10px;
+  min-height: 50px;
+  padding: 0 16px;
+
+  .item-inner {
+    position: relative;
+    padding: 0;
+  }
+
+  &.item-input-disabled,&.item-toggle-disabled  {
+    ion-label[stacked] {
+      opacity: 0.4;
+    }
+  }
+
+  ion-label[stacked]
+  {
+    margin: 0;
+    font-size: 13px;
+    color: color($colors,gray) !important;
+
+    .error-label
+    {
+        color: red;
+        font-size: 11px;
+        margin: 0;
+        position: absolute;
+    }
+  }
+
+  &.rtl {
+    text-align: right;
+  }
+
+  ion-input {
+    width: calc(100% - 20px);
+    align-self: flex-start;
+    position: relative;
+  }
+
+  ion-input[dir="ltr"] {
+    .text-input {
+      direction: ltr;
+    }
+  }
+  &[dir="rtl"] .text-input {
+    text-align: right;
+  }
+ .text-input {
+    border:none;
+    width: 100%;
+    text-overflow: ellipsis;
+    padding: 0;
+    margin-right: 0;
+    color: color($colors,dark);
+    &[disabled] {
+      opacity: 0.3;
+    }
+  }
+
+  .datetime-label {
+    margin: 0;
+  }
+
+
+  button[ion-button][item-right] {
+    margin: 0;
+    position: absolute;
+    top: 22px;
+    &[dir="rtl"] {
+      left: 0;
+    }
+    &[dir="ltr"] {
+      right: 0;
+    }
+
+    // button[ion-button] {
+      margin: 0;
+      padding: 0;
+        ion-icon {
+          font-size: 23px;
+          color: color($colors,dark);
+      }
+    // }
+  }
+
+  .datetime {
+    ion-ion {
+      color: color($colors,dark);
+    }
+    ion-label {
+      color: color($colors,dark);
+    }
+  }
+}
+
+.datetime-disabled
+{
+    opacity: 1 !important;
+}
+
+.list-md {
+  margin: 0;
+}
+
+[ng-reflect-read-only="true"] {
+  color: color($colors,gray);
+}
+
+.list-md > .details-input:last-child {
+  border-bottom: none;
+  .item-inner {
+    border-bottom: 1px solid #dedede;
+  } 
+}
+
+.details-input {
+  .toggle {
+    position: absolute;
+    top: 24px;
+    padding: 0;
+    &[dir="rtl"] {
+      left: 1px;
+    }
+    &[dir="ltr"] {
+      right: 1px;
+    }
+  }
+}
+
+.waiting-spinner {
+    width: 80%;
+    text-align: center; 
+    position: fixed;
+    top: 57px;
+    z-index: 2;
+    margin: 0 9%;
+   
+}

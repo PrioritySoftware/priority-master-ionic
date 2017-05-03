@@ -1,0 +1,59 @@
+page-list {
+    .search-dots {
+        position: fixed;
+        z-index: 1;
+        width: 100%;
+        text-align: center;
+    }
+    // ion-infinite-scroll {
+    //     display: block;
+    //     width: 100%;
+    //     position: fixed;
+    //     bottom: 0;
+    //     height: 60px;
+    // }
+    // .infinite-loading {
+    //     display: block;
+    // }
+    // $infinite-scroll-loading-color: color($colors,primary);
+    .infinite-loading-text {
+        color: color($colors,gray);
+    }
+
+    ion-buttons.add-button button {
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 10px -1px rgba(0, 0, 0, 0.5), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+        width: 50px;
+        height: 50px;
+        font-size: 15px;
+    }
+    ion-buttons.add-button {
+        height: 50px;
+        position: fixed;
+        bottom: 30px;
+        z-index: 10;
+        &[dir="rtl"] {
+            left: 30px;
+        }
+        &[dir="ltr"] {
+            right: 30px;
+        }
+    }
+
+    form-item {
+        .item {
+            min-height: 70px;
+        }
+        item-details {
+            .column:first-child {
+                .title {
+                    display: none;
+                }
+                .value {
+                    font-size: 16px;
+                    color: color($colors,dark);
+                    padding: 0;
+                }
+            }
+        }
+    }
+}

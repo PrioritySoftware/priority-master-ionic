@@ -1,0 +1,25 @@
+{
+  "name": "PriorityApp",
+  "app_id": "0321dfb6",
+  "v2": true,
+  "typescript": true,
+  "proxies": [
+    {
+      "path": "/wcf",
+      "proxyUrl": "https://dev.eshbel.com/wcf",
+      "rejectUnauthorized": false
+    },
+    {
+      "path": "/PriorityMobileApp",
+      "proxyUrl": "https://dev.eshbel.com/PriorityMobileApp"
+    },
+    {
+      "path": "/odata",
+      "proxyUrl": "https://dev.eshbel.com/odata"
+    },
+    {
+      "path": "/upgrades",
+      "proxyUrl": "https://cdn.priority-software.com/upgrades"
+    }
+  ]
+}

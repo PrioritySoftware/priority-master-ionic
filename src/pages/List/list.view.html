@@ -1,0 +1,40 @@
+<ion-header dir="{{dirByLang}}">
+  <ion-navbar hideBackButton="true">
+    <ion-title>{{form.title}}</ion-title>
+    <ion-buttons start>
+      <button ion-button icon-only (click)="leavePage()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+  <ion-toolbar *ngIf="!isSubform">
+  <ion-searchbar #searchbar debounce="1500"
+    (ionClear)="searchCleared($event)"
+    (ionInput)="searchInput($event)"
+    placeholder={{searchPlaceholder}}
+    dir="{{dirByLang}}">
+  </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="search-dots" *ngIf="isSearching">
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
+  <form-list
+     dir="{{dirByLang}}"
+     [Items]="getRows()"
+     [Form]="form"
+     [ItemOptions]="itemOptions"
+     [ColumnsOptions]="form.listColumnsOptions">
+  </form-list>
+  <ion-infinite-scroll [enabled]="!isSearching && infiniteScrollEnabled" (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content dir={{dirByLang}} loadingSpinner="dots" loadingText="{{scrollLoadingText}}"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <ion-buttons dir="{{dirByLang}}" class="add-button">
+    <button  ion-button icon-only round (click)="addNewFunc()">
+      <ion-icon name="{{getAddNewIcon()}}" padding></ion-icon>
+    </button>
+  </ion-buttons>
+</ion-content>
+
+<file-uploader [Form]="form" *ngIf="isAttachments()"></file-uploader>

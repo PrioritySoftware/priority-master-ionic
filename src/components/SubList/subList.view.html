@@ -1,0 +1,41 @@
+<!--Sub Form -->
+<ion-toolbar>
+    <ion-label>{{subform.title}}</ion-label>
+    <ion-buttons end>
+    <!-- *ngIf="isCanAddOrEditSubform()" -->
+        <button
+            ion-button
+            clear 
+            (click)="addNewOrEditSubformFunc()">
+            <ion-icon name="{{getAddNewOrEditIcon()}}"></ion-icon>
+        </button>
+    </ion-buttons>
+</ion-toolbar>
+    
+<!--Sub Form list -->
+<form-list
+    *ngIf="!isText()"
+    [Items]="getRows()"
+    [Form]="subform"
+    [ItemOptions]="itemOptions"
+    [ColumnsOptions]="subform.listColumnsOptions">
+</form-list>
+<button ion-item class="show-all" *ngIf="canExpand()" (click)="viewExpandList()">
+    {{showAllItemsText}}
+    <ion-icon name="ios-arrow-forward">
+    </ion-icon>
+</button>
+<div class="separator" *ngIf="showSeparator()"></div>
+<button ion-item class="text" *ngIf="isText() && getText() != ''" (click)="addNewOrEditSubformFunc()">
+    <div class="text-inner" #textElement [innerHTML]="getText()"></div>
+    <div class="more-icon" *ngIf="isShowMoreText">
+        <ion-icon name="more"></ion-icon>
+    </div>
+</button>
+
+<!-- <text-form-display
+    *ngIf="isText()"
+    [Form]="subform">
+</text-form-display> -->
+
+<file-uploader [Form]="subform" [style.display]="none" *ngIf="isAttachments()"></file-uploader>

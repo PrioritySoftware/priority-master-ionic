@@ -1,0 +1,37 @@
+<ion-header dir="{{dirByLang}}">
+  <ion-navbar hideBackButton="true">
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons start>
+      <button ion-button icon-only (click)="leavePage()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+	<ion-searchbar (ionInput)="getItemsBySearchText($event)"
+			   [(ngModel)]="fieldVal"
+			   placeholder= {{placeholder}}
+			   *ngIf="isSearch"
+			   dir="{{dirByLang}}"
+			   #searchbar></ion-searchbar>
+	<div id="waitingSpinner" class="waitingSpinner_search" *ngIf="isShowWaitingDots">
+		<ion-spinner name="dots"></ion-spinner>
+	</div>
+	<ion-list id="searchGrid" dir="{{dirByLang}}">
+		<ion-list-header *ngIf="chooseHeader1!=null">
+			<ion-row>
+				<ion-col> {{ chooseHeader1 }} </ion-col>
+				<ion-col width-67 *ngIf="chooseHeader2!=null"> {{ chooseHeader2 }} </ion-col>
+			</ion-row>
+		</ion-list-header>
+		<ion-item *ngFor="let item of searchResults | objToIterable" (click)="selectItem(item)">
+
+			<ion-row>
+				<ion-col> {{ getSearchResult(item) }} </ion-col>
+				<ion-col width-67 *ngIf="getSecondSearchResult(item)!=null && getSecondSearchResult(item)!=null"> {{ getSecondSearchResult(item) }} </ion-col>
+			</ion-row>
+
+		</ion-item>
+	</ion-list>
+</ion-content>

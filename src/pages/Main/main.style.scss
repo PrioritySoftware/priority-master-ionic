@@ -1,0 +1,62 @@
+main-page {
+
+    ion-card
+    {
+        height: 80px;
+        border-radius: 4px;
+        button {
+            text-align: center;
+            height: 100%;
+            font-size: 1.7rem;
+            color: color($colors,dark);
+            border-radius: 4px;
+        }
+        
+
+        ion-label {
+            text-align: center;
+        }
+
+        // [dir="ltr"] & {
+        //     border-left: 4px solid color($colors,favorite);
+        // }
+
+        // [dir="rtl"] & {
+            border-right: 4px solid color($colors,favorite);
+        // }
+    }
+    .main-page-header
+    { 
+        button
+        {
+            transform: rotate(180deg)
+        }
+      .toolbar-content
+        {
+            height: 100%;
+            position: absolute;
+            width: 100%;
+            background-repeat: no-repeat;
+            background-position: 50%;
+            &.toolbar-content
+            {
+              background-image: url('../assets/img/brand_white.png');
+            }
+            //  &.toolbar-content-ios
+            // {
+            //   background-image: url('../assets/img/brand.png');
+            // }
+          
+        }
+        
+    }
+
+     .content {
+        background: color($colors,background);
+    }
+}
+
+
+// ion-card:hover{
+//     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+// }

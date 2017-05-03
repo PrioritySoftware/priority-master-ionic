@@ -1,0 +1,268 @@
+// http://ionicframework.com/docs/v2/theming/
+
+
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+
+//<ion-list [attr.no-lines]="isMD ? '' : null">
+
+$ionicons-font-path: "../assets/fonts";
+@import "ionicons";
+@import '../icons/ionicons';
+
+@import "../pages/Login/login.style";
+@import "../pages/Main/main.style";
+@import "../pages/Details/details.style";
+@import "../pages/Start/start.style";
+@import "../pages/Search/search.style";
+@import "../pages/List/list.style";
+
+
+ion-app,ion-nav
+{
+    background-color: color($colors,primary)
+}
+ion-header {
+    &[dir="ltr"] {
+        .bar-buttons[start] {
+            order: 1;
+        }
+    }
+    &[dir="rtl"] {
+        .bar-buttons[start] {
+            order: 1;
+        }
+        .icon[name="arrow-back"],.icon[name="log-out"] {
+            transform: rotate(180deg)
+        }
+        .bar-button-default.text-only {
+            background-color: rgba(255, 255, 255, 0.18);
+            font-size: 16px;
+        }
+    }
+
+    &:after {
+        display: none;
+    }
+
+    ion-toolbar {
+        .toolbar-background-md {
+            background: transparent;
+        }
+    }
+    
+    ion-navbar {
+        position: relative;
+        box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.14), 0 0px 1px 1px rgba(0, 0, 0, 0.2);
+        .toolbar-background {
+            background: color($colors,primary);
+        }
+        .toolbar-content {
+        text-align: center;
+        }
+        .icon-md {
+            color: white;
+        }
+        .toolbar-title-md {
+            color: white;
+        }
+        img {
+            vertical-align: middle;
+        }
+        .bar-button-default-md {
+          color: white;
+        }
+    }
+}
+.spinner {
+  width: 35px;
+  height: 35px;
+  margin: 0 4px;
+}
+body{
+    margin:0 !important;
+}
+.rtl
+{
+    direction: rtl;
+}
+.ltr
+{
+    direction: ltr;
+}
+.center {
+    text-align: center;
+}
+.rtl .alert-head
+{
+  text-align: right !important;
+}
+.alert-wrapper
+{
+    max-width: 400px !important;
+}
+.alert-button-group-vertical {
+    
+    -webkit-flex-direction: row !important; 
+    -ms-flex-direction: row !important; 
+    flex-direction: row !important; 
+    padding:0 !important;
+}
+.alert-button
+{
+    margin:0 3px !important;
+}
+.alert-message
+{
+  overflow: auto !important;
+}
+.action-sheet-icon {
+    .rtl & {
+        margin: 0 0 0 32px;
+    }
+}
+.ng-valid:not(.input-has-focus),.ng-invalid:not(.input-has-focus) {
+    &.item-input {
+        border-bottom-color: #dedede !important;
+        box-shadow: none !important;
+    }
+    .item-inner {
+        border-bottom-color: #dedede !important;
+        box-shadow: none !important;
+    }
+}
+.item-input.input-has-focus:last-child {
+  border-bottom-color: #dedede !important;
+  box-shadow: none !important;
+}
+.item-input.item-md {
+    .item-inner {
+        margin-left: -1px;
+        margin-right: -1px;
+    }
+}
+ion-searchbar
+{
+    position: relative;
+}
+/*Pages*/
+.ion-page
+{
+    background-color: white;
+    opacity: 0;
+}
+.ion-page:last-of-type {
+ 
+    opacity: 1;
+}
+
+.hide 
+{ 
+    display:none; 
+}
+
+ion-list > ion-item:last-child
+{
+    border-top:initial;
+}
+
+/*TODO: move this css to package to main css file*/
+.transparentBlock  .loading-wrapper {
+   background-color: transparent !important;
+   box-shadow: none !important;
+}
+
+.transparentBlock ion-backdrop {
+   opacity: 0 !important;
+     
+}
+.popover-md .popover-content {
+    width: auto;
+}
+/***************************************************/
+
+ion-label {
+    margin: 13px 0px 13px 0;
+}
+
+.tabbar
+{
+    bottom: 60px !important;
+}
+
+ion-list ion-item ion-row ion-col
+{
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#beforeLogInImg
+{
+    top: 50%;
+    position: absolute;
+    right: 50%;
+    margin-right: -42px;
+    margin-top: -40px;
+}
+/****************************** spinner ******************************/
+.before-login-spinner
+{
+    margin-top: -20px;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    text-align: center;
+    -webkit-animation: sk-rotate 2.0s infinite linear;
+    animation: sk-rotate 2.0s infinite linear;
+    top: 52%;
+    left: 50%;
+    margin-left: -20px;
+   div 
+   {
+     width: 60%;
+     height: 60%;
+     display: inline-block;
+     position: absolute;
+     top: 0;
+     background-color: white;
+     border-radius: 100%;
+  
+     -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+     animation: sk-bounce 2.0s infinite ease-in-out;
+   }
+   div:nth-child(2) 
+   {
+     top: auto;
+     bottom: 0;
+     -webkit-animation-delay: -1.0s;
+     animation-delay: -1.0s;
+   }
+}
+
+@-webkit-keyframes sk-rotate { 100% { -webkit-transform: rotate(360deg) }}
+@keyframes sk-rotate { 100% { transform: rotate(360deg); -webkit-transform: rotate(360deg) }}
+
+@-webkit-keyframes sk-bounce {
+  0%, 100% { -webkit-transform: scale(0.0) }
+  50% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bounce {
+  0%, 100% { 
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 50% { 
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
+}

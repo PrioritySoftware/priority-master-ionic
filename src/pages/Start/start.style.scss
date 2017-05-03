@@ -1,0 +1,44 @@
+.scan-view {
+	color: white;
+	background: purple;
+	text-align: center;
+  	display: flex;
+  	flex-direction: column;
+
+  .header {
+  	flex: 0 0 100px;
+  	img {
+  		margin-top: 30px;
+  	}
+  }
+
+  .image-container {
+  	flex: 1;
+  	img {
+    	width: 32vh;
+    	height: 55vh;
+  	}
+  }
+
+  .footer {
+
+  	flex: 0 0 150px;
+
+		button {
+			width: 100px;
+			background: #48c0ee;
+			border-radius: 5px;
+			font-size: 22px;
+			height: 40px;
+	    	color: white;
+	  	}
+	  .spinner {
+	  		margin: 0;
+		  	svg circle {
+			  stroke: white;
+			  fill: white;
+			}
+		}
+	 }
+}
+

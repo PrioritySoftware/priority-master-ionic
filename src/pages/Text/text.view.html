@@ -1,0 +1,29 @@
+<ion-header dir="{{dirByLang}}">
+  <ion-navbar hideBackButton="true">
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons start>
+      <button ion-button icon-only (click)="leavePage()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons *ngIf="isHtmlEditable == 1" end>
+      <button ion-button class="text-only" (click)="saveText()">
+        {{saveBtnText}}
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+	<div class="container">
+		<textarea 
+			placeholder="{{textPlaceholder}}"
+			dir={{dirByLang}}
+			[(ngModel)]="text"
+			(ngModelChange)="onTextChange($event)"
+			*ngIf="isHtmlEditable == 1">
+		</textarea>
+		<ion-scroll class="html-container" dir={{dirByLang}} scrollY="true">
+			<div [innerHTML]="getHTML()"></div>
+		</ion-scroll>
+	</div>
+</ion-content>

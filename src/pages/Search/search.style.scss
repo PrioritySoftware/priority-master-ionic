@@ -1,0 +1,17 @@
+#searchGrid
+{
+	&[dir="rtl"] {
+		.item {
+			padding-right: 16px;
+			padding-left: 0;
+		}
+		.item-inner {
+			padding-right: 0;
+		}
+	}
+}
+
+.waitingSpinner_search
+{
+       top: 90vh !important;
+}

@@ -1,0 +1,23 @@
+.login-content {
+    margin: 20%;
+
+    .login-button {
+        width: 200px;
+        margin: 0 auto;
+        box-shadow: 0 2px 0px 0px rgba(72, 192, 238, 0), 0 3px 1px -2px rgba(72, 192, 238, 0), 0px 1px 2px 1px color($colors,primary);
+        color: color($colors,primary);
+        background-color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .list-md > .item-block {
+        padding:0;
+        border-top: none;
+    }
+
+    ion-buttons {
+        margin-top: 25px;
+        text-align: center;
+    }
+}

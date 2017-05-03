@@ -1,0 +1,28 @@
+<ion-header  dir="{{dirByLang}}" >
+  <ion-navbar hideBackButton="true">
+    <ion-title>
+      <img src="assets/img/brand.png"/>
+    </ion-title>
+  </ion-navbar>
+ </ion-header>
+<ion-content>
+  <div class="login-content">
+    <ion-list (keypress)="eventHandler($event)">
+
+      <ion-item [style.direction]="dirByLang">
+        <ion-input type="text" placeholder="{{usrTitle}}" [(ngModel)]="usrValue"></ion-input>
+      </ion-item>
+
+      <ion-item [style.direction]="dirByLang">
+        <ion-input type="password" placeholder="{{pswTitle}}" [(ngModel)]="pswValue"></ion-input>
+      </ion-item>
+
+    </ion-list>
+
+    <ion-buttons>
+      <button class="login-button" block (click)="login()" padding>
+      {{ btnTitle }}
+      </button>
+    </ion-buttons>
+  </div>
+</ion-content>

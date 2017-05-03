@@ -1,0 +1,57 @@
+
+
+
+// Shared Variables
+// --------------------------------------------------
+// To customize the look and feel of this app, you can override
+// the Sass variables found in Ionic's source scss files.
+// To view all the possible Ionic variables, see:
+// http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
+
+$text-color:        #000;
+$background-color:  #fff;
+
+
+// Named Color Variables
+// --------------------------------------------------
+// Named colors makes it easy to reuse colors on various components.
+// It's highly recommended to change the default colors
+// to match your app's branding. Ionic uses a Sass map of
+// colors so you can add, rename and remove colors as needed.
+// The "primary" color is the only required color in the map.
+
+$colors: (
+  primary:    #1f9bd1,//#48c0ee,
+  edit:       #f4f4f4,
+  delete:     #e8e8e8,
+  secondary:  #0789bb,
+  danger:     #D62839,//#F25F5C,//#EB7260,//#d6664a,//#D82222, .......................         92374D           ////////////#B80C09
+  light:      #f4f4f4,
+  dark:       #565656,
+  favorite:   #175676,//#f49f2d,//#70C1B3,//#29ABA4,//#3e97a2,//#0966ad,  ............8C5383/2D728F/[BCD2EE]   /////////////#0B4F6C
+  gray:       #ababab,
+  lightgray:  #f4f4f4,
+  darkblue:   #354458,
+  background: #f8f8f8
+);
+
+
+
+// Ionicons
+// --------------------------------------------------
+// The premium icon font for Ionic. For more info, please see:
+// http://ionicframework.com/docs/v2/ionicons/
+
+
+
+// Ionic Variables and Theming. For more info, please see:
+// http://ionicframework.com/docs/v2/theming/
+@import "ionic.globals";
+// App Theme
+// --------------------------------------------------
+// Ionic apps can have different themes applied, which can
+// then be future customized. This import comes last
+// so that the above variables are used and Ionic's
+// default are overridden.
+
+@import "ionic.theme.default";

@@ -1,0 +1,19 @@
+<ion-header dir="{{dirByLang}}" class="main-page-header">
+  <ion-navbar hideBackButton="true">
+    <ion-buttons start>
+      <button ion-button icon-only (click)="logOut()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title></ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-list dir="{{dirByLang}}">
+    <ion-card *ngFor="let item of tilesList | Filter:isShowEntity">
+      <button ion-item (click)="entityChosen(item)">
+            {{item.title}}
+          </button>
+    </ion-card>
+  </ion-list>
+</ion-content>
