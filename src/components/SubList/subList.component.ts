@@ -197,6 +197,17 @@ export class SubList implements AfterViewChecked
         {
             subformFunc = this.newRowUpload;
         }
+        else if(this.subform.oneline == 1 && Object.keys(this.subform.rows).length == 1)
+        {
+            subformFunc = () =>
+            {
+                this.formService.editSubFormRow(this.subform.parentForm, this.subform.name, 1).then(
+                result =>
+                {
+                    this.nav.push(DetailsPage, { form: this.subform, rowInd: 1, isSubform: true });
+                });
+            };
+        }
         else
         {
             subformFunc = () =>
