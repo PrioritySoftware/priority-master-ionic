@@ -32,25 +32,34 @@ export class AppService
             this.loadJson(jsonUrl).then(
                 () =>
                 {
-                    let username = this.getLocalUsername();
-                    let password = this.getLocalPassword();
-                    if (username != null && password != null)
-                    {
-                        this.configService.logIn(username, password).then(
-                            () =>
+                    let username = "";
+                    this.getLocalUsername()
+                        .then(userName =>
+                        {
+                            username = userName;
+                            return this.getLocalPassword();
+                        })
+                        .then(password =>
+                        {
+                            if (username != null && password != null)
                             {
-                                resolve(true);
-                            },
-                            reason =>
+                                this.configService.logIn(username, password).then(
+                                    () =>
+                                    {
+                                        resolve(true);
+                                    },
+                                    reason =>
+                                    {
+                                        this.clearLogin();
+                                        resolve(false);
+                                    })
+                            }
+                            else
                             {
-                                this.clearLogin();
                                 resolve(false);
-                            })
-                    }
-                    else
-                    {
-                        resolve(false);
-                    }
+                            }
+                        })
+                        .catch(() => resolve(false));
                 },
                 (reason: string) =>
                 {
@@ -191,40 +200,40 @@ export class AppService
             {
                 let json = JSON.parse(jsonString);
                 this.checkUrl(json.url).then(
-                (url) =>
-                {
-                    let config = {
-                        appname: json.appname,
-                        url: url,
-                        company: json.dname,
-                        language: json.lang,
-                        tabulaini: json.tabulaini,
-                        devicename: Device.uuid
-                    }
-                    this.configService.config(config);
-                    try
+                    (url) =>
                     {
-                        this.entitiesData = json.forms_data;
-                        this.initForms(this.entitiesData);
-                    }
-                    catch (err)
+                        let config = {
+                            appname: json.appname,
+                            url: url,
+                            company: json.dname,
+                            language: json.lang,
+                            tabulaini: json.tabulaini,
+                            devicename: Device.uuid
+                        }
+                        this.configService.config(config);
+                        try
+                        {
+                            this.entitiesData = json.forms_data;
+                            this.initForms(this.entitiesData);
+                        }
+                        catch (err)
+                        {
+                            reject();
+                        }
+                        if (config.language == 1)
+                        {
+                            Strings.setRtlConstants();
+                        }
+                        else
+                        {
+                            Strings.setLtrConstants();
+                        }
+                        resolve();
+                    },
+                    () =>
                     {
                         reject();
-                    }
-                    if (config.language == 1)
-                    {
-                        Strings.setRtlConstants();
-                    }
-                    else
-                    {
-                        Strings.setLtrConstants();
-                    }
-                    resolve();
-                },
-                () =>
-                {
-                    reject();
-                });
+                    });
             }
             catch (err)
             {
@@ -250,19 +259,19 @@ export class AppService
                     let column = form.columns[ind];
                     if (column.tabview == 1)
                     {
-                        listColumnsOptions[column.name]={};
+                        listColumnsOptions[column.name] = {};
                         listColumnsOptions[column.name].isShow = true;
                         listColumnsOptions[column.name].isShowTitle = true;
                     }
                     if (column.lineview == 1)
                     {
-                        detailsColumnsOptions[column.name]={};
+                        detailsColumnsOptions[column.name] = {};
                         detailsColumnsOptions[column.name].isShow = true;
                         detailsColumnsOptions[column.name].isShowTitle = true;
                     }
-                    if(column.barcode==1)
+                    if (column.barcode == 1)
                     {
-                        detailsColumnsOptions[column.name].subtype="barcode";
+                        detailsColumnsOptions[column.name].subtype = "barcode";
                     }
                 }
                 form.listColumnsOptions = listColumnsOptions;
@@ -287,7 +296,7 @@ export class AppService
             if (form.fatname !== form.name && form.fatname !== undefined)
             {
                 let parentform = forms[form.fatname];
-                if(parentform != null)
+                if (parentform != null)
                 {
                     form.parentForm = parentform;
                     parentform.subforms[formname] = form;
@@ -305,18 +314,18 @@ export class AppService
     /** Returns the username value saved in local storage */
     getLocalUsername()
     {
-        return window.localStorage.getItem(LocalStorageUsernameKey);
+        return this.storage.get(LocalStorageUsernameKey);
     }
     /** Returns the password value save in local storage */
     getLocalPassword()
     {
-        return window.localStorage.getItem(LocalStoragePasswordKey);
+        return this.storage.get(LocalStoragePasswordKey);
     }
     // /** Clear the values of username and password saved in local storage */
     clearLogin()
     {
-        window.localStorage.removeItem(LocalStorageUsernameKey);
-        window.localStorage.removeItem(LocalStoragePasswordKey);
+        this.storage.remove(LocalStorageUsernameKey);
+        this.storage.remove(LocalStoragePasswordKey);
     }
 
     logIn(username, password): Promise<any>
@@ -327,9 +336,11 @@ export class AppService
                 () =>
                 {
                     //save username and password in local storage
-                    window.localStorage.setItem(LocalStorageUsernameKey, username);
-                    window.localStorage.setItem(LocalStoragePasswordKey, password);
-                    resolve();
+                    this.storage.set(LocalStorageUsernameKey, username).then(() =>
+                    {
+                        return this.storage.set(LocalStoragePasswordKey, password);
+                    })
+                        .then(() => resolve());
                 },
                 (reason: ServerResponse) =>
                 {
