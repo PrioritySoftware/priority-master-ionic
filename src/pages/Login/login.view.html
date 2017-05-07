@@ -1,13 +1,16 @@
 <ion-header  dir="{{dirByLang}}" >
   <ion-navbar hideBackButton="true">
     <ion-title>
-      <img src="assets/img/brand.png"/>
+      <img src="assets/img/brand_white.svg"/>
     </ion-title>
   </ion-navbar>
  </ion-header>
 <ion-content>
   <div class="login-content">
     <ion-list (keypress)="eventHandler($event)">
+      <ion-list-header>
+        {{ loginHeader }}
+      </ion-list-header>
 
       <ion-item [style.direction]="dirByLang">
         <ion-input type="text" placeholder="{{usrTitle}}" [(ngModel)]="usrValue"></ion-input>
@@ -20,8 +23,8 @@
     </ion-list>
 
     <ion-buttons>
-      <button class="login-button" block (click)="login()" padding>
-      {{ btnTitle }}
+      <button ion-button outline (click)="login()">
+      {{ loginBtn }}
       </button>
     </ion-buttons>
   </div>

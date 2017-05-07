@@ -7,6 +7,7 @@ import { Strings } from '../../app/app.config';
 import { MessageHandler } from 'priority-ionic';
 
 @Component({
+    selector: 'page-login',
     templateUrl: 'login.view.html',
     entryComponents: [MainPage]
 })
@@ -17,7 +18,8 @@ export class LoginPage
     pswValue;
     usrTitle;
     pswTitle;
-    btnTitle;
+    loginBtn;
+    loginHeader;
     dirByLang;
     dirOpposite;
 
@@ -25,15 +27,17 @@ export class LoginPage
     {
         this.usrTitle = Strings.usrTitle;
         this.pswTitle = Strings.pswTitle;
-        this.btnTitle = Strings.btnTitle;
+        this.loginBtn = Strings.loginBtn;
+        this.loginHeader = Strings.loginHeader;
         this.dirByLang = Strings.dirByLang;
         this.dirOpposite = Strings.dirOpposite;
     }
 
     login()
     {
-        this.messageHandler.showLoading(Strings.wait);
-        this.appService.logIn(this.usrValue, this.pswValue).then(
+        this.messageHandler.showTransLoading();
+        let username = this.usrValue.trim();
+        this.appService.logIn(username, this.pswValue).then(
             res =>
             {
                 this.messageHandler.hideLoading();

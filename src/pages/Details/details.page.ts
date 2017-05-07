@@ -4,7 +4,7 @@ import { ListPage } from '../List/list.page';
 import { SearchPage } from '../Search/search.page';
 import { Strings } from '../../app/app.config';
 import { FormService, PermissionsService, MessageHandler, } from 'priority-ionic';
-import { FileUploader, MenuPopup, ButtonOptions, Search,Column } from 'priority-ionic';
+import { FileUploader, MenuPopup, ButtonOptions, Search, Column,ColumnOptions } from 'priority-ionic';
 import { BarcodeScanner } from 'ionic-native';
 import { CustomForm } from "../../entities/form.class";
 declare var window;
@@ -43,11 +43,11 @@ export class DetailsPage
     }
 
     constructor(private formService: FormService,
-                private permissions: PermissionsService,
-                private nav: NavController,
-                private navParams: NavParams,
-                private popoverCtrl: PopoverController,
-                private messageHandler: MessageHandler)
+        private permissions: PermissionsService,
+        private nav: NavController,
+        private navParams: NavParams,
+        private popoverCtrl: PopoverController,
+        private messageHandler: MessageHandler)
     {
         //data
         this.form = this.navParams.data.form;
@@ -115,18 +115,18 @@ export class DetailsPage
 
     expandSubformList(subform)
     {
-        this.formService.startSubform(this.form,subform.name).then(
+        this.formService.startSubform(this.form, subform.name).then(
             () =>
             {
-                this.nav.push(ListPage,{form: subform, isSubform: true});
+                this.nav.push(ListPage, { form: subform, isSubform: true });
             },
-            () => {});
+            () => { });
     }
 
     // Page leaving functions 
     leavePage = () =>
     {
-        if(this.isLeave)//Maybe backbutton was pressed for other functionality, then we shouldn't leave the page (isLeave = false)
+        if (this.isLeave)//Maybe backbutton was pressed for other functionality, then we shouldn't leave the page (isLeave = false)
         {
             if (!this.getIsChangesSaved())
             {
@@ -153,13 +153,13 @@ export class DetailsPage
                         () =>
                         {
                             this.nav.pop();
-                        },() => {});
+                        }, () => { });
                 }
                 else 
                 {
                     this.nav.pop();
                 }
-                
+
             }
         }
         else
@@ -175,23 +175,23 @@ export class DetailsPage
     {
         return this.formService.getIsRowChangesSaved(this.form, this.rowInd);
     }
-    sort(item1,item2)
+    sort(item1, item2)
     {
-        if(item1.pos > item2.pos)
+        if (item1.pos > item2.pos)
         {
             return 1;
         }
-        if(item2.pos > item1.pos)
+        if (item2.pos > item1.pos)
         {
             return -1;
         }
         return 0;
     }
     /** Column display properties */
-    isShowColumn=(column: Column)=>
+    isShowColumn = (column: Column) =>
     {
-        let columnOptions=this.form.detailsColumnsOptions[column.key];
-        return columnOptions&& columnOptions.isShow;
+        let columnOptions = this.getColumnOptions(column);
+        return columnOptions && columnOptions.isShow;
     }
     isDateOrTimeColumn(column: Column)
     {
@@ -214,7 +214,7 @@ export class DetailsPage
         if (columnName == null)
             return;
         let blockTimeout = setTimeout(() =>
-            {
+        {
             this.messageHandler.showTransLoading();
         }, 500);
         this.formService.updateField(this.form, value, columnName).then(
@@ -254,8 +254,8 @@ export class DetailsPage
     {
         if (this.selectedItem[column.key] == null)
             return "";
-            return this.selectedItem[column.key];
-        }
+        return this.selectedItem[column.key];
+    }
     /** Search/Choose functionality */
     isSearch(column: Column)
     {
@@ -263,8 +263,8 @@ export class DetailsPage
     }
     isBarcode(column: Column)
     {
-                let columnOptions=this.form.detailsColumnsOptions[column.key];
-        return (window.cordova) && columnOptions && columnOptions.subtype=="barcode";
+        let columnOptions = this.getColumnOptions(column);
+        return (window.cordova) && columnOptions && columnOptions.subtype == "barcode";
     }
     isAttach(column: Column)
     {
@@ -283,6 +283,17 @@ export class DetailsPage
         if (this.isAttach(column))
             return "attach";
     }
+    /**
+     * Returns the column's options object as it is defined in app.service.
+     * Used for display properties.
+     * @param {any} column 
+     * @returns 
+     * @memberOf DetailsPage
+     */
+    getColumnOptions(column):ColumnOptions
+    {
+        return this.form.detailsColumnsOptions[column.key];
+    }
     columnIconClicked($event, column: Column)
     {
         if (this.isBarcode(column))
@@ -300,48 +311,48 @@ export class DetailsPage
     }
     /* Use phonegap-plugin-barcodescanner to scan barcode into current field */
     barcodeScan(column: Column)
-    {        
+    {
         if (!window.cordova)
             return;
         this.permissions.requestPermission("camera").then(
             () =>
             {
-        column['errorMsg'] = "";
-        
-        //Note: I think that in lasndscape mode scans code-39 barcodes better because rectangle is bigger, so I forced landscape (only works on android).
-        BarcodeScanner.scan(            
-            {
-                showFlipCameraButton: true,
-                showTorchButton: true,
-                resultDisplayDuration: 0,
-                orientation: "landscape",
-            }).then(
-            result =>
-            {
-                if (result == null || result.text == null || result.cancelled)//If returned from scan without scanning
-                {
-                    this.isLeave = false;//Means that the backbutton was clicked - Don't leave page - Check behavior in iOS!!!!!!!
-                    if (this.isSearch(column))//If the column is search open the search page
+               this.getColumnOptions(column).errorMsg="";
+
+                //Note: I think that in lasndscape mode scans code-39 barcodes better because rectangle is bigger, so I forced landscape (only works on android).
+                BarcodeScanner.scan(
                     {
-                        this.openSearchList(column);
+                        showFlipCameraButton: true,
+                        showTorchButton: true,
+                        resultDisplayDuration: 0,
+                        orientation: "landscape",
+                    }).then(
+                    result =>
+                    {
+                        if (result == null || result.text == null || result.cancelled)//If returned from scan without scanning
+                        {
+                            this.isLeave = false;//Means that the backbutton was clicked - Don't leave page - Check behavior in iOS!!!!!!!
+                            if (this.isSearch(column))//If the column is search open the search page
+                            {
+                                this.openSearchList(column);
+                            }
+                            return;
+                        }
+                        let restext = result.text;
+                        if (column.maxLength > 0 && restext.length > column.maxLength)
+                        {    //should be handled in field validator not here
+                            this.getColumnOptions(column).errorMsg = Strings.maxLengthForField + column.maxLength
+                        }
+                        else if (this.selectedItem[column.key] != restext)
+                        {
+                            this.updateFields(column.key, restext, this.selectedItem[column.key]);
+                        }
+                    }).catch(
+                    reason =>
+                    {
+                        this.messageHandler.showToast("Scanning failed: " + reason);
                     }
-                    return;
-                }
-                let restext = result.text;
-                if (column.maxLength > 0 && restext.length > column.maxLength)
-                {    //should be handled in field validator not here
-                    column['errorMsg'] = Strings.maxLengthForField + column.maxLength
-                }                                        
-                else if (this.selectedItem[column.key] != restext)
-                {
-                    this.updateFields(column.key, restext, this.selectedItem[column.key]);
-                }
-            }).catch(
-            reason =>
-            {
-                this.messageHandler.showToast("Scanning failed: " + reason);
-            }
-        );
+                    );
             },
             error =>
             {
@@ -381,49 +392,49 @@ export class DetailsPage
     {
         this.isShowWaitingDots = true;
         this.formService.saveRow(this.form, this.rowInd, 0).then(
-                () =>
+            () =>
+            {
+                this.isShowWaitingDots = false;
+                if (afterSaveFunc != null)
                 {
-                    this.isShowWaitingDots = false;
-                    if (afterSaveFunc != null)
-                    {
-                        afterSaveFunc();
-                    }
-                    else
-                    {
-                        this.leavePage();
-                    }
+                    afterSaveFunc();
+                }
+                else
+                {
+                    this.leavePage();
+                }
 
-                },
-                () =>
-                {
-                    this.isShowWaitingDots = false;
-                });
+            },
+            () =>
+            {
+                this.isShowWaitingDots = false;
+            });
     }
     /** Undoes changes in current row */
     undoRow = (isAfterCheckChanges = false, afterUndoFunc = null) =>
     {
         this.isShowWaitingDots = true;
         this.formService.undoRow(this.form).then(
-                result =>
+            result =>
+            {
+                this.isShowWaitingDots = false;
+                this.setIsChangesSaved(true);
+                if (afterUndoFunc != null)
                 {
-                    this.isShowWaitingDots = false;
-                    this.setIsChangesSaved(true);
-                    if (afterUndoFunc != null)
-                    {
-                        afterUndoFunc();
-                    }
-                    else
-                    {
+                    afterUndoFunc();
+                }
+                else
+                {
                     if (isAfterCheckChanges || this.selectedItem.isNewRow)
                     {
-                            this.leavePage();
-                        }
+                        this.leavePage();
                     }
-                },
-                () =>
-                {
-                    this.isShowWaitingDots = false;
-                });
+                }
+            },
+            () =>
+            {
+                this.isShowWaitingDots = false;
+            });
     }
     /** Deletes current row */
     deleteRow()
@@ -443,7 +454,7 @@ export class DetailsPage
                     this.isShowWaitingDots = false;
                 });
         };
-        this.messageHandler.showErrorOrWarning(false, Strings.isDelete,delFunc);
+        this.messageHandler.showErrorOrWarning(false, Strings.isDelete, delFunc);
     }
 
     //******************************* Attachments *****************************************
@@ -452,31 +463,31 @@ export class DetailsPage
     {
         if (this.getValue(column) != "")
         {
-           let popover;
+            let popover;
             let openAttach: ButtonOptions = {
-               text: Strings.openBtnText,
+                text: Strings.openBtnText,
                 onClick: () =>
                 {
-                   popover.dismiss();
-                   this.openAttach(this.getValue(column));
-               }
-           }
+                    popover.dismiss();
+                    this.openAttach(this.getValue(column));
+                }
+            }
             let changeAttach: ButtonOptions = {
-               text: Strings.changeBtnText,
+                text: Strings.changeBtnText,
                 onClick: () =>
                 {
-                   popover.dismiss();
-                   this.fileUpload(column);
-               }
-           }
+                    popover.dismiss();
+                    this.fileUpload(column);
+                }
+            }
             popover = this.popoverCtrl.create(MenuPopup, {
                 items: [openAttach, changeAttach],
-           });
+            });
             popover.present({ ev: event });
         }
         else
         {
-           this.fileUpload(column);
+            this.fileUpload(column);
         }
     }
 
@@ -486,9 +497,9 @@ export class DetailsPage
         this.fileUploader.uploadFile().then(
             result =>
             {
-            //should be done in main update field
+                //should be done in main update field
                 this.formService.updateField(this.form, result.file, column.key);
-            }, reason => {});
+            }, reason => { });
     }
 
     openAttach(url)

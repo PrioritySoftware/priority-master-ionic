@@ -1,23 +1,53 @@
-.login-content {
-    margin: 20%;
+page-login {
 
-    .login-button {
-        width: 200px;
-        margin: 0 auto;
-        box-shadow: 0 2px 0px 0px rgba(72, 192, 238, 0), 0 3px 1px -2px rgba(72, 192, 238, 0), 0px 1px 2px 1px color($colors,primary);
-        color: color($colors,primary);
-        background-color: white;
-        font-weight: bold;
-        cursor: pointer;
+  .toolbar-md, .toolbar-ios {
+    min-height: 180px;
+    .toolbar-background {
+        background-color: rgba(31,155,209,0.99);
+        background: -webkit-linear-gradient(-45deg, rgba(31,155,209,0.99) 0%, rgba(31,155,209,1) 0%, rgba(31,155,209,1) 46%, rgba(24,120,158,1) 100%);
+    }
+    img {
+        height: 45px;
+    }
+  }
+
+  .login-content {
+    margin: 20px auto;
+    width:  70%;
+
+    ion-list-header {
+
+      margin-top: 13px;
+      border-top: none;
+      .item-inner {
+        border-bottom: none;
+      }
+
+      ion-label {
+        font-size: 2.4rem;
+        text-align:  center;
+      }
+
     }
 
-    .list-md > .item-block {
-        padding:0;
-        border-top: none;
+    .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus):last-child,.item-md.item-input.ng-valid.input-has-value:not(.input-has-focus) .item-inner {
+      border-bottom-color: #dedede;
+      box-shadow: none;
+    }
+
+    .item-block {
+      padding:0;
+      border-top: none;
     }
 
     ion-buttons {
+      margin-top: 25px;
+      text-align: center;
+
+      .button {
+        width: 150px;
         margin-top: 25px;
-        text-align: center;
+      }
     }
+  }
 }

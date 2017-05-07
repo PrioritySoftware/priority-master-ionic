@@ -83,6 +83,7 @@ www/
 $RECYCLE.BIN/
 resources/
 src/assets/gwt-unitCache/
+src/assets/js/priorityapp
 
 .DS_Store
 Thumbs.db

@@ -54,7 +54,7 @@ export class SearchPage
     }
     getSecondSearchResult(item: SearchResult)
     {
-        if (item.retval == item.string1)
+        if (!item.retval || item.retval == item.string1)
         {
             return item.string2;
         }
@@ -65,7 +65,7 @@ export class SearchPage
     }
     getSearchResult(item: SearchResult)
     {
-        return item.retval;
+        return item.retval || item.string1;
     }
     getItemsBySearchText(ev)
     {
@@ -93,7 +93,7 @@ export class SearchPage
     }
     selectItem(item)
     {
-        let colName = this.navParams.data.column.name;
+        let colName = this.navParams.data.column.key;
 
         if (this.fieldVal != this.getSearchResult(item))
             this.updateField(this.getSearchResult(item), colName);

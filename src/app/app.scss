@@ -28,12 +28,7 @@ $ionicons-font-path: "../assets/fonts";
 @import "../pages/Search/search.style";
 @import "../pages/List/list.style";
 
-
-ion-app,ion-nav
-{
-    background-color: color($colors,primary)
-}
-ion-header {
+ion-header,.header-ios,.header-md {
     &[dir="ltr"] {
         .bar-buttons[start] {
             order: 1;
@@ -47,7 +42,8 @@ ion-header {
             transform: rotate(180deg)
         }
         .bar-button-default.text-only {
-            background-color: rgba(255, 255, 255, 0.18);
+            //background-color: rgba(255, 255, 255, 0.18);
+            background-color: rgba(0, 0, 0, 0.07);
             font-size: 16px;
         }
     }
@@ -68,22 +64,28 @@ ion-header {
         .toolbar-background {
             background: color($colors,primary);
         }
-        .toolbar-content {
-        text-align: center;
+        .toolbar-background-ios {
+            border-color: rgba(0, 0, 0, 0.12);
         }
-        .icon-md {
+        .toolbar-content {
+            text-align: center;
+        }
+        .icon {
             color: white;
         }
-        .toolbar-title-md {
+        .toolbar-title {
             color: white;
         }
         img {
             vertical-align: middle;
         }
-        .bar-button-default-md {
+        .bar-button-default {
           color: white;
         }
     }
+}
+file-uploader {
+    display: none;
 }
 .spinner {
   width: 35px;
@@ -108,25 +110,31 @@ body{
 {
   text-align: right !important;
 }
-.alert-wrapper
-{
-    max-width: 400px !important;
+.alert-ios.rtl .alert-button {
+  border-left: 0.55px solid #dbdbdf;
+  border-right: none;
 }
-.alert-button-group-vertical {
-    
-    -webkit-flex-direction: row !important; 
-    -ms-flex-direction: row !important; 
-    flex-direction: row !important; 
-    padding:0 !important;
-}
-.alert-button
-{
-    margin:0 3px !important;
-}
-.alert-message
-{
-  overflow: auto !important;
-}
+// .alert-wrapper
+// {
+//     max-width: 400px !important;
+// }
+// .alert-button-group-vertical {
+//     -webkit-flex-direction: row !important; 
+//     -ms-flex-direction: row !important; 
+//     flex-direction: row !important; 
+//     padding:0 !important;
+// }
+// .alert-button
+// {
+//     margin:0 3px !important;
+// }
+// .alert-ios .alert-button {
+//    border-right: initial;
+// }
+// .alert-message
+// {
+//   overflow: auto !important;
+// }
 .action-sheet-icon {
     .rtl & {
         margin: 0 0 0 32px;
@@ -155,16 +163,6 @@ body{
 ion-searchbar
 {
     position: relative;
-}
-/*Pages*/
-.ion-page
-{
-    background-color: white;
-    opacity: 0;
-}
-.ion-page:last-of-type {
- 
-    opacity: 1;
 }
 
 .hide 
@@ -205,64 +203,4 @@ ion-list ion-item ion-row ion-col
 {
     overflow: hidden;
     text-overflow: ellipsis;
-}
-#beforeLogInImg
-{
-    top: 50%;
-    position: absolute;
-    right: 50%;
-    margin-right: -42px;
-    margin-top: -40px;
-}
-/****************************** spinner ******************************/
-.before-login-spinner
-{
-    margin-top: -20px;
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    text-align: center;
-    -webkit-animation: sk-rotate 2.0s infinite linear;
-    animation: sk-rotate 2.0s infinite linear;
-    top: 52%;
-    left: 50%;
-    margin-left: -20px;
-   div 
-   {
-     width: 60%;
-     height: 60%;
-     display: inline-block;
-     position: absolute;
-     top: 0;
-     background-color: white;
-     border-radius: 100%;
-  
-     -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
-     animation: sk-bounce 2.0s infinite ease-in-out;
-   }
-   div:nth-child(2) 
-   {
-     top: auto;
-     bottom: 0;
-     -webkit-animation-delay: -1.0s;
-     animation-delay: -1.0s;
-   }
-}
-
-@-webkit-keyframes sk-rotate { 100% { -webkit-transform: rotate(360deg) }}
-@keyframes sk-rotate { 100% { transform: rotate(360deg); -webkit-transform: rotate(360deg) }}
-
-@-webkit-keyframes sk-bounce {
-  0%, 100% { -webkit-transform: scale(0.0) }
-  50% { -webkit-transform: scale(1.0) }
-}
-
-@keyframes sk-bounce {
-  0%, 100% { 
-    transform: scale(0.0);
-    -webkit-transform: scale(0.0);
-  } 50% { 
-    transform: scale(1.0);
-    -webkit-transform: scale(1.0);
-  }
 }

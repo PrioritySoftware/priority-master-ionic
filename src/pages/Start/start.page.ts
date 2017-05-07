@@ -30,8 +30,6 @@ export class StartPage
 
         /* strings */
         this.dirByLang = Strings.dirByLang;
-        this.header = Strings.header;
-        this.header2 = Strings.header2;
         this.scanInstructions = Strings.scanInstructions;
         this.scanButton = Strings.scanButton;
         this.preparingApp = Strings.preparingApp;
@@ -57,12 +55,12 @@ export class StartPage
                         }
                         else
                         {
+                            this.showScan = false;
+                            this.showLoading = true;
         	            	//init app with the result json url
         	                this.appService.initApp(result.text).then(
                             () =>
                             {
-                                this.showScan = false;
-                                this.showLoading = true;
                                 //set the json in local storage
                                 this.appService.setJsonUrl(result.text);
     	                        //go to login
@@ -70,7 +68,9 @@ export class StartPage
     	                    },
                             reason =>
                             {
-                                this.messageHandler.showErrorOrWarning(true, reason,);
+                                this.showScan = true;
+                                this.showLoading = false;
+                                this.messageHandler.showErrorOrWarning(true, reason);
     	                    });
             	        }
                     },

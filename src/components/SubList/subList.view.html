@@ -29,7 +29,7 @@
 <button ion-item class="text" *ngIf="isText() && getText() != ''" (click)="addNewOrEditSubformFunc()">
     <div class="text-inner" #textElement [innerHTML]="getText()"></div>
     <div class="more-icon" *ngIf="isShowMoreText">
-        <ion-icon name="more"></ion-icon>
+        <ion-icon name="md-more"></ion-icon>
     </div>
 </button>
 
@@ -38,4 +38,4 @@
     [Form]="subform">
 </text-form-display> -->
 
-<file-uploader [Form]="subform" [style.display]="none" *ngIf="isAttachments()"></file-uploader>
+<file-uploader [Form]="subform" *ngIf="isAttachments()"></file-uploader>

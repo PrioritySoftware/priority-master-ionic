@@ -10,7 +10,9 @@
 
 $text-color:        #000;
 $background-color:  #fff;
-
+$item-ios-detail-push-show: false;
+$list-border-color: #dedede;
+$toggle-ios-border-color-off:  grayscale(lighten($list-border-color, 5%));
 
 // Named Color Variables
 // --------------------------------------------------

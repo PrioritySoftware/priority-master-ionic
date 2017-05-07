@@ -28,6 +28,7 @@ sub-list {
 	  p {
 	    margin: 0;
 	    white-space: normal;
+	    color: color($colors,dark) !important;
 	  }
 	  color: color($colors,dark) !important;
 	  &.activated {
@@ -96,7 +97,7 @@ sub-list {
 
 		color: #565656;
 		.item-inner {
-			border-top: 1px solid #dedede;
+			border-top: 1px solid $list-border-color;
 			border-bottom: none;
 
 			.input-wrapper > ion-label {
@@ -109,9 +110,5 @@ sub-list {
 				top: 11px;
 			}
 		}
-	}
-
-	file-uploader {
-		display: none;
 	}
 }

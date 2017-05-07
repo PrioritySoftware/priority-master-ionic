@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.priority-software.template" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>Priority Template</name>
-  <description>An awesome Ionic/Cordova app.</description>
+<widget id="com.priority_software.template" version="1.0.1" android-versionCode="1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>Priority Master</name>
+  <description>Priority Master App</description>
   <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
   <content src="index.html"/>
   <access origin="*"/>
@@ -25,9 +25,11 @@
   <preference name="android-minSdkVersion" value="16"/>
   <preference name="BackupWebStorage" value="none"/>
   <preference name="SplashMaintainAspectRatio" value="true"/>
-  <preference name="SplashScreenDelay" value="0" />
-  <preference name="FadeSplashScreenDuration" value="0" />
+  <preference name="AutoHideSplashScreen" value="false" />
+  <preference name="FadeSplashScreenDuration" value="600"/>
+  <preference name="ShowSplashScreenSpinner" value="false" />
   <preference name="SplashShowOnlyFirstTime" value="false"/>
+  <preference name="SplashScreen" value="screen"/>
   <feature name="StatusBar">
     <param name="ios-package" onload="true" value="CDVStatusBar"/>
   </feature>

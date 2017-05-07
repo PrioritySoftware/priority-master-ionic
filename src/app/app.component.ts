@@ -1,5 +1,5 @@
 import { Platform, Nav } from 'ionic-angular';
-import { StatusBar, Keyboard, Globalization } from 'ionic-native';
+import { StatusBar, Keyboard, Globalization, Splashscreen } from 'ionic-native';
 import { Component, ViewChild } from '@angular/core';
 import { AppService } from '../services/app.service';
 import { LoginPage } from '../pages/Login/login.page';
@@ -11,14 +11,7 @@ declare var window;
 
 @Component({
 
-  template: `<ion-nav [root]="rootPage"></ion-nav>
-             <div *ngIf="rootPage==null">
-               <img src="assets/img/brand_white.png" id="beforeLogInImg" />
-	             <div class="before-login-spinner" >
-                 <div></div>
-                 <div></div>
-               </div>
-             </div>`,
+  template: `<ion-nav [root]="rootPage"></ion-nav>`,
   entryComponents: [
     LoginPage,
     StartPage,
@@ -87,7 +80,6 @@ export class AppComponent
    */
   priorityReady = (json) =>
   {
-    this.messageHandler.showTransLoading("hide");
     //fetch json url from localstorage or return localpath url if local json exists
     this.appService.jsonUrl().then(
       url =>
@@ -97,23 +89,38 @@ export class AppComponent
           (isLoggedIn) =>
           {
             if (isLoggedIn)
-              this.rootPage = MainPage;
-            else
-              this.rootPage = LoginPage;
+            {
+              this.nav.setRoot(MainPage,{},{animation: false}).then(() =>
+              {
+                Splashscreen.hide();
+              });
 
-            this.messageHandler.hideLoading();
+            }
+            else
+            {
+              this.nav.setRoot(LoginPage,{},{animation: false}).then(() =>
+              {
+                Splashscreen.hide();
+              });
+            }
           },
           (reason) =>
           {
-            //we dont have the message callback here.
-            this.messageHandler.showErrorOrWarning(true, reason);
+            //show start page to re-scan barcode if the json file is not valid.
+            this.nav.setRoot(StartPage,{},{animation: false}).then(() =>
+            {
+              Splashscreen.hide();
+              this.messageHandler.showErrorOrWarning(true, reason + Strings.scanNewConfigurationFile);
+            });
           });
       },
       //show start page to scan barcode if url not found
       (reason) =>
       {
-        this.rootPage = StartPage;
-        this.messageHandler.hideLoading();
+        this.nav.setRoot(StartPage,{},{animation: false}).then(() =>
+        {
+          Splashscreen.hide();
+        });
       });
   }
 

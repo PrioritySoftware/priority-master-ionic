@@ -4,15 +4,13 @@ export class Strings
     public static lang: string;
 
     /** First Launch */
-    public static header: string;
-    public static header2: string;
     public static scanInstructions: string;
     public static scanButton: string;
     public static scanError: string;
     public static preparingApp: string;
-    public static storageError: string;
     public static failedToReadJsonError: string;
     public static failedToLoadJsonError: string;
+    public static scanNewConfigurationFile: string;
 
     /** Text */
     public static wait: string;
@@ -38,7 +36,8 @@ export class Strings
     public static cameraError: string;
 
     /**Buttons text */
-    public static btnTitle: string;
+    public static loginBtn: string;
+    public static loginHeader: string;
     public static ok: string;
     public static cancel: string;
     public static defaultMsgTitle: string;
@@ -69,15 +68,13 @@ export class Strings
 
     public static setFirstRtlConstants()
     {
-        Strings.header = "אפליקציית פריוריטי";
-        Strings.header2 = "כל הפונקציונליות עכשיו במובייל!";
         Strings.scanInstructions = "סרוק את הקוד QR כדי להתחיל";
         Strings.scanButton = "סרוק";
         Strings.scanError = "היתה בעיה עם סריקת הברקוד, נסו שוב";
         Strings.preparingApp = "מכין עבורך את האפליקציה, אנא המתן";
-        Strings.storageError = "בעיה בגישה לנתונים, אנא סרקו את האפליקציה שוב";
         Strings.failedToReadJsonError = "קובץ קונפיגורציה לא תקין.";
         Strings.failedToLoadJsonError = "נכשל בטעינת קובץ קונפיגורציה.";
+        Strings.scanNewConfigurationFile = " \nפנה למנהל המערכת או סרוק קוד QR חדש";
         Strings.dirByLang = "rtl";
 
         Strings.ok = "אישור";
@@ -107,8 +104,8 @@ export class Strings
         Strings.cameraError = "פתיחת מצלמה נכשלה";
         Strings.showAllItems = "הצג את כל הרשומות";
 
-
-        Strings.btnTitle = "היכנס";
+        Strings.loginBtn = "היכנס";
+        Strings.loginHeader ="כניסה למערכת";
         Strings.ok = "אישור";
         Strings.cancel = "ביטול";
         Strings.defaultMsgTitle = "הודעה";
@@ -135,41 +132,39 @@ export class Strings
         Strings.dirOpposite = "ltr";
 
         Strings.decimalValidErr = "דיוק עשרוני שגוי";
-        Strings.numberValidErr = "אנא הכנס ספרות בלבד";
+        Strings.numberValidErr = "הכנס ספרות בלבד";
         Strings.lengthValidErr = 'מספר תוים מקסימלי עבור השדה הוא: ';
     }
 
     public static setFirstLtrConstants()
     {
-        Strings.header = "Priority App";
-        Strings.header2 = "All you need, now in mobile!";
-        Strings.scanInstructions = "Scan the QR code to get started";
+        Strings.scanInstructions = "Scan your QR code to get started";
         Strings.scanButton = "Scan";
-        Strings.scanError = "There was a problem with the scanning, please try again";
-        Strings.preparingApp = "Preparing your app, please wait";
-        Strings.storageError = "Problem with accesing your data, please scan the app agian";
+        Strings.scanError = "QR code scan failed. Try again";
+        Strings.preparingApp = "Preparing your app. Please wait";
         Strings.failedToReadJsonError = "Invalid configuration file";
-        Strings.failedToLoadJsonError = "There was a problem loading configuration file. \n Check your wifi connection.";
+        Strings.failedToLoadJsonError = "There was a problem loading the configuration file. \n Check your Wi-Fi connection.";
+        Strings.scanNewConfigurationFile = " \nContact your system administrator or scan a new QR code";
 
         Strings.dirByLang = "ltr";
 
-        Strings.ok = "Ok";
+        Strings.ok = "OK";
         Strings.cancel = "Cancel";
     }
 
     public static setLtrConstants()
     {
-        Strings.usrTitle = "Username";
+        Strings.usrTitle = "User name";
         Strings.pswTitle = "Password";
         Strings.wait = "Please wait...";
-        Strings.errors = 'Errors Report';
-        Strings.fatalErrorMsg = "Error happend.Please try again.";
+        Strings.errors = "Error report";
+        Strings.fatalErrorMsg = "An error Occurred. Please contact your system administrator.";
         Strings.warningTitle = "Warning";
         Strings.errorTitle = "Error";
-        Strings.changesSavedText = "Your change were successfuly saved!";
+        Strings.changesSavedText = "Your change were successfully saved!";
         Strings.changesNotSavedText = "Some changes were not saved. Continue?";
-        Strings.cannotGoToSubForm = "The operation could not be executed.Please enter data first.";
-        Strings.saveBeforeAttach = "Some changes were not saved.Please save the report before adding an attachment.";
+        Strings.cannotGoToSubForm = "The operation could not be executed. Please enter data first.";
+        Strings.saveBeforeAttach = "Some changes were not saved. Please save the report before adding an attachment.";
         Strings.loadData = "Loading data...";
         Strings.appSubTitle = "Attendance App";
         Strings.isDelete = "Delete?";
@@ -182,13 +177,14 @@ export class Strings
         Strings.cameraError = "Failed to open camera";
         Strings.showAllItems = "Show all items";
 
-        Strings.btnTitle = "OK";
-        Strings.ok = "Ok";
+        Strings.loginBtn = "Login";
+        Strings.loginHeader ="";
+        Strings.ok = "OK";
         Strings.cancel = "Cancel";
         Strings.defaultMsgTitle = "Message";
         Strings.editBtnText = "Edit";
         Strings.deleteBtnText = "Delete";
-        Strings.addNewBtnText = "Add New";
+        Strings.addNewBtnText = "Add new";
         Strings.saveBtnText = "Save";
         Strings.saveAndCont = "Save and continue";
         Strings.cancelAndCont = "Continue without saving";
@@ -197,7 +193,7 @@ export class Strings
         Strings.changeBtnText = "Change";
         Strings.camera = "Camera";
         Strings.files = "Files";
-        Strings.photoGalery = "Photo galery";
+        Strings.photoGalery = "Photo Galery";
 
         Strings.textPlaceholder = "Enter text";
         Strings.approveReadOnly = "Read only";
@@ -205,9 +201,9 @@ export class Strings
         Strings.dirByLang = "ltr";
         Strings.dirOpposite = "rtl";
 
-        Strings.decimalValidErr = "wrong decimal precision";
-        Strings.numberValidErr = "digits only";
-        Strings.lengthValidErr = 'max length for field: ';
+        Strings.decimalValidErr = "Wrong decimal precision";
+        Strings.numberValidErr = "Digits only";
+        Strings.lengthValidErr = "Maximum length for field is: ";
     }
 }
 

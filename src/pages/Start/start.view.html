@@ -1,16 +1,10 @@
 <ion-content class="scan-view {{dirByLang}}">
-	<div class="header">
-		<img src="assets/img/brand.png"/>
-		<h1>{{header}}</h1>
-		<h2>{{header2}}</h2>
-	</div>
-	<div class="image-container">
-  		<img src="assets/img/man.png"/>
-  	</div>
+	<object data="assets/img/start_bg.svg" class="background"></object>
+	<object data="assets/img/brand.svg" class="logo"></object>
  	<div class="footer">
  		<div *ngIf="showScan">
 			<h3>{{scanInstructions}}</h3>
-			<button (click)="scan()">{{scanButton}}</button>
+			<button ion-button (click)="scan()">{{scanButton}}</button>
 		</div>
 		<div *ngIf="showLoading">
 			<h3>{{preparingApp}}</h3>

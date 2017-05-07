@@ -47,24 +47,26 @@ export class ListPage
         this.infiniteScrollEnabled = Object.keys(this.form.rows).length == RowsBatchSize;
         this.listeners = new Array();
 
+        let buttonsSideByLang = this.dirByLang == 'rtl' ? 'left' : 'right';
+
         let editButton = {
             text: Strings.editBtnText,
             icon: 'create',
             color: 'favorite',
-            side: 'left',
+            side: buttonsSideByLang,
             click: this.editRow
         }
         let openButton = {
             text: Strings.openBtnText,
             icon: 'open',
-            side: 'left',
+            side: buttonsSideByLang,
             color: 'favorite',
             click: this.openAttachRow
         }
         let deleteButton = {
             text: Strings.deleteBtnText,
             icon: 'trash',
-            side: 'left',
+            side: buttonsSideByLang,
             color: 'danger',
             click: this.deleteRow
         }

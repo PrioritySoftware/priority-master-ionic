@@ -30,7 +30,7 @@
             *ngIf="isShowFieldName(column)">
             {{ column.title}}
             <!--Validation error text-->
-            <p class="error-label">{{column.errorMsg}}</p>
+            <span class="error-label">{{getColumnOptions(column).errorMsg}}</span>
         </ion-label>
 
         <!-- Input Field -->
@@ -39,6 +39,7 @@
            type="text"
            [update-field]="column"
            [validation]="column"
+           [validation-options]="getColumnOptions(column)"
            (click)="chooseInputClick(column)"
            [disabled]="isReadOnly(column)"
            dir="{{columnDirection(column)}}"
@@ -92,7 +93,6 @@
     (expandList)="expandSubformList($event)"
     (goToSubform)="goToSubform($event)">  
 </sub-list>
-
+<file-uploader [Form]=form></file-uploader>
 </ion-content>
 
-<file-uploader [Form]=form [style.display]="none"></file-uploader>

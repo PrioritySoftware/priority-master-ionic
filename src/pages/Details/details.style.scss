@@ -113,18 +113,26 @@
   color: color($colors,gray);
 }
 
-.list-md > .details-input:last-child {
+.list > .details-input.item-block:last-child {
   border-bottom: none;
   .item-inner {
     border-bottom: 1px solid #dedede;
   } 
 }
 
+.list-ios > .details-input:first-child {
+  border-top: none;
+}
+
+
 .details-input {
   .toggle {
     position: absolute;
     top: 24px;
     padding: 0;
+    &.toggle-ios {
+      top: 13px;
+    }
     &[dir="rtl"] {
       left: 1px;
     }

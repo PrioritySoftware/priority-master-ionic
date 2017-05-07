@@ -127,22 +127,15 @@ export class AppService
                 {
                     if (request.status === 200)
                     {
-                        try
-                        {
-                            this.readJson(request.responseText).then(
-                                () =>
-                                {
-                                    resolve();
-                                },
-                                () =>
-                                {
-                                    reject(Strings.failedToReadJsonError);
-                                });
-                        }
-                        catch (err)
-                        {
-                            reject(Strings.failedToReadJsonError);
-                        }
+                        this.readJson(request.responseText).then(
+                            () =>
+                            {
+                                resolve();
+                            },
+                            () =>
+                            {
+                                reject(Strings.failedToReadJsonError);
+                            });
                     }
                     else
                     {
@@ -194,8 +187,10 @@ export class AppService
     {
         return new Promise((resolve, reject) =>
         {
-            let json = JSON.parse(jsonString);
-            this.checkUrl(json.url).then(
+            try
+            {
+                let json = JSON.parse(jsonString);
+                this.checkUrl(json.url).then(
                 (url) =>
                 {
                     let config = {
@@ -207,8 +202,15 @@ export class AppService
                         devicename: Device.uuid
                     }
                     this.configService.config(config);
-                    this.entitiesData = json.forms_data;
-                    this.initForms(this.entitiesData);
+                    try
+                    {
+                        this.entitiesData = json.forms_data;
+                        this.initForms(this.entitiesData);
+                    }
+                    catch (err)
+                    {
+                        reject();
+                    }
                     if (config.language == 1)
                     {
                         Strings.setRtlConstants();
@@ -223,6 +225,11 @@ export class AppService
                 {
                     reject();
                 });
+            }
+            catch (err)
+            {
+                reject();
+            }
         });
     }
 
@@ -260,7 +267,7 @@ export class AppService
                 }
                 form.listColumnsOptions = listColumnsOptions;
 
-                form.detailsColumnsOptions=detailsColumnsOptions;
+                form.detailsColumnsOptions = detailsColumnsOptions;
                 //init the form rows to an empty object
                 form.rows = {};
                 //init the subforms to an empty object
@@ -280,8 +287,11 @@ export class AppService
             if (form.fatname !== form.name && form.fatname !== undefined)
             {
                 let parentform = forms[form.fatname];
-                form.parentForm = parentform;
-                parentform.subforms[formname] = form;
+                if(parentform != null)
+                {
+                    form.parentForm = parentform;
+                    parentform.subforms[formname] = form;
+                }
             }
         }
 

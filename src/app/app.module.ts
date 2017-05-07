@@ -16,10 +16,7 @@ import { TextPage } from '../pages/Text/text.page';
 import { SubList } from "../components/SubList/subList.component";
 
 import { PriorityIonicModule } from 'priority-ionic';
-export function provideStorage()
-{
-  return new Storage();
-}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,7 +46,7 @@ export function provideStorage()
     DetailsPage
   ],
   providers: [
-    { provide: Storage, useFactory: provideStorage },
+    Storage,
     AppService,
     LoadingController,
     AlertController,

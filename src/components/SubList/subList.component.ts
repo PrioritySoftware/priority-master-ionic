@@ -7,6 +7,8 @@ import { TextPage } from "../../pages/Text/text.page";
 import { DetailsPage } from '../../pages/Details/details.page';
 import { CustomForm } from "../../entities/form.class";
 
+const TextMaxHeight = 400;
+
 @Component({
     selector: 'sub-list',
     templateUrl: 'subList.view.html'
@@ -90,7 +92,7 @@ export class SubList implements AfterViewChecked
     //return if to show the '...' in textforms
     showMoreText()
     {
-        return this.textElement && this.textElement.nativeElement.scrollHeight > this.textElement.nativeElement.clientHeight
+        return this.textElement && this.textElement.nativeElement.scrollHeight > TextMaxHeight;
     }
 
     //return if subform is attachments form
@@ -246,6 +248,7 @@ export class SubList implements AfterViewChecked
                         this.formService.updateField(this.subform, result.file, "EXTFILENAME").then(
                             () =>
                             {
+                                this.cdRef.detectChanges();
                                 this.formService.saveRow(this.subform, rowInd, 0).then(
                                     () =>
                                     {

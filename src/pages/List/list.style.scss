@@ -43,6 +43,9 @@ page-list {
         .item {
             min-height: 70px;
         }
+        ion-item-options .button-md {
+            text-transform: none;
+        }
         item-details {
             .column:first-child {
                 .title {

@@ -17,13 +17,15 @@ main-page {
             text-align: center;
         }
 
-        // [dir="ltr"] & {
-        //     border-left: 4px solid color($colors,favorite);
-        // }
+
 
         // [dir="rtl"] & {
-            border-right: 4px solid color($colors,favorite);
+        border-right: 4px solid color($colors,favorite);
         // }
+    }
+    .list[dir="ltr"] ion-card {
+        border-left: 4px solid color($colors,favorite);
+        border-right: none;
     }
     .main-page-header
     { 
