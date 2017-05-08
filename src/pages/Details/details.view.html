@@ -7,11 +7,11 @@
       </button>
     </ion-buttons>
     <ion-buttons end>
-       <button ion-button  (click)="saveRow()">
-         <img src="assets/img/save.png"/>
+       <button ion-button class="text-only" (click)="saveRow()">
+          {{saveBtnText}}
       </button>
       <button ion-button icon-only *ngIf="!selectedItem.isNewRow" (click)="deleteRow()">
-         <img src="assets/img/delete.png"/>
+         <ion-icon name="trash"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
