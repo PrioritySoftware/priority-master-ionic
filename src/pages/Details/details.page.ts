@@ -338,8 +338,6 @@ export class DetailsPage
         this.permissions.requestPermission("camera").then(
             () =>
             {
-               this.getColumnOptions(column).errorMsg="";
-
                 //Note: I think that in lasndscape mode scans code-39 barcodes better because rectangle is bigger, so I forced landscape (only works on android).
                 BarcodeScanner.scan(
                     {
@@ -362,7 +360,8 @@ export class DetailsPage
                         let restext = result.text;
                         if (column.maxLength > 0 && restext.length > column.maxLength)
                         {    //should be handled in field validator not here
-                            this.getColumnOptions(column).errorMsg = Strings.maxLengthForField + column.maxLength
+                            this.displayValidationMessage(Strings.maxLengthForField + column.maxLength, column);
+                            setTimeout(() => {this.displayValidationMessage('',column)},2000);
                         }
                         else if (this.selectedItem[column.key] != restext)
                         {
