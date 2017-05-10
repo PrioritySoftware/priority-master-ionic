@@ -21,7 +21,7 @@
      <ion-spinner name="dots"></ion-spinner>
 </div>
 <ion-list margin-top>
-    <ion-item *ngFor="let column of form.columns | objToIterable | Filter:isShowColumn | Sort:sort ; let ind=index"
+    <ion-item *ngFor="let column of form.columns | objToIterable | Filter:isShowColumn | Sort:sortColumns ; let ind=index"
          class="details-input"
          dir="{{dirByLang}}" >
 
@@ -30,16 +30,16 @@
             *ngIf="isShowFieldName(column)">
             {{ column.title}}
             <!--Validation error text-->
-            <span class="error-label">{{getColumnOptions(column).errorMsg}}</span>
+            <span class="error-label">{{validationMessages[column.key]}}</span>
         </ion-label>
 
         <!-- Input Field -->
-        javascript<ion-input 
+        javascript<ion-input
            [(ngModel)]="selectedItem[column.key]"
            type="text"
            [update-field]="column"
            [validation]="column"
-           [validation-options]="getColumnOptions(column)"
+           (validationMessage)="displayValidationMessage($event,column)"
            (click)="chooseInputClick(column)"
            [disabled]="isReadOnly(column)"
            dir="{{columnDirection(column)}}"
@@ -88,7 +88,7 @@
 <!--Sub Forms -->
 <sub-list
     dir="{{dirByLang}}"
-    *ngFor="let subform of subforms | Sort:sort"
+    *ngFor="let subform of subforms | Sort:sortSubforms"
     [Subform]="subform"
     (expandList)="expandSubformList($event)"
     (goToSubform)="goToSubform($event)">  

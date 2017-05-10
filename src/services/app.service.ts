@@ -262,12 +262,14 @@ export class AppService
                         listColumnsOptions[column.name] = {};
                         listColumnsOptions[column.name].isShow = true;
                         listColumnsOptions[column.name].isShowTitle = true;
+                        listColumnsOptions[column.name].pos = column.pos;
                     }
                     if (column.lineview == 1)
                     {
                         detailsColumnsOptions[column.name] = {};
                         detailsColumnsOptions[column.name].isShow = true;
                         detailsColumnsOptions[column.name].isShowTitle = true;
+                        detailsColumnsOptions[column.name].pos = column.pos;
                     }
                     if (column.barcode == 1)
                     {

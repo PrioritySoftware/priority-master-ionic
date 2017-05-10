@@ -1,5 +1,5 @@
 import { NavController, PopoverController, NavParams } from 'ionic-angular';
-import { Component, ViewChild, HostListener } from '@angular/core';
+import { Component, ViewChild, HostListener, ChangeDetectorRef } from '@angular/core';
 import { ListPage } from '../List/list.page';
 import { SearchPage } from '../Search/search.page';
 import { Strings } from '../../app/app.config';
@@ -23,6 +23,7 @@ export class DetailsPage
     title: string;
     isSubform: boolean;
     isShowWaitingDots: boolean;
+    validationMessages = {};
 
     isLeaveWithoutCheckchanges: boolean;
     isLeave = true;
@@ -47,7 +48,8 @@ export class DetailsPage
         private nav: NavController,
         private navParams: NavParams,
         private popoverCtrl: PopoverController,
-        private messageHandler: MessageHandler)
+        private messageHandler: MessageHandler,
+        private CDRef : ChangeDetectorRef)
     {
         //data
         this.form = this.navParams.data.form;
@@ -175,13 +177,32 @@ export class DetailsPage
     {
         return this.formService.getIsRowChangesSaved(this.form, this.rowInd);
     }
-    sort(item1, item2)
+    displayValidationMessage(message,column)
     {
-        if (item1.pos > item2.pos)
+        this.validationMessages[column.key] = message;
+        this.CDRef.detectChanges();
+    }
+    sortColumns = (column1, column2) =>
+    {
+        let columnOptions1 = this.getColumnOptions(column1);
+        let columnOptions2 = this.getColumnOptions(column2);
+        if (columnOptions1.pos > columnOptions2.pos)
         {
             return 1;
         }
-        if (item2.pos > item1.pos)
+        if (columnOptions2.pos > columnOptions1.pos)
+        {
+            return -1;
+        }
+        return 0;
+    }
+    sortSubforms = (subform1, subform2) =>
+    {
+        if (subform1.pos > subform2.pos)
+        {
+            return 1;
+        }
+        if (subform2.pos > subform1.pos)
         {
             return -1;
         }

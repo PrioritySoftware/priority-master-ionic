@@ -24,6 +24,7 @@
     margin: 0;
     font-size: 13px;
     color: color($colors,gray) !important;
+    line-height: 13px;
 
     .error-label
     {
@@ -31,6 +32,7 @@
         font-size: 11px;
         margin: 0;
         position: absolute;
+        padding: 0 10px;
     }
   }
 
