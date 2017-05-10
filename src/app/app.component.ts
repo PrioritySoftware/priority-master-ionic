@@ -29,8 +29,8 @@ export class AppComponent
   @ViewChild(Nav) nav;
 
   constructor(private platform: Platform,
-    private appService: AppService,
-    private messageHandler: MessageHandler)
+              private appService: AppService,
+              private messageHandler: MessageHandler)
   {
     window['priorityReady'] = this.priorityReady;
     this.dirByLang = "";
@@ -49,7 +49,7 @@ export class AppComponent
       //scroll - content {
       //   padding-bottom:0!important;
       // }
-      platform.registerBackButtonAction(($event) => { this.leavePage($event) });
+      platform.registerBackButtonAction(() => { this.leavePage(); },100);
       StatusBar.styleDefault();
       if (window.cordova)
       {
@@ -164,7 +164,7 @@ export class AppComponent
    * Else if the current page has a function than handles its leaving - call it.
    * Else exit the app.
    */
-  leavePage = (event) =>
+  leavePage = () =>
   {
     if (this.nav.last().instance.leavePage != null)
     {

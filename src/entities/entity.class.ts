@@ -7,4 +7,5 @@ export interface Entity
     title: string;
     fatname?: string;
     columns?: {[key:string]: CustomColumn};
+    pos: number;
 }

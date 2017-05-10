@@ -13,6 +13,6 @@ export interface CustomColumn extends Column
     lineview:number;
     /** The fields position for sort */
     pos:number;
-    /** Is fileds content is a barcode. 0 or 1*/
-    barcode:number;
+    /** Is field a special type 'B' for barcode 'P' for phone*/
+    special: string;
 }

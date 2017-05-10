@@ -16,84 +16,30 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
+
 <ion-content>
+
   <div class="waiting-spinner" *ngIf="isShowWaitingDots" >
      <ion-spinner name="dots"></ion-spinner>
-</div>
-<ion-list margin-top>
-    <ion-item *ngFor="let column of form.columns | objToIterable | Filter:isShowColumn | Sort:sortColumns ; let ind=index"
-         class="details-input"
-         dir="{{dirByLang}}" >
+  </div>
 
-        <ion-label stacked 
-            [readonly]="isReadOnly(column)"
-            *ngIf="isShowFieldName(column)">
-            {{ column.title}}
-            <!--Validation error text-->
-            <span class="error-label">{{validationMessages[column.key]}}</span>
-        </ion-label>
+  <!-- Inputs -->
+  <item-input-opts
+    [Form]="form"
+    [Item]="selectedItem"
+    [ColumnsOptions]="formConfig.detailsColumnsOptions"
+    (columnClick)="columnClicked($event)">
+  </item-input-opts>
 
-        <!-- Input Field -->
-        javascript<ion-input
-           [(ngModel)]="selectedItem[column.key]"
-           type="text"
-           [update-field]="column"
-           [validation]="column"
-           (validationMessage)="displayValidationMessage($event,column)"
-           (click)="chooseInputClick(column)"
-           [disabled]="isReadOnly(column)"
-           dir="{{columnDirection(column)}}"
-           class="{{dirByLang}}"
-           *ngIf="!isDateOrTimeColumn(column) && !isBoolColumn(column)"
-        ></ion-input>
+  <!--Subforms -->
+  <sub-list
+      dir="{{dirByLang}}"
+      *ngFor="let subform of subforms | Sort:sortSubforms"
+      [Subform]="subform"
+      [ParentForm]="form"
+      (expandList)="expandSubformList($event)"
+      (goToSubform)="goToSubform($event)">  
+  </sub-list>
 
-        <!-- Boolean Field -->
-        <ion-toggle
-            [(ngModel)]="selectedItem[column.key]"
-            [boolean] 
-            [update-field]="column"
-            [disabled]="isReadOnly(column)"
-            dir="{{dirByLang}}"
-            *ngIf="isBoolColumn(column)"
-        ></ion-toggle>
-
-        <!-- Date field-->
-        <ion-label
-            class="datetime-label"
-            *ngIf="isDateOrTimeColumn(column)">
-            <date-time
-              [value]="getValue(column)"
-              [column]="column"
-            ></date-time>
-        </ion-label>
-
-        <!--column action icons-->
-        <button
-            clear
-            ion-button
-            item-right
-            dir="{{dirByLang}}"
-            *ngIf="isShowColumnIcon(column)"
-            (click)="columnIconClicked($event,column)">
-            <ion-icon 
-              name="{{getColumnIconName(column)}}"
-              >
-            </ion-icon>
-        </button>
-      
-    </ion-item>
-
-</ion-list>
-
-<!--Sub Forms -->
-<sub-list
-    dir="{{dirByLang}}"
-    *ngFor="let subform of subforms | Sort:sortSubforms"
-    [Subform]="subform"
-    [ParentForm]="form"
-    (expandList)="expandSubformList($event)"
-    (goToSubform)="goToSubform($event)">  
-</sub-list>
-<file-uploader [Form]=form></file-uploader>
 </ion-content>
 

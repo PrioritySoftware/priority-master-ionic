@@ -47,10 +47,7 @@ import { PriorityIonicModule } from 'priority-ionic';
   ],
   providers: [
     Storage,
-    AppService,
-    LoadingController,
-    AlertController,
-    ToastController
+    AppService
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

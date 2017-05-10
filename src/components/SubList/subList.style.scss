@@ -30,6 +30,10 @@ sub-list {
 	    white-space: normal;
 	    color: color($colors,dark) !important;
 	  }
+	  hr {
+	    height: 1px;
+	    background-color: rgba(0, 0, 0, 0.12);
+		}
 	  color: color($colors,dark) !important;
 	  &.activated {
 	  	background-color: white;

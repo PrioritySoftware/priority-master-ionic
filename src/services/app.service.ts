@@ -252,7 +252,8 @@ export class AppService
             subforms: [],
             listColumnsOptions: {},
             detailsColumnsOptions: {},
-            parentForm: form.fatname
+            parentForm: form.fatname,
+            pos: form.pos
         };
 
         for (var ind in form.columns)
@@ -273,9 +274,13 @@ export class AppService
                 formConfig.detailsColumnsOptions[column.name].isShowTitle = true;
                 formConfig.detailsColumnsOptions[column.name].pos = column.pos;
             }
-            if (column.barcode == 1)
+            if (column.special == 'B')
             {
                 formConfig.detailsColumnsOptions[column.name].subtype = "barcode";
+            }
+            if (column.special == 'P')
+            {
+                formConfig.detailsColumnsOptions[column.name].subtype = "phone";
             }
             if(column.searchfield == 1)
             {

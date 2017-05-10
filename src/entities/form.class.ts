@@ -6,4 +6,5 @@ export declare class FormConfig {
 	searchColumns: Array<string>;
 	detailsColumnsOptions: {[key:string]: ColumnOptions};
 	listColumnsOptions: {[key:string]: ColumnOptions};
+	pos;
 }
