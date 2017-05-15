@@ -242,68 +242,84 @@ export class AppService
         });
     }
 
+    prepareForm(form) : CustomForm
+    {
+        let listColumnsOptions = {};
+        let detailsColumnsOptions = {};
+        for (var ind in form.columns)
+        {
+            let column = form.columns[ind];
+            if (column.tabview == 1)
+            {
+                listColumnsOptions[column.name] = {};
+                listColumnsOptions[column.name].isShow = true;
+                listColumnsOptions[column.name].isShowTitle = true;
+                listColumnsOptions[column.name].pos = column.pos;
+                //This is temporary and should not be in column options
+                listColumnsOptions[column.name].searchfield = column.searchfield;
+            }
+            if (column.lineview == 1)
+            {
+                detailsColumnsOptions[column.name] = {};
+                detailsColumnsOptions[column.name].isShow = true;
+                detailsColumnsOptions[column.name].isShowTitle = true;
+                detailsColumnsOptions[column.name].pos = column.pos;
+            }
+            if (column.barcode == 1)
+            {
+                detailsColumnsOptions[column.name].subtype = "barcode";
+            }
+        }
+        form.listColumnsOptions = listColumnsOptions;
+
+        form.detailsColumnsOptions = detailsColumnsOptions;
+        //init the form rows to an empty object
+        form.rows = {};
+        //init the subforms to an empty object
+        form.subforms = {};
+
+        form.subForms = {};
+
+        return form;
+    }
+
     initForms(entities)
     {
         let forms = {};
-        //loop on entities and add the forms to the forms object
+        //loop on entities and add the parent forms to the forms object
         for (var ind in entities)
         {
             if (entities[ind].type == 'F')
             {
-                let form: CustomForm = entities[ind];
-                //format the columns to object instead of array
-                let listColumnsOptions = {};
-                let detailsColumnsOptions = {};
-                for (var ind in form.columns)
+                let form: Entity = entities[ind];
+                //add the parent form to the forms object
+                if(form.fatname == form.name || form.fatname == undefined)
                 {
-                    let column = form.columns[ind];
-                    if (column.tabview == 1)
-                    {
-                        listColumnsOptions[column.name] = {};
-                        listColumnsOptions[column.name].isShow = true;
-                        listColumnsOptions[column.name].isShowTitle = true;
-                        listColumnsOptions[column.name].pos = column.pos;
-                        //This is temporary and should not be in column options
-                        listColumnsOptions[column.name].searchfield = column.searchfield;
-                    }
-                    if (column.lineview == 1)
-                    {
-                        detailsColumnsOptions[column.name] = {};
-                        detailsColumnsOptions[column.name].isShow = true;
-                        detailsColumnsOptions[column.name].isShowTitle = true;
-                        detailsColumnsOptions[column.name].pos = column.pos;
-                    }
-                    if (column.barcode == 1)
-                    {
-                        detailsColumnsOptions[column.name].subtype = "barcode";
-                    }
+                    let preparedForm = this.prepareForm(form);
+                    forms[form.name] = form;
                 }
-                form.listColumnsOptions = listColumnsOptions;
-
-                form.detailsColumnsOptions = detailsColumnsOptions;
-                //init the form rows to an empty object
-                form.rows = {};
-                //init the subforms to an empty object
-                form.subforms = {};
-                //add the form to the forms object
-                forms[form.name] = form;
             }
         }
 
-        //loop on forms and assign parent and subforms
-        for (var formname in forms)
+        //loop on entities and assign subforms to parents
+        for (var ind in entities)
         {
-            let form = forms[formname];
-            //if the form is a subform
-            //assign it's parent form
-            //and add it to the parent's form subform list
-            if (form.fatname !== form.name && form.fatname !== undefined)
+            if (entities[ind].type == 'F')
             {
-                let parentform = forms[form.fatname];
-                if (parentform != null)
+                let form: Entity = entities[ind];
+                //if the form is a subform
+                //assign it's parent form
+                //and add it to the parent's form subform list
+                if (form.fatname !== form.name && form.fatname !== undefined)
                 {
-                    form.parentForm = parentform;
-                    parentform.subforms[formname] = form;
+                    let preparedForm = this.prepareForm(form);
+                    let parentform = forms[form.fatname];
+                    if (parentform != null)
+                    {
+                        preparedForm.parentForm = parentform;
+                        parentform.subforms[preparedForm.name] = preparedForm;
+                        parentform.subForms[preparedForm.name] = preparedForm;
+                    }
                 }
             }
         }

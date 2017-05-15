@@ -4,8 +4,82 @@
   "dname": "test",
   "lang": 1,
   "tabulaini": "tabdev.ini",
-  "url": "/dev",
+  "url": "",
   "forms_data": [
+    {
+      "id": 22,
+      "name": "ORDERS",
+      "title": "הזמנות לקוח",
+      "pos": 0,
+      "fatname": "ORDERS",
+      "type": "F",
+      "columns": [
+        {
+          "name": "CUSTNAME",
+          "title": "מס. לקוח",
+          "pos": 0,
+          "type": "CHAR",
+          "length": 16,
+          "decimal": 0,
+          "readonly": 0,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 0,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "CURDATE",
+          "title": "תאריך",
+          "pos": 0,
+          "type": "DATE",
+          "length": 8,
+          "decimal": 0,
+          "readonly": 0,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 0,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "ORDNAME",
+          "title": "הזמנה",
+          "pos": 0,
+          "type": "CHAR",
+          "length": 16,
+          "decimal": 0,
+          "readonly": 0,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 0,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "ORDSTATUSDES",
+          "title": "סטטוס הזמנה",
+          "pos": 0,
+          "type": "RCHAR",
+          "length": 12,
+          "decimal": 0,
+          "readonly": 0,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 0,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        }
+      ]
+    },
     {
       "id": 5943,
       "name": "LOGPART",
@@ -16,7 +90,7 @@
         {
           "name": "PARTNAME",
           "title": "מק\"ט",
-          "pos": 2,
+          "pos": 0,
           "type": "CHAR",
           "length": 15,
           "decimal": 0,
@@ -26,13 +100,13 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "B",
           "iskey": 1
         },
         {
           "name": "BARCODE",
           "title": "ברקוד",
-          "pos": 3,
+          "pos": 0,
           "type": "CHAR",
           "length": 16,
           "decimal": 0,
@@ -42,13 +116,13 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 1,
-          "barcode": 1,
+          "special": "",
           "iskey": 0
         },
         {
           "name": "PARTDES",
           "title": "תאור מוצר",
-          "pos": 1,
+          "pos": 0,
           "type": "RCHAR",
           "length": 48,
           "decimal": 0,
@@ -58,7 +132,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 1,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -74,7 +148,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -90,13 +164,13 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
           "name": "FAMILYNAME",
           "title": "משפחת מוצר",
-          "pos": 4,
+          "pos": 0,
           "type": "CHAR",
           "length": 8,
           "decimal": 0,
@@ -106,7 +180,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -122,7 +196,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -138,7 +212,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -154,7 +228,447 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
+          "iskey": 0
+        }
+      ]
+    },
+    {
+      "id": 6039,
+      "name": "DOCUMENTS_Q",
+      "title": "קריאות שרות",
+      "pos": 0,
+      "fatname": "DOCUMENTS_Q",
+      "type": "F",
+      "columns": [
+        {
+          "name": "CUSTNAME",
+          "title": "מס. לקוח",
+          "pos": 0,
+          "type": "CHAR",
+          "length": 16,
+          "decimal": 0,
+          "readonly": 0,
+          "mandatory": 1,
+          "tabview": 0,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "CDES",
+          "title": "שם לקוח",
+          "pos": 0,
+          "type": "RCHAR",
+          "length": 48,
+          "decimal": 0,
+          "readonly": 0,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "STARTDATE",
+          "title": "ת. פתיחה",
+          "pos": 0,
+          "type": "DATE",
+          "length": 14,
+          "decimal": 0,
+          "readonly": 0,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "CALLSTATUSCODE",
+          "title": "סטטוס קריאה",
+          "pos": 0,
+          "type": "RCHAR",
+          "length": 12,
+          "decimal": 0,
+          "readonly": 0,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "ACTIVEFLAG",
+          "title": "פעילה?",
+          "pos": 0,
+          "type": "CHAR",
+          "length": 1,
+          "decimal": 0,
+          "readonly": 1,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        }
+      ]
+    },
+    {
+      "id": 10772,
+      "name": "EXTFILES",
+      "title": "נספחים",
+      "pos": 0,
+      "fatname": "ORDERS",
+      "type": "F",
+      "columns": [
+        {
+          "name": "EXTFILEDES",
+          "title": "שם קובץ",
+          "pos": 0,
+          "type": "RCHAR",
+          "length": 32,
+          "decimal": 0,
+          "readonly": 0,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "EXTFILENUM",
+          "title": "מספר מסמך",
+          "pos": 0,
+          "type": "INT",
+          "length": 13,
+          "decimal": 0,
+          "readonly": 1,
+          "mandatory": 1,
+          "tabview": 0,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 1
+        },
+        {
+          "name": "EXTFILENAME",
+          "title": "נתיב הקובץ",
+          "pos": 0,
+          "type": "CHAR",
+          "length": 80,
+          "decimal": 0,
+          "readonly": 0,
+          "mandatory": 1,
+          "tabview": 0,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "CURDATE",
+          "title": "תאריך יצירת המסמך",
+          "pos": 0,
+          "type": "DATE",
+          "length": 8,
+          "decimal": 0,
+          "readonly": 0,
+          "mandatory": 1,
+          "tabview": 0,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "USERLOGIN",
+          "title": "עודכן ע\"י",
+          "pos": 0,
+          "type": "RCHAR",
+          "length": 20,
+          "decimal": 0,
+          "readonly": 1,
+          "mandatory": 1,
+          "tabview": 0,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "UDATE",
+          "title": "ת. עדכון אחרון",
+          "pos": 0,
+          "type": "DATE",
+          "length": 14,
+          "decimal": 0,
+          "readonly": 1,
+          "mandatory": 1,
+          "tabview": 0,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        }
+      ]
+    },
+    {
+      "id": 12380,
+      "name": "PROJLINK",
+      "title": "קישור לפרויקט/חשבון",
+      "pos": 0,
+      "fatname": "ORDERS",
+      "type": "F",
+      "columns": [
+        {
+          "name": "DOCNO",
+          "title": "פרויקט",
+          "pos": 0,
+          "type": "CHAR",
+          "length": 16,
+          "decimal": 0,
+          "readonly": 0,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "PROJDES",
+          "title": "תאור פרויקט",
+          "pos": 0,
+          "type": "RCHAR",
+          "length": 32,
+          "decimal": 0,
+          "readonly": 1,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "ACCNAME",
+          "title": "חשבון",
+          "pos": 0,
+          "type": "CHAR",
+          "length": 16,
+          "decimal": 0,
+          "readonly": 0,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "ACCDES",
+          "title": "תאור חשבון",
+          "pos": 0,
+          "type": "RCHAR",
+          "length": 48,
+          "decimal": 0,
+          "readonly": 1,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "WBS",
+          "title": "מיספור פעילות (WBS)",
+          "pos": 0,
+          "type": "CHAR",
+          "length": 24,
+          "decimal": 0,
+          "readonly": 0,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "PROJACT",
+          "title": "מספר פעילות",
+          "pos": 0,
+          "type": "INT",
+          "length": 13,
+          "decimal": 0,
+          "readonly": 1,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "ACTDES",
+          "title": "שם פעילות",
+          "pos": 0,
+          "type": "RCHAR",
+          "length": 50,
+          "decimal": 0,
+          "readonly": 1,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        }
+      ]
+    },
+    {
+      "id": 12380,
+      "name": "PROJLINK",
+      "title": "קישור לפרויקט/חשבון",
+      "pos": 0,
+      "fatname": "DOCUMENTS_Q",
+      "type": "F",
+      "columns": [
+        {
+          "name": "DOCNO",
+          "title": "פרויקט",
+          "pos": 0,
+          "type": "CHAR",
+          "length": 16,
+          "decimal": 0,
+          "readonly": 0,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "PROJDES",
+          "title": "תאור פרויקט",
+          "pos": 0,
+          "type": "RCHAR",
+          "length": 32,
+          "decimal": 0,
+          "readonly": 1,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "ACCNAME",
+          "title": "חשבון",
+          "pos": 0,
+          "type": "CHAR",
+          "length": 16,
+          "decimal": 0,
+          "readonly": 0,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "ACCDES",
+          "title": "תאור חשבון",
+          "pos": 0,
+          "type": "RCHAR",
+          "length": 48,
+          "decimal": 0,
+          "readonly": 1,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "WBS",
+          "title": "מיספור פעילות (WBS)",
+          "pos": 0,
+          "type": "CHAR",
+          "length": 24,
+          "decimal": 0,
+          "readonly": 0,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "PROJACT",
+          "title": "מספר פעילות",
+          "pos": 0,
+          "type": "INT",
+          "length": 13,
+          "decimal": 0,
+          "readonly": 1,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "ACTDES",
+          "title": "שם פעילות",
+          "pos": 0,
+          "type": "RCHAR",
+          "length": 50,
+          "decimal": 0,
+          "readonly": 1,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
           "iskey": 0
         }
       ]
@@ -179,7 +693,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 1,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -195,7 +709,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -211,7 +725,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -227,7 +741,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -243,7 +757,7 @@
           "lineview": 0,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -259,7 +773,7 @@
           "lineview": 0,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -275,7 +789,7 @@
           "lineview": 0,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -291,7 +805,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -307,7 +821,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -323,7 +837,7 @@
           "lineview": 0,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -339,7 +853,7 @@
           "lineview": 0,
           "titlefield": 0,
           "searchfield": 1,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -355,7 +869,7 @@
           "lineview": 0,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -371,7 +885,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -390,6 +904,70 @@
           "name": "VERSION",
           "type": "INT",
           "length": 3,
+          "iskey": 1
+        }
+      ]
+    },
+    {
+      "id": 21708,
+      "name": "INTERNALDIALOGTEXT",
+      "title": "דו שיח פנימי",
+      "pos": 0,
+      "fatname": "ORDERS",
+      "type": "F",
+      "columns": [
+        {
+          "name": "TEXT",
+          "title": "טקסט חופשי",
+          "pos": 0,
+          "type": "RCHAR",
+          "length": 68,
+          "decimal": 0,
+          "readonly": 0,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "TEXTLINE",
+          "type": "INT",
+          "length": 13,
+          "iskey": 1
+        }
+      ]
+    },
+    {
+      "id": 21708,
+      "name": "INTERNALDIALOGTEXT",
+      "title": "דו שיח פנימי",
+      "pos": 0,
+      "fatname": "DOCUMENTS_Q",
+      "type": "F",
+      "columns": [
+        {
+          "name": "TEXT",
+          "title": "טקסט חופשי",
+          "pos": 0,
+          "type": "RCHAR",
+          "length": 68,
+          "decimal": 0,
+          "readonly": 0,
+          "mandatory": 1,
+          "tabview": 1,
+          "lineview": 1,
+          "titlefield": 0,
+          "searchfield": 0,
+          "special": "",
+          "iskey": 0
+        },
+        {
+          "name": "TEXTLINE",
+          "type": "INT",
+          "length": 13,
           "iskey": 1
         }
       ]
@@ -415,7 +993,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -431,7 +1009,7 @@
           "lineview": 0,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -447,7 +1025,7 @@
           "lineview": 0,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -463,7 +1041,7 @@
           "lineview": 0,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -479,7 +1057,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -495,7 +1073,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -511,7 +1089,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -527,7 +1105,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -543,7 +1121,7 @@
           "lineview": 0,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -559,7 +1137,7 @@
           "lineview": 0,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -575,7 +1153,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -591,7 +1169,7 @@
           "lineview": 0,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -607,7 +1185,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -645,7 +1223,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -677,7 +1255,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -693,7 +1271,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 1
         },
         {
@@ -709,7 +1287,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -725,7 +1303,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -741,7 +1319,7 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         },
         {
@@ -757,16 +1335,10 @@
           "lineview": 1,
           "titlefield": 0,
           "searchfield": 0,
-          "barcode": 0,
+          "special": "",
           "iskey": 0
         }
       ]
-    },
-    {
-      "id": 2982,
-      "name": "LOGINTIME",
-      "title": "עדכון שעת כניסה",
-      "type": "P"
     }
   ]
 }

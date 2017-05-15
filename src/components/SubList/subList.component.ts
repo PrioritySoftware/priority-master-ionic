@@ -14,7 +14,8 @@ const TextMaxHeight = 400;
     templateUrl: 'subList.view.html'
 })
 
-export class SubList implements AfterViewChecked
+export class SubList
+// implements AfterViewChecked
 {
 
     iterablePipe: ObjToIterable;
@@ -79,15 +80,15 @@ export class SubList implements AfterViewChecked
     //the isShowMoreText changes to 'true' after Angular's changeDetector has finished running
     //So here we explicitly tell Angular's changeDetector to run again
     //see this question: http://stackoverflow.com/questions/43513421/ngif-expression-has-changed-after-it-was-checked
-    ngAfterViewChecked()
-    {
-        let show = this.showMoreText();
-        if (show != this.isShowMoreText)
-        { // check if it change, tell CD to update view
-            this.isShowMoreText = show;
-            this.cdRef.detectChanges();
-        }
-    }
+    // ngAfterViewChecked()
+    // {
+    //     let show = this.showMoreText();
+    //     if (show != this.isShowMoreText)
+    //     { // check if it change, tell CD to update view
+    //         this.isShowMoreText = show;
+    //         this.cdRef.detectChanges();
+    //     }
+    // }
 
     //return if to show the '...' in textforms
     showMoreText()
@@ -253,7 +254,7 @@ export class SubList implements AfterViewChecked
         this.fileUploader.uploadFile().then(
             result =>
             {
-                this.formService.addNewSubFormRow(this.subform, "EXTFILES").then(
+                this.formService.addNewSubFormRow(this.subform.parentForm, "EXTFILES").then(
                     rowInd =>
                     {
                         this.formService.updateField(this.subform, result.file, "EXTFILENAME").then(

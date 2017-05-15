@@ -78,7 +78,7 @@ export class DetailsPage
     {
         for (var subformName in this.form.subforms)
         {
-            this.subforms.push(this.formService.getForm(subformName));
+            this.subforms.push(this.formService.getForm(subformName,this.form));
         }
         this.messageHandler.showTransLoading();
         let subformNames = Object.keys(this.form.subforms);
