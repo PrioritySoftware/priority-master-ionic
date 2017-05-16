@@ -151,7 +151,7 @@ export class ListPage
             let searchFields = [];
             for (var colname in this.form.columns)
             {
-                if (this.form.columns[colname].searchfield == 1)
+                if (this.form.listColumnsOptions[colname] && this.form.listColumnsOptions[colname].searchfield == 1)
                 {
                     searchFields.push(colname);
                 }

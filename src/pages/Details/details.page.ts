@@ -1,5 +1,5 @@
 import { NavController, PopoverController, NavParams } from 'ionic-angular';
-import { Component, ViewChild, HostListener, ChangeDetectorRef } from '@angular/core';
+import { Component, ViewChild, HostListener } from '@angular/core';
 import { ListPage } from '../List/list.page';
 import { SearchPage } from '../Search/search.page';
 import { Strings } from '../../app/app.config';
@@ -48,8 +48,7 @@ export class DetailsPage
         private nav: NavController,
         private navParams: NavParams,
         private popoverCtrl: PopoverController,
-        private messageHandler: MessageHandler,
-        private CDRef : ChangeDetectorRef)
+        private messageHandler: MessageHandler)
     {
         //data
         this.form = this.navParams.data.form;
@@ -180,7 +179,6 @@ export class DetailsPage
     displayValidationMessage(message,column)
     {
         this.validationMessages[column.key] = message;
-        this.CDRef.detectChanges();
     }
     sortColumns = (column1, column2) =>
     {

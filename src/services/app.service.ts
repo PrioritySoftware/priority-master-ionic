@@ -263,6 +263,8 @@ export class AppService
                         listColumnsOptions[column.name].isShow = true;
                         listColumnsOptions[column.name].isShowTitle = true;
                         listColumnsOptions[column.name].pos = column.pos;
+                        //This is temporary and should not be in column options
+                        listColumnsOptions[column.name].searchfield = column.searchfield;
                     }
                     if (column.lineview == 1)
                     {
