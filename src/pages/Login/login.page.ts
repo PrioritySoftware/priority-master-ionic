@@ -31,6 +31,8 @@ export class LoginPage
         this.loginHeader = Strings.loginHeader;
         this.dirByLang = Strings.dirByLang;
         this.dirOpposite = Strings.dirOpposite;
+        this.usrValue="";
+        this.pswValue="";
     }
 
     login()

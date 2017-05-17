@@ -27,7 +27,7 @@ import { PriorityIonicModule } from 'priority-ionic';
     SubList,
     SearchPage,
     DetailsPage,
-    StartPage,
+    StartPage
   ],
   imports: [
     IonicModule.forRoot(AppComponent),

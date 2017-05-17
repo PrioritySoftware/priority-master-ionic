@@ -1,6 +1,8 @@
 <ion-content class="scan-view {{dirByLang}}">
-	<object data="assets/img/start_bg.svg" class="background"></object>
-	<object data="assets/img/brand.svg" class="logo"></object>
+	<!--<object data="assets/img/start_bg.svg" class="background" type="image/svg+xml"></object>-->
+	<!--<object data="assets/img/brand.svg" class="logo" type="image/svg+xml"></object>-->
+	<img src="assets/img/start_bg.png" class="background"/>
+	<img src="assets/img/brand_white.png" class="logo"/>
  	<div class="footer">
  		<div *ngIf="showScan">
 			<h3>{{scanInstructions}}</h3>

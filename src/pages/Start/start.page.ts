@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { NavController } from 'ionic-angular';
 import { AppService } from "../../services/app.service";
-import { PermissionsService, MessageHandler, ServerResponseType } from 'priority-ionic';
+import { PermissionsService, MessageHandler } from 'priority-ionic';
 import { LoginPage} from '../Login/login.page';
 import { BarcodeScanner } from 'ionic-native';
 import { Strings } from '../../app/app.config';

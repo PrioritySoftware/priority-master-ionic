@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Device } from 'ionic-native';
 import { Storage } from '@ionic/storage';
 import { Strings } from "../app/app.config";
-import { Configuration } from "priority-ionic";
 import { Entity } from "../entities/entity.class";
 import { FormConfig } from "../entities/form.class";
 import { ConfigurationService, FormService, ServerResponse } from 'priority-ionic';
