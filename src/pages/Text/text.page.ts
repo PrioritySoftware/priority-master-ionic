@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Strings } from '../../app/app.config';
-import { MessageHandler, FormService } from 'priority-ionic';
-import { CustomForm } from "../../entities/form.class";
+import { MessageHandler, FormService, Form } from 'priority-ionic';
 
 @Component({
   selector: 'page-text',
@@ -11,7 +10,7 @@ import { CustomForm } from "../../entities/form.class";
 export class TextPage
 {
 
-  form: CustomForm;
+  form: Form;
   text: string;
   dirByLang: string;
   saveBtnText: string;

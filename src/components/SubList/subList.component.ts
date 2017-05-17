@@ -1,11 +1,12 @@
-import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, AfterViewChecked, ChangeDetectorRef, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { FormService, MessageHandler, ServerResponseType, FileUploader } from 'priority-ionic';
+import { FormService, MessageHandler, ServerResponseType, FileUploader, Form } from 'priority-ionic';
 import { Strings } from '../../app/app.config';
 import { ObjToIterable } from "priority-ionic";
 import { TextPage } from "../../pages/Text/text.page";
 import { DetailsPage } from '../../pages/Details/details.page';
-import { CustomForm } from "../../entities/form.class";
+import { FormConfig } from "../../entities/form.class";
+import { AppService } from "../../services/app.service";
 
 const TextMaxHeight = 400;
 
@@ -14,8 +15,7 @@ const TextMaxHeight = 400;
     templateUrl: 'subList.view.html'
 })
 
-export class SubList
-// implements AfterViewChecked
+export class SubList implements AfterViewChecked, OnInit
 {
 
     iterablePipe: ObjToIterable;
@@ -27,22 +27,11 @@ export class SubList
 
     isShowMoreText;
 
-    subform;
-    @Input() set Subform(subform)
-    {
-        this.subform = subform;
-        if (this.isAttachments())
-        {
-            this.itemOptions.slidingButtons = [this.deleteButton, this.openButton];
-        }
-        else
-        {
-            this.itemOptions.slidingButtons = [this.deleteButton, this.editButton];
-        }
-        this.itemOptions.itemSelect = this.getSelectSubformRowFunc();
-    }
+    subformConfig: FormConfig;
+    @Input('ParentForm') parentForm: Form;
+    @Input('Subform') subform : Form
 
-    @Output() expandList = new EventEmitter<Function>();
+    @Output() expandList = new EventEmitter<Form>();
 
     @Output() goToSubform = new EventEmitter<Function>();
 
@@ -50,7 +39,7 @@ export class SubList
     @ViewChild('textElement') textElement: ElementRef;
 
 
-    constructor(private nav: NavController, private formService: FormService, private messageHandler: MessageHandler, private cdRef: ChangeDetectorRef)
+    constructor(private nav: NavController,private appService: AppService, private formService: FormService, private messageHandler: MessageHandler, private cdRef: ChangeDetectorRef)
     {
         this.iterablePipe = new ObjToIterable();
         this.editButton = {
@@ -80,15 +69,30 @@ export class SubList
     //the isShowMoreText changes to 'true' after Angular's changeDetector has finished running
     //So here we explicitly tell Angular's changeDetector to run again
     //see this question: http://stackoverflow.com/questions/43513421/ngif-expression-has-changed-after-it-was-checked
-    // ngAfterViewChecked()
-    // {
-    //     let show = this.showMoreText();
-    //     if (show != this.isShowMoreText)
-    //     { // check if it change, tell CD to update view
-    //         this.isShowMoreText = show;
-    //         this.cdRef.detectChanges();
-    //     }
-    // }
+    ngAfterViewChecked()
+    {
+        let show = this.showMoreText();
+        if (show != this.isShowMoreText)
+        { 
+            // check if it change, tell CD to update view
+            this.isShowMoreText = show;
+            this.cdRef.detectChanges();
+        }
+    }
+
+    ngOnInit()
+    {
+        if (this.isAttachments())
+        {
+            this.itemOptions.slidingButtons = [this.deleteButton, this.openButton];
+        }
+        else
+        {
+            this.itemOptions.slidingButtons = [this.deleteButton, this.editButton];
+        }
+        this.itemOptions.itemSelect = this.getSelectSubformRowFunc();
+        this.subformConfig = this.appService.getFormConfig(this.subform,this.parentForm);
+    }
 
     //return if to show the '...' in textforms
     showMoreText()
@@ -114,7 +118,7 @@ export class SubList
 
     getText()
     {
-        if (this.subform.rows["1"] != null)
+        if (this.subform.rows && this.subform.rows["1"] != null)
             return this.subform.rows["1"].htmltext;
         return "";
     }
@@ -122,7 +126,11 @@ export class SubList
     getRows()
     {
         let items = this.iterablePipe.transform(this.subform.rows);
-        return items.slice(0, 5);
+        if(items)
+        {
+            return items.slice(0, 5);
+        }
+        return [];
     }
 
     getAddNewOrEditIcon()
@@ -142,13 +150,13 @@ export class SubList
         }
         else
         {
-            return Object.keys(this.subform.rows).length == 0;
+            return this.subform.rows && Object.keys(this.subform.rows).length == 0;
         }
     }
 
     canExpand()
     {
-        return Object.keys(this.subform.rows).length > 5;
+        return this.subform.rows && Object.keys(this.subform.rows).length > 5;
     }
 
     viewExpandList()
@@ -160,10 +168,10 @@ export class SubList
     {
         let editFunc = () =>
         {
-            this.formService.editSubFormRow(this.subform.parentForm, this.subform.name, item.key).then(
+            this.formService.editSubFormRow(this.parentForm, this.subform.name, item.key).then(
                 result =>
                 {
-                    this.nav.push(DetailsPage, { form: this.subform, rowInd: item.key, isSubform: true });
+                    this.nav.push(DetailsPage, { form: this.subform, rowInd: item.key, isSubform: true, parentForm: this.parentForm });
                 });
         };
         this.goToSubform.emit(editFunc);
@@ -176,7 +184,7 @@ export class SubList
             let delFunc = () =>
             {
                 this.messageHandler.showTransLoading();
-                this.formService.deleteSubFormListRow(this.subform.parentForm, this.subform.name, item.key)
+                this.formService.deleteSubFormListRow(this.parentForm, this.subform.name, item.key)
                     .then(() => this.messageHandler.hideLoading())
                     .catch(() => this.messageHandler.hideLoading());
             }
@@ -202,10 +210,10 @@ export class SubList
         {
             subformFunc = () =>
             {
-                this.formService.editSubFormRow(this.subform.parentForm, this.subform.name, 1).then(
+                this.formService.editSubFormRow(this.parentForm, this.subform.name, 1).then(
                 result =>
                 {
-                    this.nav.push(DetailsPage, { form: this.subform, rowInd: 1, isSubform: true });
+                    this.nav.push(DetailsPage, { form: this.subform, rowInd: 1, isSubform: true, parentForm: this.parentForm });
                 });
             };
         }
@@ -213,7 +221,7 @@ export class SubList
         {
             subformFunc = () =>
             {
-                this.formService.startSubform(this.subform.parentForm, this.subform.name).then(subform =>
+                this.formService.startSubform(this.parentForm, this.subform.name).then(subform =>
                 {
                     if (this.isText(subform))
                         this.editTextForm();
@@ -230,7 +238,7 @@ export class SubList
         this.formService.newRow(this.subform).then(
             rowInd =>
             {
-                this.nav.push(DetailsPage, { form: this.subform, rowInd: rowInd, isSubform: true });
+                this.nav.push(DetailsPage, { form: this.subform, rowInd: rowInd, isSubform: true, parentForm: this.parentForm });
             });
     }
 
@@ -242,7 +250,7 @@ export class SubList
             result =>
             {
                 //temporary  TODO this should push a new DetailedPage that can display text;
-                this.nav.push(TextPage, { form: this.subform });
+                this.nav.push(TextPage, { form: this.subform, parentForm: this.parentForm });
             }, reason => { });
     }
 
@@ -254,7 +262,7 @@ export class SubList
         this.fileUploader.uploadFile().then(
             result =>
             {
-                this.formService.addNewSubFormRow(this.subform.parentForm, "EXTFILES").then(
+                this.formService.addNewSubFormRow(this.parentForm, "EXTFILES").then(
                     rowInd =>
                     {
                         this.formService.updateField(this.subform, result.file, "EXTFILENAME").then(

@@ -14,11 +14,11 @@
     
 <!--Sub Form list -->
 <form-list
-    *ngIf="!isText()"
+    *ngIf="subform.rows && !isText()"
     [Items]="getRows()"
     [Form]="subform"
     [ItemOptions]="itemOptions"
-    [ColumnsOptions]="subform.listColumnsOptions">
+    [ColumnsOptions]="subformConfig.listColumnsOptions">
 </form-list>
 <button ion-item class="show-all" *ngIf="canExpand()" (click)="viewExpandList()">
     {{showAllItemsText}}

@@ -90,6 +90,7 @@
     dir="{{dirByLang}}"
     *ngFor="let subform of subforms | Sort:sortSubforms"
     [Subform]="subform"
+    [ParentForm]="form"
     (expandList)="expandSubformList($event)"
     (goToSubform)="goToSubform($event)">  
 </sub-list>

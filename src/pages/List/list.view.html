@@ -25,7 +25,7 @@
      [Items]="getRows()"
      [Form]="form"
      [ItemOptions]="itemOptions"
-     [ColumnsOptions]="form.listColumnsOptions">
+     [ColumnsOptions]="formConfig.listColumnsOptions">
   </form-list>
   <ion-infinite-scroll [enabled]="!isSearching && infiniteScrollEnabled" (ionInfinite)="doInfinite($event)">
       <ion-infinite-scroll-content dir={{dirByLang}} loadingSpinner="dots" loadingText="{{scrollLoadingText}}"></ion-infinite-scroll-content>

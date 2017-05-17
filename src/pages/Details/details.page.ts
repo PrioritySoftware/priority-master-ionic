@@ -3,10 +3,11 @@ import { Component, ViewChild, HostListener } from '@angular/core';
 import { ListPage } from '../List/list.page';
 import { SearchPage } from '../Search/search.page';
 import { Strings } from '../../app/app.config';
-import { FormService, PermissionsService, MessageHandler, } from 'priority-ionic';
-import { FileUploader, MenuPopup, ButtonOptions, Search, Column,ColumnOptions } from 'priority-ionic';
+import { FormService, PermissionsService, MessageHandler } from 'priority-ionic';
+import { FileUploader, MenuPopup, ButtonOptions, Form, Search, Column, ColumnOptions } from 'priority-ionic';
 import { BarcodeScanner } from 'ionic-native';
-import { CustomForm } from "../../entities/form.class";
+import { FormConfig } from "../../entities/form.class";
+import { AppService } from "../../services/app.service";
 declare var window;
 
 
@@ -17,7 +18,9 @@ declare var window;
 export class DetailsPage
 {
     selectedItem;
-    form: CustomForm;
+    form: Form;
+    parentForm: Form;
+    formConfig: FormConfig;
     subforms;
     rowInd;
     title: string;
@@ -43,7 +46,8 @@ export class DetailsPage
         this.updateFields(event.field, event.value, event.prevVal);
     }
 
-    constructor(private formService: FormService,
+    constructor(private appService: AppService,
+        private formService: FormService,
         private permissions: PermissionsService,
         private nav: NavController,
         private navParams: NavParams,
@@ -52,6 +56,8 @@ export class DetailsPage
     {
         //data
         this.form = this.navParams.data.form;
+        this.parentForm = this.navParams.data.parentForm;
+        this.formConfig = this.appService.getFormConfig(this.form, this.parentForm);
         this.rowInd = this.navParams.data.rowInd;
         this.isSubform = this.navParams.data.isSubform;
         this.selectedItem = this.formService.getFormRow(this.form, this.rowInd);
@@ -76,13 +82,15 @@ export class DetailsPage
     /** Get subform rows for current item */
     getSubForms()
     {
-        for (var subformName in this.form.subforms)
+        for (var ind in this.formConfig.subforms)
         {
-            this.subforms.push(this.formService.getForm(subformName,this.form));
+            let subformName = this.formConfig.subforms[ind];
+            let subform = this.formService.getForm(subformName,this.form);
+            subform.name = subformName;
+            this.subforms.push(subform);
         }
         this.messageHandler.showTransLoading();
-        let subformNames = Object.keys(this.form.subforms);
-        this.formService.getSubForms(this.form, subformNames, this.rowInd).then(
+        this.formService.getSubForms(this.form, this.formConfig.subforms, this.rowInd).then(
             () =>
             {
                 this.messageHandler.hideLoading();
@@ -109,9 +117,13 @@ export class DetailsPage
                 }
             );
         else if (this.selectedItem.isNewRow)
+        {
             this.messageHandler.showToast(Strings.cannotGoToSubForm, 3000);
+        }
         else
+        {
             subformFunc();
+        }
     }
 
     expandSubformList(subform)
@@ -119,7 +131,7 @@ export class DetailsPage
         this.formService.startSubform(this.form, subform.name).then(
             () =>
             {
-                this.nav.push(ListPage, { form: subform, isSubform: true });
+                this.nav.push(ListPage, { form: subform, isSubform: true, parentForm: this.form });
             },
             () => { });
     }
@@ -311,7 +323,7 @@ export class DetailsPage
      */
     getColumnOptions(column):ColumnOptions
     {
-        return this.form.detailsColumnsOptions[column.key];
+        return this.formConfig.detailsColumnsOptions[column.key];
     }
     columnIconClicked($event, column: Column)
     {
@@ -484,7 +496,7 @@ export class DetailsPage
             let popover;
             let openAttach: ButtonOptions = {
                 text: Strings.openBtnText,
-                onClick: () =>
+                click: () =>
                 {
                     popover.dismiss();
                     this.openAttach(this.getValue(column));
@@ -492,7 +504,7 @@ export class DetailsPage
             }
             let changeAttach: ButtonOptions = {
                 text: Strings.changeBtnText,
-                onClick: () =>
+                click: () =>
                 {
                     popover.dismiss();
                     this.fileUpload(column);

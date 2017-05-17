@@ -75,7 +75,7 @@ export class MainPage
     let buttons = [
       {
         text: Strings.ok,
-        onClick: () =>
+        click: () =>
         {
           this.appService.clearLogin();
           this.nav.setRoot(LoginPage);
@@ -83,7 +83,7 @@ export class MainPage
       },
       {
         text: Strings.cancel,
-        onClick: () => { }
+        click: () => { }
       }];
     this.messageHandler.showMessage(Strings.isExitApp, buttons);
   }

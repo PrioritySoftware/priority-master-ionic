@@ -1,8 +1,9 @@
 import { Component, ViewChild } from "@angular/core";
-import { FormService, MessageHandler, ObjToIterable, FileUploader } from 'priority-ionic';
+import { FormService, MessageHandler, ObjToIterable, FileUploader, Form } from 'priority-ionic';
 import { NavController, NavParams } from 'ionic-angular';
 import { DetailsPage } from '../Details/details.page';
-import { CustomForm } from "../../entities/form.class"
+import { FormConfig } from "../../entities/form.class";
+import { AppService } from "../../services/app.service";
 import { Strings } from '../../app/app.config';
 import { ElementRef, Renderer } from '@angular/core';
 
@@ -15,7 +16,9 @@ const RowsBatchSize = 115;
 
 export class ListPage
 {
-    form: CustomForm;
+    form: Form;
+    parentForm: Form;
+    formConfig: FormConfig;
     iterablePipe: ObjToIterable;
     isSubform: boolean;
     dirByLang: string;
@@ -29,7 +32,8 @@ export class ListPage
 
     @ViewChild(FileUploader) fileUploader: FileUploader;
 
-    constructor(private formService: FormService,
+    constructor(private appService: AppService,
+        private formService: FormService,
         private messageHandler: MessageHandler,
         private nav: NavController,
         private navParams: NavParams,
@@ -37,7 +41,8 @@ export class ListPage
         private renderer: Renderer)
     {
         this.form = this.navParams.data.form;
-
+        this.parentForm = this.navParams.data.parentForm;
+        this.formConfig = this.appService.getFormConfig(this.form, this.parentForm);
         this.isSubform = this.navParams.data.isSubform;
         this.isSearching = false;
         this.iterablePipe = new ObjToIterable();
@@ -123,7 +128,7 @@ export class ListPage
         this.formService.setActiveRow(this.form, item.key).then(
             result =>
             {
-                this.nav.push(DetailsPage, { form: this.form, rowInd: item.key });
+                this.nav.push(DetailsPage, { form: this.form, rowInd: item.key, parentForm: this.parentForm });
             }, reason => { });
     }
 
@@ -148,21 +153,13 @@ export class ListPage
             this.isSearching = true;
             //init the enable scroll when searching
             this.infiniteScrollEnabled = true;
-            let searchFields = [];
-            for (var colname in this.form.columns)
-            {
-                if (this.form.listColumnsOptions[colname] && this.form.listColumnsOptions[colname].searchfield == 1)
-                {
-                    searchFields.push(colname);
-                }
-            }
-            this.formService.setFilter(this.form, searchFields, val).then(
+            this.formService.setFilter(this.form, this.formConfig.searchColumns, val).then(
                 result =>
                 {
                     this.isSearching = false;
                 }, reason =>
                 {
-                    if (searchFields.length == 0)
+                    if (this.formConfig.searchColumns.length == 0)
                     {
                         this.messageHandler.showErrorOrWarning(true, Strings.searchError, () => { }, () => { }, { title: Strings.errorTitle });
                     }
@@ -222,7 +219,7 @@ export class ListPage
         this.formService.newRow(this.form).then(
             newRowInd =>
             {
-                this.nav.push(DetailsPage, { form: this.form, rowInd: newRowInd });
+                this.nav.push(DetailsPage, { form: this.form, rowInd: newRowInd, parentForm: this.parentForm });
             }, reason => { });
     }
 
