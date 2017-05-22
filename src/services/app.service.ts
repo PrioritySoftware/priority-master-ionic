@@ -16,7 +16,7 @@ const LocalStoragePasswordKey: string = "pripassword";
 export class AppService
 {
     entitiesData: Entity[];
-    formsConfig: {[key: string] : FormConfig} = {};
+    formsConfig: Array<FormConfig> = [];
 
     constructor(private configService: ConfigurationService, private formService: FormService, private storage: Storage)
     {
@@ -299,25 +299,30 @@ export class AppService
             {
                 let form: Entity = entities[ind];
                 let preparedForm = this.prepareForm(form);
-                let key = form.name;
-                if(form.name != form.fatname && form.fatname)
-                {
-                    key = key + form.fatname;
-                }
-                this.formsConfig[key] = preparedForm;
+                // let key = form.name;
+                // if(form.name != form.fatname && form.fatname)
+                // {
+                //     key = key + form.fatname;
+                // }
+                this.formsConfig.push(preparedForm);
             }
         }
 
         //loop on forms config and assign subforms to parents
-        for (var key in this.formsConfig)
+        for (var ind in this.formsConfig)
         {
-            let formConfig = this.formsConfig[key];
+            let formConfig = this.formsConfig[ind];
             if (formConfig.parentForm !== formConfig.name && formConfig.parentForm !== undefined)
             {
-                let parentForm = this.formsConfig[formConfig.parentForm];
-                if(parentForm !== undefined)
+                //loop on forms config to find the parent form
+                for (var ind in this.formsConfig)
                 {
-                    parentForm.subforms.push(formConfig.name);
+                    if(this.formsConfig[ind].name == formConfig.parentForm)
+                    {
+                        //add form to the parent form subforms array
+                        let parentForm = this.formsConfig[ind];
+                        parentForm.subforms.push(formConfig.name);
+                    }
                 }
             }
         }
@@ -326,12 +331,24 @@ export class AppService
     /** Returns the formConfig object according to the form name and parent form name */
     getFormConfig(form,parentForm) : FormConfig
     {
-        let key = form.name;
-        if(parentForm)
+        let formConfig;
+        for (var ind in this.formsConfig)
         {
-            key = key + parentForm.name;
+            if(this.formsConfig[ind].name == form.name)
+            {
+                if(parentForm)
+                {
+                    if(this.formsConfig[ind].parentForm == parentForm.name)
+                    {
+                        return this.formsConfig[ind];
+                    }
+                }
+                else
+                {
+                    return this.formsConfig[ind];
+                }
+            }
         }
-        return this.formsConfig[key];
     }
 
     /** Set json url in local storage */
