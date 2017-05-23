@@ -1,0 +1,112 @@
+page-apps {
+
+    .toolbar-content {
+        height: 100%;
+        position: absolute;
+        width: 100%;
+        background-repeat: no-repeat;
+        background-position: 50%;
+        &.toolbar-content
+        {
+          background-image: url('../assets/img/brand_white.png');
+        }
+    }
+
+    .content {
+        background: color($colors,background);
+    }
+
+    .list {
+
+        &.list-md ion-item-sliding {
+            margin: 10px 10px 10px 10px;
+            width: calc(100% - 20px);
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+        }
+
+        &.list-ios ion-item-sliding {
+            margin: 12px 12px 12px 12px;
+            width: calc(100% - 24px);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        ion-item-sliding {
+            height: 80px;
+            border-radius: 4px;
+            font-size: 1.4rem;
+            background: #fff;
+            border-right: 4px solid color($colors,favorite);
+
+            .item-block {
+                height: 100%;
+                border: none !important;
+                padding: 0;
+                .item-inner {
+                    border: none !important;
+                    padding: 0 !important;
+
+                    ion-label {
+                        margin: 0;
+                    }
+                }
+            }
+
+            ion-item-options {
+                border-radius: 4px;
+                border: none !important;
+                .button {
+                    height: 100%;
+                    margin: 0;
+                    padding: 0 15px;
+                    text-transform: none;
+                }
+            }
+
+            // button {
+            //     text-align: center;
+            //     height: 100%;
+            //     font-size: 1.7rem;
+            //     color: color($colors,dark);
+            //     border-radius: 4px;
+            // }
+            
+            ion-label {
+                text-align: center;
+            }
+
+            &.new {
+                background: transparent;
+                box-shadow: none;
+                border: 1px dashed gray;
+
+                .item {
+                    background: transparent;
+
+                    ion-icon {
+                        vertical-align: middle;
+                        padding-left: 16px;
+                    }
+                }
+            }
+        }
+
+        &[dir="ltr"] ion-item-sliding {
+            border-left: 4px solid color($colors,favorite);
+            border-right: none;
+
+            &.new {
+                 border: 1px dashed gray;
+
+                 ion-icon {
+                    padding-right: 16px;
+                    padding-left: 0;
+                 }
+
+                 ion-label {
+                     text-transform: uppercase;
+                 }
+            }
+        }
+    }
+
+}

@@ -1,4 +1,9 @@
 <ion-content class="scan-view {{dirByLang}}">
+	<ion-buttons start *ngIf="isShowBack">
+      <button ion-button icon-only clear (click)="leavePage()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
 	<!--<object data="assets/img/start_bg.svg" class="background" type="image/svg+xml"></object>-->
 	<!--<object data="assets/img/brand.svg" class="logo" type="image/svg+xml"></object>-->
 	<img src="assets/img/start_bg.png" class="background"/>

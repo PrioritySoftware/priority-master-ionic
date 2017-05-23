@@ -12,6 +12,12 @@ export class Strings
     public static failedToLoadJsonError: string;
     public static scanNewConfigurationFile: string;
 
+    /** Menu */
+    public static menuTitle: string;
+    public static logout: string;
+    public static switchApp: string;
+    public static newApp: string;
+
     /** Text */
     public static wait: string;
     public static usrTitle: string;
@@ -59,6 +65,7 @@ export class Strings
     public static showAllItems: string;
     /**Style  */
     public static dirByLang: string;
+    public static sideByLang: string;
     public static dirOpposite: string;
 
     /** Validation errors */
@@ -76,6 +83,10 @@ export class Strings
         Strings.failedToLoadJsonError = "נכשל בטעינת קובץ קונפיגורציה.";
         Strings.scanNewConfigurationFile = " \nפנה למנהל המערכת או סרוק קוד QR חדש";
         Strings.dirByLang = "rtl";
+        Strings.newApp = "הוסף יישומון";
+        Strings.defaultMsgTitle = "הודעה";
+        Strings.isDelete = "מחיקה?";
+        Strings.deleteBtnText = "מחק";
 
         Strings.ok = "אישור";
         Strings.cancel = "ביטול";
@@ -83,6 +94,11 @@ export class Strings
 
     public static setRtlConstants() 
     {
+        Strings.menuTitle = "תפריט";
+        Strings.logout = "התנתק";
+        Strings.switchApp = "החלף יישומון";
+        Strings.newApp = "הוסף יישומון";
+
         Strings.usrTitle = "שם משתמש";
         Strings.pswTitle = "סיסמא";
         Strings.wait = "אנא המתן...";
@@ -130,6 +146,7 @@ export class Strings
         Strings.approveEditText = "עריכה";
         Strings.dirByLang = "rtl";
         Strings.dirOpposite = "ltr";
+        Strings.sideByLang = "right";
 
         Strings.decimalValidErr = "דיוק עשרוני שגוי";
         Strings.numberValidErr = "הכנס ספרות בלבד";
@@ -147,13 +164,21 @@ export class Strings
         Strings.scanNewConfigurationFile = " \nContact your system administrator or scan a new QR code";
 
         Strings.dirByLang = "ltr";
-
+        Strings.defaultMsgTitle = "Message";
         Strings.ok = "OK";
         Strings.cancel = "Cancel";
+        Strings.newApp = "New app";
+        Strings.isDelete = "Delete?";
+        Strings.deleteBtnText = "Delete";
     }
 
     public static setLtrConstants()
     {
+        Strings.menuTitle = "Menu";
+        Strings.logout = "Logout";
+        Strings.switchApp = "Switch app";
+        Strings.newApp = "New app";
+
         Strings.usrTitle = "User name";
         Strings.pswTitle = "Password";
         Strings.wait = "Please wait...";
@@ -200,6 +225,7 @@ export class Strings
         Strings.approveEditText = "Edit";
         Strings.dirByLang = "ltr";
         Strings.dirOpposite = "rtl";
+        Strings.sideByLang = "left";
 
         Strings.decimalValidErr = "Wrong decimal precision";
         Strings.numberValidErr = "Digits only";

@@ -30,7 +30,6 @@
 	<!-- Ionic's root component and where the app will load -->
 	<ion-app></ion-app>
 
- <script type="application/javascript" src="./assets/js/jquery.min.js"></script>
 	<!-- cordova.js required for cordova apps -->
 	<script src="cordova.js"></script>
 
@@ -50,26 +49,26 @@
       document.body.appendChild(script);
     };
     document.body.appendChild(scriptMain);
-    $(function()
-  {
-    if (/ipad|iphone|Android/gi.test(window.navigator.userAgent))
-    {
-      var events = " blur focus";
-      $("ion-input,input").on(events, function (e)
-      {
-        return (function (window, elem, w, h)
-        {
-          var vh = window.getComputedStyle(elem, null).getPropertyValue(h);
-          var vw = window.getComputedStyle(elem, null).getPropertyValue(w);
-          var vwh = { "documentWidth": vw, "documentHeight": vh, "windowInnerWidth": window.innerWidth, "windowInnerHeight": window.innerHeight };
-          console.log(vwh);
-          var _vwh = document.getElementById("vwh");
-          _vwh.innerHTML = JSON.stringify(vwh)
-          return vwh
-        } (window, document.documentElement, "width", "height"));
-      }).focus();
-    };
-  });
+  //   $(function()
+  // {
+  //   if (/ipad|iphone|Android/gi.test(window.navigator.userAgent))
+  //   {
+  //     var events = " blur focus";
+  //     $("ion-input,input").on(events, function (e)
+  //     {
+  //       return (function (window, elem, w, h)
+  //       {
+  //         var vh = window.getComputedStyle(elem, null).getPropertyValue(h);
+  //         var vw = window.getComputedStyle(elem, null).getPropertyValue(w);
+  //         var vwh = { "documentWidth": vw, "documentHeight": vh, "windowInnerWidth": window.innerWidth, "windowInnerHeight": window.innerHeight };
+  //         console.log(vwh);
+  //         var _vwh = document.getElementById("vwh");
+  //         _vwh.innerHTML = JSON.stringify(vwh)
+  //         return vwh
+  //       } (window, document.documentElement, "width", "height"));
+  //     }).focus();
+  //   };
+  // });
 </script>
 
 </body>

@@ -9,6 +9,22 @@
 	color: white;
 	text-align: center;
 
+	&.rtl {
+		.bar-buttons {
+			text-align: right;
+			.icon[name="arrow-back"] {
+	            transform: rotate(180deg)
+	        }
+		}
+	}
+
+	.bar-buttons {
+		text-align: left;
+		.button {
+			color: white;
+		}
+	}
+
 	.background {
 	    position: absolute;
 	    top: 0;

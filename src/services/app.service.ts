@@ -8,6 +8,7 @@ import { ConfigurationService, FormService, ServerResponse } from 'priority-ioni
 
 const LocalJsonUrl: string = "assets/js/pridata.json";
 const LocalStorageJsonUrlKey: string = "prijsonurl";
+const LocalStorageAppsListKey: string = "priappslist";
 const LocalStorageUsernameKey: string = "priusername";
 const LocalStoragePasswordKey: string = "pripassword";
 
@@ -15,13 +16,31 @@ const LocalStoragePasswordKey: string = "pripassword";
 @Injectable()
 export class AppService
 {
+    appsList: Array<any> = [];
+    currentApp: any = {};
     entitiesData: Entity[];
     formsConfig: Array<FormConfig> = [];
 
     constructor(private configService: ConfigurationService, private formService: FormService, private storage: Storage)
     {
-        this.entitiesData = [];
+        this.getAppsList().then(
+            (apps) =>
+            {
+                if(apps)
+                {
+                    this.appsList = apps;
+            
+                }
+                else
+                {
+                    this.appsList = [];
+                }
+            },
+            () => {});
     }
+
+    // *************************************** JSON ********************************************
+
     /** Initialization **/
     initApp(jsonUrl: string): Promise<any>
     {
@@ -134,7 +153,7 @@ export class AppService
                 {
                     if (request.status === 200)
                     {
-                        this.readJson(request.responseText).then(
+                        this.readJson(request.responseText,jsonUrl).then(
                             () =>
                             {
                                 resolve();
@@ -190,7 +209,7 @@ export class AppService
         });
     }
     /** Reads the json file and sets the configuration settings and entities */
-    readJson(jsonString): Promise<any>
+    readJson(jsonString, jsonUrl): Promise<any>
     {
         return new Promise((resolve, reject) =>
         {
@@ -209,6 +228,7 @@ export class AppService
                             devicename: Device.uuid
                         }
                         this.configService.config(config);
+                        this.setApp(json.appdes,jsonUrl);
                         try
                         {
                             this.entitiesData = json.forms_data;
@@ -221,10 +241,12 @@ export class AppService
                         if (config.language == 1)
                         {
                             Strings.setRtlConstants();
+                            Strings.setFirstRtlConstants();
                         }
                         else
                         {
                             Strings.setLtrConstants();
+                            Strings.setFirstLtrConstants();
                         }
                         resolve();
                     },
@@ -238,6 +260,12 @@ export class AppService
                 reject();
             }
         });
+    }
+
+    /** Set json url in local storage */
+    setJsonUrl(jsonUrl: string)
+    {
+        this.storage.set(LocalStorageJsonUrlKey, jsonUrl);
     }
 
     // ********************************* Forms Config **************************************
@@ -351,11 +379,50 @@ export class AppService
         }
     }
 
-    /** Set json url in local storage */
-    setJsonUrl(jsonUrl: string)
+    // ********************************* Apps **************************************
+
+    setApp(appTitle: string, jsonUrl: string)
     {
-        this.storage.set(LocalStorageJsonUrlKey, jsonUrl);
+        let app;
+        for (var ind in this.appsList)
+        {
+            if(this.appsList[ind].jsonUrl == jsonUrl)
+            {
+                app = this.appsList[ind];
+                this.appsList[ind].title = appTitle;
+            }
+        }
+        if(app === undefined)//if this app does not exist in apps list add it to the list
+        {
+            app = {
+               title: appTitle,
+               jsonUrl: jsonUrl
+           }
+           this.appsList.push(app);
+        }
+        this.storage.set(LocalStorageAppsListKey,this.appsList);
+        this.currentApp = app;
     }
+
+    getAppsList()
+    {
+        return this.storage.get(LocalStorageAppsListKey);
+    }
+
+    clearCurrentApp()
+    {
+        this.storage.remove(LocalStorageJsonUrlKey);
+    }
+
+    deleteApp(app)
+    {
+        var index = this.appsList.indexOf(app);
+        this.appsList.splice(index,1);
+        this.storage.set(LocalStorageAppsListKey,this.appsList);
+    }
+
+    // ********************************* Login **************************************
+
     /** Returns the username value saved in local storage */
     getLocalUsername()
     {

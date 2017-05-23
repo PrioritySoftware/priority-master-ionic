@@ -5,24 +5,19 @@ import { AppService } from '../services/app.service';
 import { LoginPage } from '../pages/Login/login.page';
 import { MainPage } from "../pages/Main/main.page";
 import { StartPage } from '../pages/Start/start.page';
+import { AppsPage } from '../pages/Apps/apps.page';
 import { Strings } from './app.config';
 import { MessageHandler, Constants } from 'priority-ionic';
 declare var window;
 
 @Component({
-
-  template: `<ion-nav [root]="rootPage"></ion-nav>`,
-  entryComponents: [
-    LoginPage,
-    StartPage,
-    MainPage
-  ]
+  templateUrl: "app.html"
 })
 
 export class AppComponent
 {
   rootPage: any = null;
-
+  strings = Strings;
   dirByLang: string;
   currentClickOffset;
 
@@ -35,20 +30,8 @@ export class AppComponent
     window['priorityReady'] = this.priorityReady;
     this.dirByLang = "";
 
-
     platform.ready().then(() =>
     {
-
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      Keyboard.disableScroll(true);
-      window.addEventListener('native.keyboardshow', this.keyboardShowHandler);
-      window.addEventListener('native.keyboardhide', this.keyboardHideHandler);
-      window.addEventListener('touchstart', this.touchStartHandler);
-      // for IOS 
-      //scroll - content {
-      //   padding-bottom:0!important;
-      // }
       platform.registerBackButtonAction(() => { this.leavePage(); },100);
       StatusBar.styleDefault();
       if (window.cordova)
@@ -118,47 +101,55 @@ export class AppComponent
             //   Splashscreen.hide();
             //   this.messageHandler.showErrorOrWarning(true, reason + Strings.scanNewConfigurationFile);
             // });
-            this.rootPage = StartPage;
-            this.messageHandler.hideLoading();
-            Splashscreen.hide();
+            if(this.appService.appsList.length > 1)
+            {
+              this.rootPage = AppsPage;
+              this.messageHandler.hideLoading();
+              Splashscreen.hide();
+            }
+            else
+            {
+              this.rootPage = StartPage;
+              this.messageHandler.hideLoading();
+              Splashscreen.hide();
+              this.messageHandler.showErrorOrWarning(true, reason + Strings.scanNewConfigurationFile);
+            }
           });
       },
       //show start page to scan barcode if url not found
+      //or apps page, if user has already scanned apps
       (reason) =>
       {
+        if(this.appService.appsList.length)
+        {
+          this.rootPage = AppsPage;
+        }
+        else
+        {
+          this.rootPage = StartPage;
+        }
+        this.messageHandler.hideLoading();
+        Splashscreen.hide();
         // this.nav.setRoot(StartPage,{},{animation: false}).then(() =>
         // {
         //   Splashscreen.hide();
         // });
-        this.rootPage = StartPage;
-        this.messageHandler.hideLoading();
-        Splashscreen.hide();
       });
   }
 
-  /**Keyboard events */
-  keyboardShowHandler = (e) =>
+  logout = () =>
   {
-    let kH = e.keyboardHeight;
+    this.appService.clearLogin();
+    this.nav.setRoot(LoginPage, {}, {animate: true, direction: 'forward'});
+  }
 
-    if (this.currentClickOffset < kH + 40)
-    {
-      this.nav._elementRef.nativeElement.style.bottom = (kH - this.currentClickOffset + 40) + "px";
-      // this.nav._elementRef.nativeElement.style.top = "initial !important";
-    }
+  switchApp = () =>
+  {
+    this.appService.clearCurrentApp();
+    this.nav.setRoot(AppsPage, {}, {animate: true, direction: 'forward'});
+  }
 
-  }
-  keyboardHideHandler = () =>
-  {
-    this.nav._elementRef.nativeElement.style.bottom = '0';
-    // this.nav._elementRef.nativeElement.style.top = '50px !important';
-  }
-  touchStartHandler = (e) =>
-  {
-    let clickHeight = e.touches[0].clientY;
-    let deviceHeight = window.innerHeight;
-    this.currentClickOffset = (deviceHeight - clickHeight);
-  }
+
   /**Determines what action should be taken when leaving the current page.
    * If there is a date picker present hide it.
    * Else if the current page has a function than handles its leaving - call it.

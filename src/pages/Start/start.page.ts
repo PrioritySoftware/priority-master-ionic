@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import { AppService } from "../../services/app.service";
 import { PermissionsService, MessageHandler } from 'priority-ionic';
 import { LoginPage} from '../Login/login.page';
@@ -12,6 +12,7 @@ import { Strings } from '../../app/app.config';
 
 export class StartPage
 {
+    isShowBack: boolean;
     showScan: boolean;
     showLoading: boolean;
 
@@ -23,10 +24,17 @@ export class StartPage
     scanButton: string;
     preparingApp: string;
 
-    constructor(private appService: AppService, private nav: NavController, private messageHandler: MessageHandler, private permissions: PermissionsService, private barcodeScanner: BarcodeScanner)
+    constructor(private appService: AppService,
+                private nav: NavController,
+                private navParams: NavParams,
+                private messageHandler: MessageHandler,
+                private permissions: PermissionsService,
+                private barcodeScanner: BarcodeScanner,
+                private platform: Platform)
     {
         this.showScan = true;
         this.showLoading = false;
+        this.isShowBack = navParams.data.isShowBack;
 
         /* strings */
         this.dirByLang = Strings.dirByLang;
@@ -79,5 +87,18 @@ export class StartPage
                         this.messageHandler.showToast(Strings.scanError, 3000);
                     })
         }).catch(() => { this.messageHandler.showToast(Strings.scanError, 3000); });
+    }
+
+
+    leavePage = () =>
+    {
+        if(this.nav.canGoBack())
+        {
+            this.nav.pop();
+        }
+        else
+        {
+           this.platform.exitApp(); 
+        }
     }
 }

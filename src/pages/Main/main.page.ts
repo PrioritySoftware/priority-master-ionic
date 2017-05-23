@@ -70,22 +70,5 @@ export class MainPage
         reason => { this.messageHandler.hideLoading(); });
     }
   }
-  logOut = () =>
-  {
-    let buttons = [
-      {
-        text: Strings.ok,
-        click: () =>
-        {
-          this.appService.clearLogin();
-          this.nav.setRoot(LoginPage);
-        }
-      },
-      {
-        text: Strings.cancel,
-        click: () => { }
-      }];
-    this.messageHandler.showMessage(Strings.isExitApp, buttons);
-  }
 }
 

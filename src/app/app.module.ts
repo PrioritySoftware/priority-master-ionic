@@ -14,6 +14,7 @@ import { MainPage } from '../pages/Main/main.page';
 import { SearchPage } from '../pages/Search/search.page';
 import { StartPage } from '../pages/Start/start.page';
 import { TextPage } from '../pages/Text/text.page';
+import { AppsPage } from '../pages/Apps/apps.page';
 
 import { SubList } from "../components/SubList/subList.component";
 
@@ -29,7 +30,8 @@ import { PriorityIonicModule } from 'priority-ionic';
     SubList,
     SearchPage,
     DetailsPage,
-    StartPage
+    StartPage,
+    AppsPage
   ],
   imports: [
     IonicModule.forRoot(AppComponent),
@@ -46,7 +48,8 @@ import { PriorityIonicModule } from 'priority-ionic';
     TextPage,
     SubList,
     SearchPage,
-    DetailsPage
+    DetailsPage,
+    AppsPage
   ],
   providers: [
     AppService,

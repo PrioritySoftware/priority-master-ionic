@@ -1,10 +1,11 @@
 import { Platform } from 'ionic-angular';
 import { Component } from "@angular/core";
 import { AppService } from "../../services/app.service";
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { MainPage } from "../Main/main.page";
 import { Strings } from '../../app/app.config';
 import { MessageHandler } from 'priority-ionic';
+import { AppsPage } from '../Apps/apps.page';
 
 @Component({
     selector: 'page-login',
@@ -14,26 +15,24 @@ import { MessageHandler } from 'priority-ionic';
 
 export class LoginPage
 {
-    usrValue;
-    pswValue;
-    usrTitle;
-    pswTitle;
-    loginBtn;
-    loginHeader;
-    dirByLang;
-    dirOpposite;
+    usrValue = '';
+    pswValue = '';
+    strings = Strings;
+    appName;
+    isShowApp;
+    isShowBack;
 
-    constructor(private appService: AppService, private nav: NavController, private platform: Platform, private messageHandler: MessageHandler)
+    constructor(private appService: AppService,
+                private nav: NavController,
+                private navParams: NavParams,
+                private platform: Platform,
+                private messageHandler: MessageHandler)
     {
-        this.usrTitle = Strings.usrTitle;
-        this.pswTitle = Strings.pswTitle;
-        this.loginBtn = Strings.loginBtn;
-        this.loginHeader = Strings.loginHeader;
-        this.dirByLang = Strings.dirByLang;
-        this.dirOpposite = Strings.dirOpposite;
-        this.usrValue="";
-        this.pswValue="";
+        this.appName = this.appService.currentApp.title;
+        this.isShowApp = this.appService.appsList.length > 1;
+        this.isShowBack = navParams.data.isShowBack;
     }
+
 
     login()
     {
@@ -43,7 +42,7 @@ export class LoginPage
             res =>
             {
                 this.messageHandler.hideLoading();
-                this.nav.setRoot(MainPage);
+                this.nav.setRoot(MainPage,{}, {animate: true, direction: 'forward'});
             },
             reason =>
             {
@@ -55,15 +54,24 @@ export class LoginPage
             }
         ).catch(() => { });
     }
+
     eventHandler(evnt)
     {
         let key = evnt.key;
         if (key == "Enter")
             this.login();
     }
+
     leavePage = () =>
     {
-        this.platform.exitApp();
+        if(this.nav.canGoBack())
+        {
+            this.nav.pop();
+        }
+        else
+        {
+           this.platform.exitApp(); 
+       }
     }
 
 }

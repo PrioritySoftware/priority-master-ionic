@@ -1,0 +1,32 @@
+<ion-header dir="{{strings.dirByLang}}">
+  <ion-navbar hideBackButton="true">
+    <ion-title></ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-list dir="{{strings.dirByLang}}">
+    <ion-item-sliding *ngFor="let app of appsList">
+      <ion-item (click)="selectApp(app)">
+        {{app.title}}
+      </ion-item>
+      <ion-item-options side="left" dir="ltr" *ngIf="strings.dirByLang == 'rtl'">
+        <button ion-button color="danger" (click)="deleteApp(app)">
+          <ion-icon name="trash"></ion-icon>
+          {{strings.deleteBtnText}}
+        </button>
+      </ion-item-options>
+      <ion-item-options side="right" dir="ltr" *ngIf="strings.dirByLang == 'ltr'">
+        <button ion-button color="danger" (click)="deleteApp(app)">
+          <ion-icon name="trash"></ion-icon>
+          {{strings.deleteBtnText}}
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+    <ion-item-sliding class="new">
+       <button ion-item (click)="newApp()">
+          <ion-icon name="add"></ion-icon>
+			   {{strings.newApp}}
+        </button>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>

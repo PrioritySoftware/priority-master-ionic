@@ -6,10 +6,32 @@ page-login {
         background-color: rgba(31,155,209,0.99);
         background: -webkit-linear-gradient(-45deg, rgba(31,155,209,0.99) 0%, rgba(31,155,209,1) 0%, rgba(31,155,209,1) 46%, rgba(24,120,158,1) 100%);
     }
+
     img {
         height: 45px;
     }
+
+    .bar-buttons {
+        align-self: flex-start;
+    }
   }
+  .toolbar-content
+        {
+            height: 100%;
+            position: absolute;
+            width: 100%;
+            background-repeat: no-repeat;
+            background-position: 50%;
+            &.toolbar-content
+            {
+              background-image: url('../assets/img/brand_white.svg');
+            }
+            //  &.toolbar-content-ios
+            // {
+            //   background-image: url('../assets/img/brand.png');
+            // }
+          
+        }
 
   .login-content {
     margin: 20px auto;
@@ -26,6 +48,7 @@ page-login {
       ion-label {
         font-size: 2.4rem;
         text-align:  center;
+        white-space: normal;
       }
 
     }
@@ -44,7 +67,7 @@ page-login {
       margin-top: 25px;
       text-align: center;
 
-      .button {
+      .button[outline] {
         width: 150px;
         margin-top: 25px;
       }

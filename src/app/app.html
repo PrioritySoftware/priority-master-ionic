@@ -1,0 +1,63 @@
+<ion-nav [root]="rootPage" #content></ion-nav>
+<ion-menu [content]="content"
+            side="left"
+            [swipeEnabled]="false"
+            dir="{{strings.dirByLang}}"
+            *ngIf="strings.sideByLang == 'left'">
+    <ion-header dir="{{strings.dirByLang}}">
+        <ion-toolbar color="dark">
+            <ion-title>{{strings.menuTitle}}</ion-title>
+        </ion-toolbar>
+    </ion-header>
+    <ion-content>
+        <ion-list>
+            <ion-item (click)="switchApp()" dir="{{strings.dirByLang}}" menuClose>
+                <ion-label>
+                    <button ion-button clear>
+	                   <ion-icon name="apps"></ion-icon>
+				       <ion-label>{{strings.switchApp}}</ion-label>
+			    </button>
+                </ion-label>
+            </ion-item>
+            <ion-item (click)="logout()" dir="{{strings.dirByLang}}" menuClose>
+                <ion-label>
+                    <button ion-button clear>
+                       <ion-icon name="log-out"></ion-icon>
+                       <ion-label>{{strings.logout}}</ion-label>
+                </button>
+                </ion-label>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-menu>
+<ion-menu [content]="content"
+            side="right"
+            [swipeEnabled]="false"
+            dir="{{strings.dirByLang}}"
+            *ngIf="strings.sideByLang == 'right'">
+    <ion-header dir="{{strings.dirByLang}}">
+        <ion-toolbar color="dark">
+            <ion-title>{{strings.menuTitle}}</ion-title>
+        </ion-toolbar>
+    </ion-header>
+    <ion-content>
+        <ion-list>
+            <ion-item (click)="switchApp()" dir="{{strings.dirByLang}}" menuClose>
+                <ion-label>
+                    <button ion-button clear>
+                       <ion-icon name="apps"></ion-icon>
+                       <ion-label>{{strings.switchApp}}</ion-label>
+                </button>
+                </ion-label>
+            </ion-item>
+            <ion-item (click)="logout()" dir="{{strings.dirByLang}}" menuClose>
+                <ion-label>
+                    <button ion-button clear>
+                       <ion-icon name="log-out"></ion-icon>
+                       <ion-label>{{strings.logout}}</ion-label>
+                </button>
+                </ion-label>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-menu>

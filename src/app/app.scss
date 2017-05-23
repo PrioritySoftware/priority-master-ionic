@@ -21,12 +21,12 @@ $ionicons-font-path: "../assets/fonts";
 @import "ionicons";
 @import '../icons/ionicons';
 
-@import "../pages/Login/login.style";
-@import "../pages/Main/main.style";
-@import "../pages/Details/details.style";
-@import "../pages/Start/start.style";
-@import "../pages/Search/search.style";
-@import "../pages/List/list.style";
+// @import "../pages/Login/login.style";
+// @import "../pages/Main/main.style";
+// @import "../pages/Details/details.style";
+// @import "../pages/Start/start.style";
+// @import "../pages/Search/search.style";
+// @import "../pages/List/list.style";
 
 ion-header,.header-ios,.header-md {
     &[dir="ltr"] {
@@ -50,12 +50,6 @@ ion-header,.header-ios,.header-md {
 
     &:after {
         display: none;
-    }
-
-    ion-toolbar {
-        .toolbar-background-md {
-            background: transparent;
-        }
     }
     
     ion-navbar {
@@ -84,6 +78,57 @@ ion-header,.header-ios,.header-md {
         }
     }
 }
+
+ion-menu {
+    &[dir="rtl"] {
+        .menu-inner {
+            right: 0;
+            left: auto;
+        }
+    }
+    ion-item[dir="rtl"] {
+        padding-right: 16px;
+        padding-left: 0;
+
+        ion-label {
+            margin: 13px 0 13px 8px;
+        }
+
+        .button ion-icon {
+            padding-left: 16px;
+            padding-right: 0;
+        }
+    }
+
+    ion-item {
+        .button-md, .button-ios {
+            padding: 0;
+
+            .button {
+                text-transform: none;
+            }
+        
+            ion-label {
+                margin: 13px 0 13px 0;
+                font-size: 1.6rem;
+                color: color($colors,dark);
+            }
+
+            ion-icon {
+                padding-right: 16px;
+            }
+
+            .icon-md {
+                font-size: 1.8rem;
+            }
+
+            .icon-ios {
+                font-size: 2.4rem;
+            }
+        }
+    }
+}
+
 file-uploader {
     display: none;
 }

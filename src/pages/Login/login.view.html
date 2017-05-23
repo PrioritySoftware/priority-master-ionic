@@ -1,30 +1,37 @@
-<ion-header  dir="{{dirByLang}}" >
+<ion-header  dir="{{strings.dirByLang}}" >
   <ion-navbar hideBackButton="true">
     <ion-title>
-      <img src="assets/img/brand_white.svg"/>
     </ion-title>
+     <ion-buttons start *ngIf="isShowBack">
+      <button ion-button icon-only (click)="leavePage()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
  </ion-header>
 <ion-content>
   <div class="login-content">
-    <ion-list (keypress)="eventHandler($event)">
-      <ion-list-header>
-        {{ loginHeader }}
+    <ion-list (keypress)="eventHandler($event)" dir="{{strings.dirByLang}}">
+      <ion-list-header *ngIf="!isShowApp">
+        {{ strings.loginHeader }}
+      </ion-list-header>
+      <ion-list-header *ngIf="isShowApp">
+        {{ appName }}
       </ion-list-header>
 
-      <ion-item [style.direction]="dirByLang">
-        <ion-input type="text" placeholder="{{usrTitle}}" [(ngModel)]="usrValue"></ion-input>
+      <ion-item [style.direction]="strings.dirByLang">
+        <ion-input type="text" placeholder="{{strings.usrTitle}}" [(ngModel)]="usrValue"></ion-input>
       </ion-item>
 
-      <ion-item [style.direction]="dirByLang">
-        <ion-input type="password" placeholder="{{pswTitle}}" [(ngModel)]="pswValue"></ion-input>
+      <ion-item [style.direction]="strings.dirByLang">
+        <ion-input type="password" placeholder="{{strings.pswTitle}}" [(ngModel)]="pswValue"></ion-input>
       </ion-item>
 
     </ion-list>
 
     <ion-buttons>
       <button ion-button outline (click)="login()">
-      {{ loginBtn }}
+      {{ strings.loginBtn }}
       </button>
     </ion-buttons>
   </div>
