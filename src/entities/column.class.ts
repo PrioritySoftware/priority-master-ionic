@@ -15,4 +15,6 @@ export interface CustomColumn extends Column
     pos:number;
     /** Is field a special type 'B' for barcode 'P' for phone*/
     special: string;
+    /** Backward compatibility for barcode instead of special  */
+    barcode: number;
 }

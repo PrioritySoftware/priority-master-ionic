@@ -273,7 +273,7 @@ export class AppService
                 formConfig.detailsColumnsOptions[column.name].isShowTitle = true;
                 formConfig.detailsColumnsOptions[column.name].pos = column.pos;
             }
-            if (column.special == 'B')
+            if (column.special == 'B' || column.barcode == 1)// backward compatibility for barcode
             {
                 formConfig.detailsColumnsOptions[column.name].subtype = "barcode";
             }
