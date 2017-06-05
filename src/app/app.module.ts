@@ -1,6 +1,8 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { IonicApp, IonicModule, LoadingController, AlertController, ToastController } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
+import { Storage, IonicStorageModule } from '@ionic/storage';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { Camera } from '@ionic-native/camera';
 
 import { AppComponent } from './app.component';
 import { AppService } from '../services/app.service';
@@ -31,6 +33,7 @@ import { PriorityIonicModule } from 'priority-ionic';
   ],
   imports: [
     IonicModule.forRoot(AppComponent),
+    IonicStorageModule.forRoot(),
     PriorityIonicModule
   ],
   bootstrap: [IonicApp],
@@ -46,8 +49,10 @@ import { PriorityIonicModule } from 'priority-ionic';
     DetailsPage
   ],
   providers: [
-    Storage,
-    AppService
+    AppService,
+    BarcodeScanner,
+    Camera
+
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

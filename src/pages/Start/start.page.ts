@@ -3,7 +3,7 @@ import { NavController } from 'ionic-angular';
 import { AppService } from "../../services/app.service";
 import { PermissionsService, MessageHandler } from 'priority-ionic';
 import { LoginPage} from '../Login/login.page';
-import { BarcodeScanner } from 'ionic-native';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Strings } from '../../app/app.config';
 
 @Component({
@@ -23,7 +23,7 @@ export class StartPage
     scanButton: string;
     preparingApp: string;
 
-    constructor(private appService: AppService, private nav: NavController, private messageHandler: MessageHandler, private permissions: PermissionsService)
+    constructor(private appService: AppService, private nav: NavController, private messageHandler: MessageHandler, private permissions: PermissionsService, private barcodeScanner: BarcodeScanner)
     {
         this.showScan = true;
         this.showLoading = false;
@@ -41,7 +41,7 @@ export class StartPage
         this.permissions.requestPermission("camera").then(
             () =>
             {
-                BarcodeScanner.scan(
+                this.barcodeScanner.scan(
                     {
                         resultDisplayDuration: 0,
                         formats : "QR_CODE",

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from "@angular/core";
-import { FormService, MessageHandler, ObjToIterable, FileUploader, Form } from 'priority-ionic';
+import { FormService, MessageHandler, ObjToIterable, FileUploader, Form ,ItemOptions} from 'priority-ionic';
 import { NavController, NavParams } from 'ionic-angular';
 import { DetailsPage } from '../Details/details.page';
 import { FormConfig } from "../../entities/form.class";
@@ -28,7 +28,7 @@ export class ListPage
     isSearching: boolean;
     scrollLoadingText: string;
     infiniteScrollEnabled: boolean;
-    itemOptions = {} as any;
+    itemOptions:ItemOptions={};
 
     @ViewChild(FileUploader) fileUploader: FileUploader;
 
@@ -79,12 +79,12 @@ export class ListPage
         if (this.form.name == "EXTFILES")
         {
             this.itemOptions.slidingButtons = [deleteButton, openButton];
-            this.itemOptions.itemSelect = this.openAttachRow
+            this.itemOptions.click = this.openAttachRow
         }
         else
         {
             this.itemOptions.slidingButtons = [deleteButton, editButton];
-            this.itemOptions.itemSelect = this.editRow
+            this.itemOptions.click = this.editRow
         }
     }
 

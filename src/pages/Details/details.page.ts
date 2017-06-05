@@ -5,7 +5,6 @@ import { SearchPage } from '../Search/search.page';
 import { Strings } from '../../app/app.config';
 import { FormService, MessageHandler, } from 'priority-ionic';
 import { Search, Form, Column, ColumnOptions } from 'priority-ionic';
-import { BarcodeScanner } from 'ionic-native';
 import { FormConfig } from "../../entities/form.class";
 import { AppService } from "../../services/app.service";
 declare var window;
@@ -211,7 +210,7 @@ export class DetailsPage
             {
                 this.isLeaveWithoutCheckchanges = true;
                 let searchResults = res.SearchLine == null ? res.ChooseLine : res.SearchLine;
-                if (searchResults != null && searchResults.length > 0)
+                if (searchResults != null && Object.keys(searchResults).length > 0)
                 {
                     this.nav.push(
                         SearchPage,
