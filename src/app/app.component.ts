@@ -1,5 +1,7 @@
 import { Platform, Nav } from 'ionic-angular';
-import { StatusBar, Keyboard, Globalization, Splashscreen } from 'ionic-native';
+import { StatusBar } from '@ionic-native/status-bar';
+import { Globalization } from '@ionic-native/globalization';
+import { SplashScreen } from '@ionic-native/splash-screen';
 import { Component, ViewChild } from '@angular/core';
 import { AppService } from '../services/app.service';
 import { LoginPage } from '../pages/Login/login.page';
@@ -25,7 +27,10 @@ export class AppComponent
   constructor(private platform: Platform,
     private appService: AppService,
     private messageHandler: MessageHandler,
-    private strings: Strings)
+    private strings: Strings,
+    private statusBar:StatusBar,
+    private globalization:Globalization,
+    private splashScreen:SplashScreen)
   {
     window['priorityReady'] = this.priorityReady;
     this.dirByLang = "";
@@ -33,11 +38,11 @@ export class AppComponent
     platform.ready().then(() =>
     {
 
-      platform.registerBackButtonAction(() => { this.leavePage(); },100);
-      StatusBar.styleDefault();
+      platform.registerBackButtonAction(() => { this.leavePage(); }, 100);
+      this.statusBar.styleDefault();
       if (window.cordova)
       {
-        Globalization.getPreferredLanguage().then((language) =>
+        this.globalization.getPreferredLanguage().then((language) =>
         {
           if (language.value.startsWith('iw') || language.value.startsWith('he'))
           {
@@ -77,7 +82,7 @@ export class AppComponent
             {
               // this.nav.setRoot(MainPage,{},{animation: false}).then(() =>
               // {
-              //   Splashscreen.hide();
+              //   this.splashScreen.hide();
               // });
               // Using the setRoot function caused bugs with change detection in details page
               // We need to check if they still appear in later version of ionic
@@ -87,32 +92,32 @@ export class AppComponent
             {
               // this.nav.setRoot(LoginPage,{},{animation: false}).then(() =>
               // {
-              //   Splashscreen.hide();
+              //   this.splashScreen.hide();
               // });
               this.rootPage = LoginPage;
             }
             this.messageHandler.hideLoading();
-            Splashscreen.hide();
+            this.splashScreen.hide();
           },
           (reason) =>
           {
             //show start page to re-scan barcode if the json file is not valid.
             // this.nav.setRoot(StartPage,{},{animation: false}).then(() =>
             // {
-            //   Splashscreen.hide();
+            //   this.splashScreen.hide();
             //   this.messageHandler.showErrorOrWarning(true, reason + this.strings.scanNewConfigurationFile);
             // });
-            if(this.appService.appsList.length > 1)
+            if (this.appService.appsList.length > 1)
             {
               this.rootPage = AppsPage;
               this.messageHandler.hideLoading();
-              Splashscreen.hide();
+              this.splashScreen.hide();
             }
             else
             {
               this.rootPage = StartPage;
               this.messageHandler.hideLoading();
-              Splashscreen.hide();
+              this.splashScreen.hide();
               this.messageHandler.showErrorOrWarning(true, reason + this.strings.scanNewConfigurationFile);
             }
           });
@@ -121,7 +126,7 @@ export class AppComponent
       //or apps page, if user has already scanned apps
       (reason) =>
       {
-        if(this.appService.appsList.length)
+        if (this.appService.appsList.length)
         {
           this.rootPage = AppsPage;
         }
@@ -130,10 +135,10 @@ export class AppComponent
           this.rootPage = StartPage;
         }
         this.messageHandler.hideLoading();
-        Splashscreen.hide();
+        this.splashScreen.hide();
         // this.nav.setRoot(StartPage,{},{animation: false}).then(() =>
         // {
-        //   Splashscreen.hide();
+        //   this.splashScreen.hide();
         // });
       });
   }
@@ -141,13 +146,13 @@ export class AppComponent
   logout = () =>
   {
     this.appService.clearLogin();
-    this.nav.setRoot(LoginPage, {}, {animate: true, direction: 'forward'});
+    this.nav.setRoot(LoginPage, {}, { animate: true, direction: 'forward' });
   }
 
   switchApp = () =>
   {
     this.appService.clearCurrentApp();
-    this.nav.setRoot(AppsPage, {}, {animate: true, direction: 'forward'});
+    this.nav.setRoot(AppsPage, {}, { animate: true, direction: 'forward' });
   }
 
 

@@ -11,15 +11,15 @@ import { Strings } from '../../app/app.config';
   selector: 'page-apps',
   templateUrl: 'apps.view.html',
 })
-export class AppsPage {
-
-	strings = Strings;
+export class AppsPage 
+{
 	appsList = [];
 
     constructor(public navCtrl: NavController,
     			public navParams: NavParams,
     			private appService: AppService,
-    			private messageHandler: MessageHandler)
+    			private messageHandler: MessageHandler,
+                private strings:Strings)
     {
     	this.appsList = this.appService.appsList;
     }
@@ -59,16 +59,16 @@ export class AppsPage {
     {
         let buttons = [
         {
-            text: Strings.ok,
+            text: this.strings.ok,
             click: () =>
             {
           this.appService.deleteApp(app);
             }
         },
         {
-            text: Strings.cancel,
+            text: this.strings.cancel,
             click: () => { }
         }];
-        this.messageHandler.showMessage(Strings.isDelete, buttons);
+        this.messageHandler.showMessage(this.strings.isDelete, buttons);
     }
 }

@@ -25,7 +25,8 @@ export class LoginPage
                 private nav: NavController,
                 private navParams: NavParams,
                 private platform: Platform,
-                private messageHandler: MessageHandler)
+                private messageHandler: MessageHandler,
+                private strings:Strings)
     {
         this.appName = this.appService.currentApp.title;
         this.isShowApp = this.appService.appsList.length > 1;

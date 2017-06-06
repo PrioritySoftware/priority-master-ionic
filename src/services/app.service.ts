@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Device } from 'ionic-native';
+import { Device } from '@ionic-native/device';
 import { Storage } from '@ionic/storage';
 import { Strings } from "../app/app.config";
 import { Entity } from "../entities/entity.class";
@@ -24,7 +24,8 @@ export class AppService
     constructor(private configService: ConfigurationService,
         private formService: FormService,
         private storage: Storage,
-        private strings: Strings)
+        private strings: Strings,
+        private device:Device)
     {
         this.getAppsList().then(
             (apps) =>
@@ -228,7 +229,7 @@ export class AppService
                             company: json.dname,
                             language: json.lang,
                             tabulaini: json.tabulaini,
-                            devicename: Device.uuid
+                            devicename: this.device.uuid
                         }
                         this.configService.config(config);
                         this.setApp(json.appdes,jsonUrl);

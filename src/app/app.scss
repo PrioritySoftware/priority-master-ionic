@@ -51,12 +51,6 @@ ion-header,.header-ios,.header-md {
     &:after {
         display: none;
     }
-
-    ion-toolbar:not(.menu-toolbar) {
-        .toolbar-background-md {
-            background: transparent;
-        }
-    }
     
     ion-navbar {
         position: relative;

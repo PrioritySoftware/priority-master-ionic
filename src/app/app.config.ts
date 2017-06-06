@@ -184,10 +184,10 @@ export class Strings
 
     setLtrConstants()
     {
-        Strings.menuTitle = "Menu";
-        Strings.logout = "Logout";
-        Strings.switchApp = "Switch app";
-        Strings.newApp = "New app";
+        this.menuTitle = "Menu";
+        this.logout = "Logout";
+        this.switchApp = "Switch app";
+        this.newApp = "New app";
 
         this.usrTitle = "User name";
         this.pswTitle = "Password";
