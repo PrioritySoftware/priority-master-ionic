@@ -10,7 +10,7 @@ import { ElementRef, Renderer } from '@angular/core';
 const RowsBatchSize = 115;
 
 @Component({
-    selector: "page-list",
+    selector: "list-page",
     templateUrl: "list.view.html"
 })
 
@@ -38,7 +38,8 @@ export class ListPage
         private nav: NavController,
         private navParams: NavParams,
         private elementRef: ElementRef,
-        private renderer: Renderer)
+        private renderer: Renderer,
+        private strings:Strings)
     {
         this.form = this.navParams.data.form;
         this.parentForm = this.navParams.data.parentForm;
@@ -46,30 +47,30 @@ export class ListPage
         this.isSubform = this.navParams.data.isSubform;
         this.isSearching = false;
         this.iterablePipe = new ObjToIterable();
-        this.dirByLang = Strings.dirByLang;
-        this.searchPlaceholder = Strings.search;
-        this.scrollLoadingText = Strings.scrollLoadingText;
+        this.dirByLang = this.strings.dirByLang;
+        this.searchPlaceholder = this.strings.search;
+        this.scrollLoadingText = this.strings.scrollLoadingText;
         this.infiniteScrollEnabled = Object.keys(this.form.rows).length == RowsBatchSize;
         this.listeners = new Array();
 
         let buttonsSideByLang = this.dirByLang == 'rtl' ? 'left' : 'right';
 
         let editButton = {
-            text: Strings.editBtnText,
+            text: this.strings.editBtnText,
             icon: 'create',
             color: 'favorite',
             side: buttonsSideByLang,
             click: this.editRow
         }
         let openButton = {
-            text: Strings.openBtnText,
+            text: this.strings.openBtnText,
             icon: 'open',
             side: buttonsSideByLang,
             color: 'favorite',
             click: this.openAttachRow
         }
         let deleteButton = {
-            text: Strings.deleteBtnText,
+            text: this.strings.deleteBtnText,
             icon: 'trash',
             side: buttonsSideByLang,
             color: 'danger',
@@ -141,7 +142,7 @@ export class ListPage
                 .then(() => this.messageHandler.hideLoading())
                 .catch(() => this.messageHandler.hideLoading());
         }
-        this.messageHandler.showErrorOrWarning(false, Strings.isDelete, delFunc);
+        this.messageHandler.showErrorOrWarning(false, this.strings.isDelete, delFunc);
     }
 
     //search function sets a filter on form rows
@@ -161,7 +162,7 @@ export class ListPage
                 {
                     if (this.formConfig.searchColumns.length == 0)
                     {
-                        this.messageHandler.showErrorOrWarning(true, Strings.searchError, () => { }, () => { }, { title: Strings.errorTitle });
+                        this.messageHandler.showErrorOrWarning(true, this.strings.searchError, () => { }, () => { }, { title: this.strings.errorTitle });
                     }
                     this.isSearching = false;
                 });

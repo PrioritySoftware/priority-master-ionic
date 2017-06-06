@@ -1,11 +1,12 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { IonicApp, IonicModule, LoadingController, AlertController, ToastController } from 'ionic-angular';
-import { Storage, IonicStorageModule } from '@ionic/storage';
+import { IonicApp, IonicModule } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Camera } from '@ionic-native/camera';
 
 import { AppComponent } from './app.component';
 import { AppService } from '../services/app.service';
+import {Strings} from './app.config';
 
 import { LoginPage } from '../pages/Login/login.page';
 import { ListPage } from '../pages/List/list.page';
@@ -17,6 +18,7 @@ import { TextPage } from '../pages/Text/text.page';
 import { AppsPage } from '../pages/Apps/apps.page';
 
 import { SubList } from "../components/SubList/subList.component";
+import {DirectActivations} from "../components/DirectActivations/direct-activations.component";
 
 import { PriorityIonicModule } from 'priority-ionic';
 
@@ -28,6 +30,7 @@ import { PriorityIonicModule } from 'priority-ionic';
     ListPage,
     TextPage,
     SubList,
+    DirectActivations,
     SearchPage,
     DetailsPage,
     StartPage,
@@ -35,7 +38,6 @@ import { PriorityIonicModule } from 'priority-ionic';
   ],
   imports: [
     IonicModule.forRoot(AppComponent),
-    IonicStorageModule.forRoot(),
     PriorityIonicModule
   ],
   bootstrap: [IonicApp],
@@ -47,11 +49,14 @@ import { PriorityIonicModule } from 'priority-ionic';
     StartPage,
     TextPage,
     SubList,
+    DirectActivations,
     SearchPage,
     DetailsPage,
     AppsPage
   ],
   providers: [
+    Storage,
+    Strings,
     AppService,
     BarcodeScanner,
     Camera

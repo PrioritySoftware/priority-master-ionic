@@ -8,7 +8,7 @@ import { MessageHandler } from 'priority-ionic';
 import { AppsPage } from '../Apps/apps.page';
 
 @Component({
-    selector: 'page-login',
+    selector: 'login-page',
     templateUrl: 'login.view.html',
     entryComponents: [MainPage]
 })
@@ -17,7 +17,6 @@ export class LoginPage
 {
     usrValue = '';
     pswValue = '';
-    strings = Strings;
     appName;
     isShowApp;
     isShowBack;

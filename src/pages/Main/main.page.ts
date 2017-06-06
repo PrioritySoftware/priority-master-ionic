@@ -5,6 +5,7 @@ import { NavController, NavParams, Platform } from 'ionic-angular';
 import { ListPage } from '../List/list.page';
 import { LoginPage } from '../Login/login.page';
 import { Strings } from '../../app/app.config';
+import {Entity} from'../../entities/entity.class';
 
 @Component({
   templateUrl: 'main.view.html',
@@ -24,22 +25,23 @@ export class MainPage
     private messageHandler: MessageHandler,
     private nav: NavController,
     private navParams: NavParams,
-    private platform: Platform)
+    private platform: Platform,
+    private strings: Strings)
   {
-    this.dirByLang = Strings.dirByLang;
+    this.dirByLang = this.strings.dirByLang;
     this.tilesList = this.appService.entitiesData;
     this.formService.onFatalError = () => { this.nav.popTo(MainPage); };
   }
 
   isShowEntity(ent)
   {
-    //returns true for procs and forms that are parent forms 
-    return (ent.type == 'F' && (ent.fatname === ent.name || ent.fatname === undefined)) || ent.type == 'P';
+    //returns true for procs that are not direct activations and forms that are parent forms 
+    return ent.fatname == ent.name || ent.fatname === undefined;
   }
 
-  entityChosen(ent)
+  entityChosen(ent:Entity)
   {
-    if (ent.type == 'P')
+    if (ent.type == 'P' || ent.type=='R')
     {
       this.messageHandler.showTransLoading();
       this.procService.startProcedure(ent.name, ent.type, this.configService.configuration.company)
@@ -56,7 +58,7 @@ export class MainPage
     else if (ent.type == 'F')
     {
 
-      this.messageHandler.showLoading(Strings.wait);
+      this.messageHandler.showLoading(this.strings.wait);
       this.formService.startFormAndGetRows(ent.name, this.configService.configuration.company).then(
         form =>
         {
@@ -69,6 +71,23 @@ export class MainPage
         },
         reason => { this.messageHandler.hideLoading(); });
     }
+  }
+  logOut = () =>
+  {
+    let buttons = [
+      {
+        text: this.strings.ok,
+        click: () =>
+        {
+          this.appService.clearLogin();
+          this.nav.setRoot(LoginPage);
+        }
+      },
+      {
+        text: this.strings.cancel,
+        click: () => { }
+      }];
+    this.messageHandler.showMessage(this.strings.isExitApp, buttons);
   }
 }
 

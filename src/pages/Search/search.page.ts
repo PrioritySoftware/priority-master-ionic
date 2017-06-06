@@ -25,12 +25,15 @@ export class SearchPage
 
     @ViewChild('searchbar') searchBar;
 
-    constructor(private formService: FormService, private nav: NavController, private navParams: NavParams)
+    constructor(private formService: FormService, 
+                private nav: NavController, 
+                private navParams: NavParams,
+                private strings:Strings)
     {
         this.isSearch = false;
         this.isShowWaitingDots = false;
-        this.dirByLang = Strings.dirByLang;
-        this.placeholder = Strings.search;
+        this.dirByLang = this.strings.dirByLang;
+        this.placeholder = this.strings.search;
     }
     ionViewDidLoad()
     {

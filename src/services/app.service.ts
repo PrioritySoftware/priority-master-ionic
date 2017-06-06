@@ -19,9 +19,12 @@ export class AppService
     appsList: Array<any> = [];
     currentApp: any = {};
     entitiesData: Entity[];
-    formsConfig: Array<FormConfig> = [];
+    formsConfig: { [key: string]: FormConfig } = {};
 
-    constructor(private configService: ConfigurationService, private formService: FormService, private storage: Storage)
+    constructor(private configService: ConfigurationService,
+        private formService: FormService,
+        private storage: Storage,
+        private strings: Strings)
     {
         this.getAppsList().then(
             (apps) =>
@@ -131,12 +134,12 @@ export class AppService
                             }
                             else
                             {
-                                reject(Strings.failedToLoadJsonError);
+                                reject(this.strings.failedToLoadJsonError);
                             }
                         },
                         error =>
                         {
-                            reject(Strings.failedToLoadJsonError);
+                            reject(this.strings.failedToLoadJsonError);
                         });
                 })
         });
@@ -160,12 +163,12 @@ export class AppService
                             },
                             () =>
                             {
-                                reject(Strings.failedToReadJsonError);
+                                reject(this.strings.failedToReadJsonError);
                             });
                     }
                     else
                     {
-                        reject(Strings.failedToLoadJsonError);
+                        reject(this.strings.failedToLoadJsonError);
                     }
                 }
             };
@@ -240,13 +243,14 @@ export class AppService
                         }
                         if (config.language == 1)
                         {
-                            Strings.setRtlConstants();
-                            Strings.setFirstRtlConstants();
+
+                            this.strings.setRtlConstants();
+                            this.strings.setFirstRtlConstants();
                         }
                         else
                         {
-                            Strings.setLtrConstants();
-                            Strings.setFirstLtrConstants();
+                            this.strings.setLtrConstants();
+                            this.strings.setFirstLtrConstants();
                         }
                         resolve();
                     },
@@ -271,7 +275,7 @@ export class AppService
     // ********************************* Forms Config **************************************
 
     /** Returns a formConfig object according to the supplied form (in json format) */
-    prepareForm(form: Entity) : FormConfig
+    prepareForm(form: Entity): FormConfig
     {
         let formConfig: FormConfig = {
             name: form.name,
@@ -280,7 +284,8 @@ export class AppService
             listColumnsOptions: {},
             detailsColumnsOptions: {},
             parentForm: form.fatname,
-            pos: form.pos
+            pos: form.pos,
+            activations: {}
         };
 
         for (var ind in form.columns)
@@ -292,7 +297,7 @@ export class AppService
                 formConfig.listColumnsOptions[column.name].isShow = true;
                 formConfig.listColumnsOptions[column.name].isShowTitle = true;
                 formConfig.listColumnsOptions[column.name].pos = column.pos;
-                
+
             }
             if (column.lineview == 1)
             {
@@ -309,7 +314,7 @@ export class AppService
             {
                 formConfig.detailsColumnsOptions[column.name].subtype = "phone";
             }
-            if(column.searchfield == 1)
+            if (column.searchfield == 1)
             {
                 formConfig.searchColumns.push(column.name);
             }
@@ -320,35 +325,55 @@ export class AppService
     /** Iterates on the form entities in json and initializes the formsConfig object. */
     initFormsConfig(entities)
     {
-        //loop on entities and add the parent forms to the forms object
-        for (var ind in entities)
+        let procedures = [];
+        let parentForms = {};
+        //loop on entities and add the parent forms to the parentForms object
+        for (let ind in entities)
         {
-            if (entities[ind].type == 'F')
+            let entity = entities[ind];
+            if (entity.type == 'F')
             {
-                let form: Entity = entities[ind];
+                let form = entities[ind];
                 let preparedForm = this.prepareForm(form);
-                // let key = form.name;
-                // if(form.name != form.fatname && form.fatname)
-                // {
-                //     key = key + form.fatname;
-                // }
-                this.formsConfig.push(preparedForm);
+                let key = form.name;
+                if (!parentForms[form.name])
+                    parentForms[form.name] = [];
+                if (form.name != form.fatname && form.fatname)
+                {
+                    key = key + form.fatname;
+                    parentForms[form.name].push(form.fatname);
+                }
+                else
+                {
+                    parentForms[form.name].push("");
+                }
+                this.formsConfig[key] = preparedForm;
+            }
+            else
+            {
+                procedures.push(entity);
             }
         }
+        this.initSubformsConfig(parentForms);
+        this.initProcConfig(parentForms, procedures);
+    }
 
+    initSubformsConfig(parentForms)
+    {
         //loop on forms config and assign subforms to parents
-        for (var ind in this.formsConfig)
+        for (let key in this.formsConfig)
         {
-            let formConfig = this.formsConfig[ind];
+            let formConfig = this.formsConfig[key];
             if (formConfig.parentForm !== formConfig.name && formConfig.parentForm !== undefined)
             {
-                //loop on forms config to find the parent form
-                for (var ind in this.formsConfig)
+                if (!parentForms[formConfig.parentForm])
+                    continue;
+                for (let grandParentName of parentForms[formConfig.parentForm])
                 {
-                    if(this.formsConfig[ind].name == formConfig.parentForm)
+                    let parentName = formConfig.parentForm + grandParentName;
+                    let parentForm = this.formsConfig[parentName];
+                    if (parentForm !== undefined)
                     {
-                        //add form to the parent form subforms array
-                        let parentForm = this.formsConfig[ind];
                         parentForm.subforms.push(formConfig.name);
                     }
                 }
@@ -356,28 +381,39 @@ export class AppService
         }
     }
 
-    /** Returns the formConfig object according to the form name and parent form name */
-    getFormConfig(form,parentForm) : FormConfig
+    initProcConfig(parentForms, procedures)
     {
-        let formConfig;
-        for (var ind in this.formsConfig)
+        //loops over all procedures to determine which of them is a direct activation of one of the forms in formsConfig.
+        for (let proc of procedures)
         {
-            if(this.formsConfig[ind].name == form.name)
+            for (let grandParentName of parentForms[proc.fatname])
             {
-                if(parentForm)
+                let parentName = proc.fatname + grandParentName;
+                let parentForm = this.formsConfig[parentName];
+                if (parentForm !== undefined)
                 {
-                    if(this.formsConfig[ind].parentForm == parentForm.name)
-                    {
-                        return this.formsConfig[ind];
-                    }
-                }
-                else
-                {
-                    return this.formsConfig[ind];
+                    parentForm.activations[proc.name] =
+                        {
+                            title: proc.title,
+                            type: proc.type,
+                            name: proc.name
+                        };
                 }
             }
         }
     }
+
+    /** Returns the formConfig object according to the form name and parent form name */
+    getFormConfig(form, parentForm)
+    {
+        let key = form.name;
+        if (parentForm)
+        {
+            key = key + parentForm.name;
+        }
+        return this.formsConfig[key];
+    }
+
 
     // ********************************* Apps **************************************
 

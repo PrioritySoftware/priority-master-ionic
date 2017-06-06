@@ -4,7 +4,7 @@ import { Strings } from '../../app/app.config';
 import { MessageHandler, FormService, Form } from 'priority-ionic';
 
 @Component({
-  selector: 'page-text',
+  selector: 'text-page',
   templateUrl: 'text.view.html'
 })
 export class TextPage
@@ -20,12 +20,16 @@ export class TextPage
 
   isChangesSaved: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private formService: FormService,private messageHandler:MessageHandler)
+  constructor(public navCtrl: NavController, 
+              public navParams: NavParams, 
+              private formService: FormService,
+              private messageHandler:MessageHandler,
+              private strings:Strings)
   {
     this.form = navParams.data.form;
-    this.dirByLang = Strings.dirByLang;
-    this.saveBtnText = Strings.saveBtnText;
-    this.textPlaceholder = Strings.textPlaceholder;
+    this.dirByLang = this.strings.dirByLang;
+    this.saveBtnText = this.strings.saveBtnText;
+    this.textPlaceholder = this.strings.textPlaceholder;
     this.isChangesSaved = true;
     this.title = this.form.title;
     this.isHtmlEditable = this.form.ishtmleditable;

@@ -17,42 +17,43 @@ declare var window;
 export class AppComponent
 {
   rootPage: any = null;
-  strings = Strings;
   dirByLang: string;
   currentClickOffset;
 
   @ViewChild(Nav) nav;
 
   constructor(private platform: Platform,
-              private appService: AppService,
-              private messageHandler: MessageHandler)
+    private appService: AppService,
+    private messageHandler: MessageHandler,
+    private strings: Strings)
   {
     window['priorityReady'] = this.priorityReady;
     this.dirByLang = "";
 
     platform.ready().then(() =>
     {
+
       platform.registerBackButtonAction(() => { this.leavePage(); },100);
       StatusBar.styleDefault();
       if (window.cordova)
       {
         Globalization.getPreferredLanguage().then((language) =>
         {
-          if (language.value == 'en' || language.value == 'en-US' || language.value == 'US')
+          if (language.value.startsWith('iw') || language.value.startsWith('he'))
           {
-            Strings.setFirstLtrConstants();
-            Constants.setLtrTranslations();
+            this.strings.setFirstRtlConstants();
+            Constants.setRtlTranslations();
           }
           else
           {
-            Strings.setFirstRtlConstants();
-            Constants.setRtlTranslations();
+            this.strings.setFirstLtrConstants();
+            Constants.setLtrTranslations();
           }
         });
       }
       else
       {
-        Strings.setFirstLtrConstants();
+        this.strings.setFirstLtrConstants();
         Constants.setLtrTranslations();
       }
     });
@@ -99,7 +100,7 @@ export class AppComponent
             // this.nav.setRoot(StartPage,{},{animation: false}).then(() =>
             // {
             //   Splashscreen.hide();
-            //   this.messageHandler.showErrorOrWarning(true, reason + Strings.scanNewConfigurationFile);
+            //   this.messageHandler.showErrorOrWarning(true, reason + this.strings.scanNewConfigurationFile);
             // });
             if(this.appService.appsList.length > 1)
             {
@@ -112,7 +113,7 @@ export class AppComponent
               this.rootPage = StartPage;
               this.messageHandler.hideLoading();
               Splashscreen.hide();
-              this.messageHandler.showErrorOrWarning(true, reason + Strings.scanNewConfigurationFile);
+              this.messageHandler.showErrorOrWarning(true, reason + this.strings.scanNewConfigurationFile);
             }
           });
       },

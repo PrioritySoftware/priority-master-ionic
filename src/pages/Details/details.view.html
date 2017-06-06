@@ -1,45 +1,46 @@
 <ion-header dir="{{dirByLang}}">
   <ion-navbar hideBackButton="true">
-    <ion-title>{{form.title}}</ion-title>
+    <ion-title [style.textAlign]="selectedItem.isNewRow ? 'center' : dirByLang=='rtl'? 'right' : 'left'">{{form.title}}</ion-title>
     <ion-buttons start>
       <button ion-button icon-only (click)="leavePage()">
         <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
     <ion-buttons end>
-       <button ion-button  (click)="saveRow()">
-          <img src="assets/img/save.png"/>
+      <button ion-button icon-only (click)="saveRow()" style="margin: auto 11px">
+          <ion-icon name="checkmark"></ion-icon>
       </button>
-      <button ion-button icon-only *ngIf="!selectedItem.isNewRow" (click)="deleteRow()">
-         <img src="assets/img/delete.png"/>
+       <button ion-button icon-only *ngIf="!selectedItem.isNewRow" (click)="deleteRow()">
+         <ion-icon name="trash"></ion-icon>
+      </button>
+      <button ion-button icon-only *ngIf="!selectedItem.isNewRow" (click)="openDirectActivationsMenu($event)" class="more-button">
+         <ion-icon name="more"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-
   <div class="waiting-spinner" *ngIf="isShowWaitingDots" >
-     <ion-spinner name="dots"></ion-spinner>
+    <ion-spinner name="dots"></ion-spinner>
   </div>
 
   <!-- Inputs -->
-  <item-input-opts
-    [Form]="form"
+  <item-input-opts 
+    [Form]="form" 
     [Item]="selectedItem"
-    [ColumnsOptions]="formConfig.detailsColumnsOptions"
+    [ColumnsOptions]="formConfig.detailsColumnsOptions" 
     (columnClick)="columnClicked($event)">
   </item-input-opts>
 
   <!--Subforms -->
-  <sub-list
-      dir="{{dirByLang}}"
-      *ngFor="let subform of subforms | Sort:sortSubforms"
-      [Subform]="subform"
-      [ParentForm]="form"
-      (expandList)="expandSubformList($event)"
-      (goToSubform)="goToSubform($event)">  
+  <sub-list 
+       dir="{{dirByLang}}" 
+       *ngFor="let subform of subforms | Sort:sortSubforms" 
+       [Subform]="subform" 
+       [ParentForm]="form"
+       (expandList)="expandSubformList($event)" 
+       (goToSubform)="goToSubform($event)">
   </sub-list>
 
 </ion-content>
-

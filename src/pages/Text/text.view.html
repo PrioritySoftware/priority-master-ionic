@@ -7,8 +7,8 @@
       </button>
     </ion-buttons>
     <ion-buttons *ngIf="isHtmlEditable == 1" end>
-       <button ion-button  (click)="saveText()">
-          <img src="assets/img/save.png"/>
+       <button ion-button  icon-only (click)="saveText()">
+         <ion-icon name="checkmark"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>

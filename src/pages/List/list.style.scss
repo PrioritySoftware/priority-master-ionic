@@ -1,11 +1,9 @@
-page-list {
-
-    ion-toolbar {
+list-page {
+     ion-toolbar {
         .toolbar-background-md {
             background: transparent;
         }
     }
-
     .search-dots {
         position: fixed;
         z-index: 1;

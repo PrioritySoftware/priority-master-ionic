@@ -1,4 +1,4 @@
-page-details {
+details-page {
   item-input .list-md,.list.list-ios {
     margin-top: 16px;
   }
@@ -10,5 +10,10 @@ page-details {
       top: 57px;
       z-index: 2;
       margin: 0 9%;
+  }
+  .more-button
+  {
+    display: inline-block;
+    margin: 0 -5px;
   }
 }

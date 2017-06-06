@@ -23,7 +23,7 @@ export class SubList implements AfterViewChecked, OnInit
     openButton;
     deleteButton;
     itemOptions = {} as any;
-    showAllItemsText = Strings.showAllItems;
+    showAllItemsText = this.strings.showAllItems;
 
     isShowMoreText;
 
@@ -39,25 +39,31 @@ export class SubList implements AfterViewChecked, OnInit
     @ViewChild('textElement') textElement: ElementRef;
 
 
-    constructor(private nav: NavController,private appService: AppService, private formService: FormService, private messageHandler: MessageHandler, private cdRef: ChangeDetectorRef)
+    constructor(private nav: NavController, 
+                private formService: FormService, 
+                private messageHandler: MessageHandler, 
+                private cdRef: ChangeDetectorRef,
+                private strings:Strings,
+                private appService:AppService)
+
     {
         this.iterablePipe = new ObjToIterable();
         this.editButton = {
-            text: Strings.editBtnText,
+            text: this.strings.editBtnText,
             icon: 'create',
             color: 'favorite',
             side: 'left',
             click: this.editSubFormRow
         }
         this.openButton = {
-            text: Strings.openBtnText,
+            text: this.strings.openBtnText,
             icon: 'open',
             side: 'left',
             color: 'favorite',
             click: this.openAttachRow
         }
         this.deleteButton = {
-            text: Strings.deleteBtnText,
+            text: this.strings.deleteBtnText,
             icon: 'trash',
             side: 'left',
             color: 'danger',
@@ -188,7 +194,7 @@ export class SubList implements AfterViewChecked, OnInit
                     .then(() => this.messageHandler.hideLoading())
                     .catch(() => this.messageHandler.hideLoading());
             }
-            this.messageHandler.showErrorOrWarning(false, Strings.isDelete, delFunc);
+            this.messageHandler.showErrorOrWarning(false, this.strings.isDelete, delFunc);
         });
     }
 

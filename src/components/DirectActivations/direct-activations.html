@@ -1,0 +1,5 @@
+ <ion-list margin-left margin-right dir="{{strings.dirByLang}}">
+      <button ion-item *ngFor="let activation of formConfig.activations | objToIterable" (click)="startDirectActivation(activation)">
+        {{activation.title}}
+      </button>
+    </ion-list>
