@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, AfterViewChecked, ChangeDetectorRef, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { FormService, MessageHandler, ServerResponseType, FileUploader, Form } from 'priority-ionic';
+import { FormService, MessageHandler, FileUploader,Form, ItemOptions} from 'priority-ionic';
 import { Strings } from '../../app/app.config';
 import { ObjToIterable } from "priority-ionic";
 import { TextPage } from "../../pages/Text/text.page";
@@ -22,7 +22,7 @@ export class SubList implements AfterViewChecked, OnInit
     editButton;
     openButton;
     deleteButton;
-    itemOptions = {} as any;
+    itemOptions: ItemOptions = {} as any;
     showAllItemsText = this.strings.showAllItems;
 
     isShowMoreText;
@@ -96,7 +96,7 @@ export class SubList implements AfterViewChecked, OnInit
         {
             this.itemOptions.slidingButtons = [this.deleteButton, this.editButton];
         }
-        this.itemOptions.itemSelect = this.getSelectSubformRowFunc();
+        this.itemOptions.click = this.getSelectSubformRowFunc();
         this.subformConfig = this.appService.getFormConfig(this.subform,this.parentForm);
     }
 
@@ -174,7 +174,7 @@ export class SubList implements AfterViewChecked, OnInit
     {
         let editFunc = () =>
         {
-            this.formService.editSubFormRow(this.parentForm, this.subform.name, item.key).then(
+            this.formService.setActiveSubformRow(this.parentForm, this.subform.name, item.key).then(
                 result =>
                 {
                     this.nav.push(DetailsPage, { form: this.subform, rowInd: item.key, isSubform: true, parentForm: this.parentForm });
@@ -190,7 +190,7 @@ export class SubList implements AfterViewChecked, OnInit
             let delFunc = () =>
             {
                 this.messageHandler.showTransLoading();
-                this.formService.deleteSubFormListRow(this.parentForm, this.subform.name, item.key)
+                this.formService.deleteSubformListRow(this.parentForm, this.subform.name, item.key)
                     .then(() => this.messageHandler.hideLoading())
                     .catch(() => this.messageHandler.hideLoading());
             }
@@ -216,7 +216,7 @@ export class SubList implements AfterViewChecked, OnInit
         {
             subformFunc = () =>
             {
-                this.formService.editSubFormRow(this.parentForm, this.subform.name, 1).then(
+                this.formService.setActiveSubformRow(this.parentForm, this.subform.name, 1).then(
                 result =>
                 {
                     this.nav.push(DetailsPage, { form: this.subform, rowInd: 1, isSubform: true, parentForm: this.parentForm });
@@ -268,7 +268,7 @@ export class SubList implements AfterViewChecked, OnInit
         this.fileUploader.uploadFile().then(
             result =>
             {
-                this.formService.addNewSubFormRow(this.parentForm, "EXTFILES").then(
+                this.formService.addSubformRow(this.parentForm, "EXTFILES").then(
                     rowInd =>
                     {
                         this.formService.updateField(this.subform, result.file, "EXTFILENAME").then(

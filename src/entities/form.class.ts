@@ -1,4 +1,4 @@
-import { ColumnOptions } from "priority-ionic";
+import { ColumnsOptions } from "priority-ionic";
 import { DirectActivation } from './direct-activation.class';
 export declare class FormConfig
 {
@@ -6,8 +6,8 @@ export declare class FormConfig
 	subforms: Array<string>
 	parentForm: string;
 	searchColumns: Array<string>;
-	detailsColumnsOptions: { [key: string]: ColumnOptions };
-	listColumnsOptions: { [key: string]: ColumnOptions };
-	pos;
+	detailsColumnsOptions: ColumnsOptions;
+	listColumnsOptions: ColumnsOptions;
+	pos: number;
 	activations: { [key: string]: DirectActivation };
 }

@@ -54,7 +54,7 @@ export class DetailsPage
         this.selectedItem = this.formService.getFormRow(this.form, this.rowInd);
         this.setIsChangesSaved(true);
         this.subforms = [];
-        this.getSubForms();
+        this.getSubforms();
 
         //strings
         this.dirOpposite = this.strings.dirOpposite;
@@ -136,7 +136,7 @@ export class DetailsPage
     // ****************** Subforms ***************************
 
     /** Get subform rows for current item */
-    getSubForms()
+    getSubforms()
     {
         for (var ind in this.formConfig.subforms)
         {
@@ -145,18 +145,25 @@ export class DetailsPage
             subform.name = subformName;
             this.subforms.push(subform);
         }
-        this.messageHandler.showTransLoading();
-        this.formService.getSubForms(this.form, this.formConfig.subforms, this.rowInd).then(
-            () =>
-            {
-                this.messageHandler.hideLoading();
-            },
-            reason => { this.messageHandler.hideLoading(); });
+        if(!this.selectedItem.isNewRow)// don't load subform for a new row
+        {
+            this.messageHandler.showTransLoading();
+            this.formService.getSubforms(this.form, this.formConfig.subforms).then(
+                () =>
+                {
+                    this.messageHandler.hideLoading();
+                },
+                reason => { this.messageHandler.hideLoading(); });
+        }
     }
 
+    /** Clears subform rows of a specific item.*/
     clearSubforms = () =>
     {
-        this.formService.clearSubforms(this.subforms);
+        for (var subform in this.subforms)
+        {
+            this.formService.clearLocalRows(this.subforms[subform]);
+        }
     }
 
     goToSubform(subformFunc)
