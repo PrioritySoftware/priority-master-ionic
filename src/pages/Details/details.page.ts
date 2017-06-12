@@ -316,8 +316,8 @@ export class DetailsPage
      */
     setDirectActivations()
     {
-        this.activations = Object.keys(this.formConfig.activations).map(
-            (key) => 
+        this.activations = Object.keys(this.formConfig.activations)
+        .map((key) => 
             {
                 let activation = this.formConfig.activations[key];
                 let startActivation = () =>

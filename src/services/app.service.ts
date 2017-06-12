@@ -25,22 +25,22 @@ export class AppService
         private formService: FormService,
         private storage: Storage,
         private strings: Strings,
-        private device:Device)
+        private device: Device)
     {
         this.getAppsList().then(
             (apps) =>
             {
-                if(apps)
+                if (apps)
                 {
                     this.appsList = apps;
-            
+
                 }
                 else
                 {
                     this.appsList = [];
                 }
             },
-            () => {});
+            () => { });
     }
 
     // *************************************** JSON ********************************************
@@ -157,7 +157,7 @@ export class AppService
                 {
                     if (request.status === 200)
                     {
-                        this.readJson(request.responseText,jsonUrl).then(
+                        this.readJson(request.responseText, jsonUrl).then(
                             () =>
                             {
                                 resolve();
@@ -232,7 +232,7 @@ export class AppService
                             devicename: this.device.uuid
                         }
                         this.configService.config(config);
-                        this.setApp(json.appdes,jsonUrl);
+                        this.setApp(json.appdes, jsonUrl);
                         try
                         {
                             this.entitiesData = json.forms_data;
@@ -382,11 +382,16 @@ export class AppService
         }
     }
 
-    initProcConfig(parentForms, procedures)
+    initProcConfig(parentForms, procedures:Entity[])
     {
+        //sorts the procedures array so that procedures that have lower position will be first.
+        procedures=procedures.sort((ent1,ent2)=>ent1.pos-ent2.pos);
+
         //loops over all procedures to determine which of them is a direct activation of one of the forms in formsConfig.
         for (let proc of procedures)
         {
+            if (!parentForms[proc.fatname])
+                continue;
             for (let grandParentName of parentForms[proc.fatname])
             {
                 let parentName = proc.fatname + grandParentName;
@@ -423,21 +428,21 @@ export class AppService
         let app;
         for (var ind in this.appsList)
         {
-            if(this.appsList[ind].jsonUrl == jsonUrl)
+            if (this.appsList[ind].jsonUrl == jsonUrl)
             {
                 app = this.appsList[ind];
                 this.appsList[ind].title = appTitle;
             }
         }
-        if(app === undefined)//if this app does not exist in apps list add it to the list
+        if (app === undefined)//if this app does not exist in apps list add it to the list
         {
             app = {
-               title: appTitle,
-               jsonUrl: jsonUrl
-           }
-           this.appsList.push(app);
+                title: appTitle,
+                jsonUrl: jsonUrl
+            }
+            this.appsList.push(app);
         }
-        this.storage.set(LocalStorageAppsListKey,this.appsList);
+        this.storage.set(LocalStorageAppsListKey, this.appsList);
         this.currentApp = app;
     }
 
@@ -454,8 +459,8 @@ export class AppService
     deleteApp(app)
     {
         var index = this.appsList.indexOf(app);
-        this.appsList.splice(index,1);
-        this.storage.set(LocalStorageAppsListKey,this.appsList);
+        this.appsList.splice(index, 1);
+        this.storage.set(LocalStorageAppsListKey, this.appsList);
     }
 
     // ********************************* Login **************************************
