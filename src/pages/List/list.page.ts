@@ -1,5 +1,5 @@
 import { Component, ViewChild } from "@angular/core";
-import { FormService, MessageHandler, ObjToIterable, FileUploader, Form ,ItemOptions} from 'priority-ionic';
+import { FormService, MessageHandler, ObjToIterable, FileUploader, Form, ItemOptions } from 'priority-ionic';
 import { NavController, NavParams } from 'ionic-angular';
 import { DetailsPage } from '../Details/details.page';
 import { FormConfig } from "../../entities/form.class";
@@ -28,7 +28,7 @@ export class ListPage
     isSearching: boolean;
     scrollLoadingText: string;
     infiniteScrollEnabled: boolean;
-    itemOptions:ItemOptions={};
+    itemOptions: ItemOptions = {};
 
     @ViewChild(FileUploader) fileUploader: FileUploader;
 
@@ -39,7 +39,7 @@ export class ListPage
         private navParams: NavParams,
         private elementRef: ElementRef,
         private renderer: Renderer,
-        private strings:Strings)
+        private strings: Strings)
     {
         this.form = this.navParams.data.form;
         this.parentForm = this.navParams.data.parentForm;
@@ -188,7 +188,10 @@ export class ListPage
     {
         return this.form.name == "EXTFILES"
     }
-
+    isQueryForm()
+    {
+        return this.form.isquery == 1;
+    }
 
     //The form could be a subform
     //So we check if it is an 'attachments' subform

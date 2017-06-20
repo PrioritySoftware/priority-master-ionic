@@ -1,12 +1,12 @@
 <!--Sub Form -->
-<ion-toolbar>
+<ion-toolbar (click)="viewExpandList()">
     <ion-label>{{subform.title}}</ion-label>
     <ion-buttons end>
     <!-- *ngIf="isCanAddOrEditSubform()" -->
         <button
             ion-button
             clear 
-            (click)="addNewOrEditSubformFunc()">
+            (click)="addNewOrEditSubformFunc($event)">
             <ion-icon name="{{getAddNewOrEditIcon()}}"></ion-icon>
         </button>
     </ion-buttons>
@@ -26,7 +26,7 @@
     </ion-icon>
 </button>
 <div class="separator" *ngIf="showSeparator()"></div>
-<button ion-item class="text" *ngIf="isText() && getText() != ''" (click)="addNewOrEditSubformFunc()">
+<button ion-item class="text" *ngIf="isText() && getText() != ''" (click)="addNewOrEditSubformFunc($event)">
     <div class="text-inner" #textElement [innerHTML]="getText()"></div>
     <div class="more-icon" *ngIf="isShowMoreText">
         <ion-icon name="md-more"></ion-icon>

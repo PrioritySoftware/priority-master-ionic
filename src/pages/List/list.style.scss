@@ -25,12 +25,12 @@ list-page {
         color: color($colors,gray);
     }
 
-    ion-buttons.add-button button {
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 10px -1px rgba(0, 0, 0, 0.5), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-        width: 50px;
-        height: 50px;
-        font-size: 15px;
-    }
+    // ion-buttons.add-button button {
+    //     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 10px -1px rgba(0, 0, 0, 0.5), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    //     width: 50px;
+    //     height: 50px;
+    //     font-size: 15px;
+    // }
     ion-buttons.add-button {
         height: 50px;
         position: fixed;

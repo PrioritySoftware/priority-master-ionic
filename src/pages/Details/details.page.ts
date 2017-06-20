@@ -8,6 +8,7 @@ import { Search, Form, Column, ButtonOptions } from 'priority-ionic';
 import { FormConfig } from "../../entities/form.class";
 import { AppService } from "../../services/app.service";
 import { DirectActivation } from "../../entities/direct-activation.class";
+import { TextPage } from "../Text/text.page";
 declare var window;
 
 
@@ -138,6 +139,7 @@ export class DetailsPage
     /** Get subform rows for current item */
     getSubforms()
     {
+        this.subforms = [];
         for (var ind in this.formConfig.subforms)
         {
             let subformName = this.formConfig.subforms[ind];
@@ -165,20 +167,42 @@ export class DetailsPage
             this.formService.clearLocalRows(this.subforms[subform]);
         }
     }
-
-    goToSubform(subformFunc)
+    /**
+     * Shows a 'changes-not-saved' alert with a 'dont-ask-me-again' checkbox.
+     * @param {any} continueFunc The function that should be executed after save or after undo.
+     * @memberof DetailsPage
+     */
+    showSaveAndAskAlert(continueFunc)
     {
-        if (!this.getIsChangesSaved())
-            this.messageHandler.showChangesNotSaved(
-                () =>
+        if (this.appService.isNotShowSaveMessage)
+        {
+            this.saveRow(continueFunc);
+        }
+        else
+        {
+            this.messageHandler.showChangesNotSavedAnsAsk(event,
+                (notAskMeAgainValue) =>
                 {
-                    this.saveRow(subformFunc);
+                    this.saveRow(continueFunc);
+                    if (notAskMeAgainValue)
+                    {
+                        this.appService.setLocalUserPreferenceShowSaveMessage(true);
+                    }
                 },
                 () =>
                 {
-                    this.undoRow(true, subformFunc);
-                }
-            );
+                    this.undoRow(true, continueFunc);
+                });
+
+        }
+    }
+
+    goToSubform(subformFunc, event = null)
+    {
+        if (!this.getIsChangesSaved())
+        {
+            this.showSaveAndAskAlert(subformFunc);
+        }
         else if (this.selectedItem.isNewRow)
         {
             this.messageHandler.showToast(this.strings.cannotGoToSubForm, 3000);
@@ -189,14 +213,36 @@ export class DetailsPage
         }
     }
 
-    expandSubformList(subform)
+    expandSubformList(subform: Form)
     {
-        this.formService.startSubform(this.form, subform.name).then(
-            () =>
-            {
-                this.nav.push(ListPage, { form: subform, isSubform: true, parentForm: this.form });
-            },
-            () => { });
+        if (subform === undefined)
+            return;
+        let editFunc = () =>
+        {
+            this.formService.startSubform(this.form, subform.name)
+                .then(subform =>
+                {
+                    if (subform.ishtml == 1)
+                    {
+                        this.formService.getRows(subform, 1).then(
+                            result =>
+                            {
+                                this.nav.push(TextPage, { form: subform, parentForm: this.form });
+                            }, reason => { });
+                    }
+                    else
+                    {
+                        this.nav.push(ListPage, { form: subform, isSubform: true, parentForm: this.form });
+                    }
+                })
+                .catch(reason => { });
+        };
+
+        // check if there are some unsaved changes and show the 'save-changes' alert if there are.
+        if (!this.getIsChangesSaved())
+            this.showSaveAndAskAlert(editFunc);
+        else
+            editFunc();
     }
     sortSubforms = (subform1: FormConfig, subform2: FormConfig) =>
     {
@@ -210,9 +256,6 @@ export class DetailsPage
         }
         return 0;
     }
-
-
-
 
     // ****************** Serch / Choose ***************************
 
@@ -314,6 +357,35 @@ export class DetailsPage
         this.messageHandler.showErrorOrWarning(false, this.strings.isDelete, delFunc);
     }
 
+    /** Refresh current row */
+    refresh()
+    {
+        if (!this.getIsChangesSaved())
+        {
+            this.messageHandler.showChangesNotSaved(
+                () =>
+                {
+                    this.saveRow(() => { this.refresh() });
+                },
+                () =>
+                {
+                    this.undoRow(true, () => { this.refresh() });
+                });
+        }
+        else
+        {
+            this.appService.contactMonitorServer("refreshBtn", this.form.name);
+            this.getSubForms();
+        }
+
+    }
+
+    /** get is query form */
+    isQueryForm()
+    {
+        return this.form.isquery == 1;
+    }
+
     // ****************** Direct Activations ***************************
 
     /**
@@ -324,7 +396,7 @@ export class DetailsPage
     setDirectActivations()
     {
         this.activations = Object.keys(this.formConfig.activations)
-        .map((key) => 
+            .map((key) => 
             {
                 let activation = this.formConfig.activations[key];
                 let startActivation = () =>

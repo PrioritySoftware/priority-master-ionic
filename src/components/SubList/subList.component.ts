@@ -141,6 +141,8 @@ export class SubList implements AfterViewChecked, OnInit
 
     getAddNewOrEditIcon()
     {
+        if(this.subform.isquery == 1)
+            return "";
         if (this.subform.oneline == 1 || (this.isText() && this.getText() != ""))
             return "md-create";
         if (this.isAttachments())
@@ -167,9 +169,10 @@ export class SubList implements AfterViewChecked, OnInit
 
     viewExpandList()
     {
+        this.appService.contactMonitorServer("refreshHeader",this.subform.name);
         this.expandList.emit(this.subform);
     }
-
+    
     editSubFormRow = (item) =>
     {
         let editFunc = () =>
@@ -205,7 +208,7 @@ export class SubList implements AfterViewChecked, OnInit
         return this.editSubFormRow;
     }
 
-    addNewOrEditSubformFunc()
+    addNewOrEditSubformFunc($event = null)
     {
         let subformFunc;
         if (this.isAttachments())
@@ -237,6 +240,10 @@ export class SubList implements AfterViewChecked, OnInit
             }
         };
         this.goToSubform.emit(subformFunc);
+        if ($event)
+        {
+            $event.stopPropagation();
+        }
     }
 
     addNewFunc = () =>

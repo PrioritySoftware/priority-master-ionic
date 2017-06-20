@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
 import { Device } from '@ionic-native/device';
 import { Storage } from '@ionic/storage';
 import { Strings } from "../app/app.config";
@@ -11,21 +12,26 @@ const LocalStorageJsonUrlKey: string = "prijsonurl";
 const LocalStorageAppsListKey: string = "priappslist";
 const LocalStorageUsernameKey: string = "priusername";
 const LocalStoragePasswordKey: string = "pripassword";
+const LocalStorageShowSaveMessageKey: string = "alwaysSave";
+const AppVersion: string = "app_master_2"
 
 
 @Injectable()
 export class AppService
 {
+    userName : string = "";
     appsList: Array<any> = [];
     currentApp: any = {};
     entitiesData: Entity[];
     formsConfig: { [key: string]: FormConfig } = {};
+    isNotShowSaveMessage : boolean = false;
 
     constructor(private configService: ConfigurationService,
         private formService: FormService,
         private storage: Storage,
         private strings: Strings,
-        private device: Device)
+        private device:Device,
+        private http: Http)
     {
         this.getAppsList().then(
             (apps) =>
@@ -41,6 +47,13 @@ export class AppService
                 }
             },
             () => { });
+        this.getLocalUserPreferenceShowSaveMessage().then(
+            (showSaveMessage) =>
+            {
+                if(showSaveMessage)
+                    this.isNotShowSaveMessage = true;
+            },
+            () => {});
     }
 
     // *************************************** JSON ********************************************
@@ -53,18 +66,17 @@ export class AppService
             this.loadJson(jsonUrl).then(
                 () =>
                 {
-                    let username = "";
                     this.getLocalUsername()
-                        .then(userName =>
+                        .then(username =>
                         {
-                            username = userName;
+                            this.userName = username;
                             return this.getLocalPassword();
                         })
                         .then(password =>
                         {
-                            if (username != null && password != null)
+                            if (this.userName != null && password != null)
                             {
-                                this.configService.logIn(username, password).then(
+                                this.configService.logIn(this.userName, password).then(
                                     () =>
                                     {
                                         resolve(true);
@@ -480,6 +492,7 @@ export class AppService
     {
         this.storage.remove(LocalStorageUsernameKey);
         this.storage.remove(LocalStoragePasswordKey);
+        this.userName = "";
     }
 
     logIn(username, password): Promise<any>
@@ -492,6 +505,7 @@ export class AppService
                     //save username and password in local storage
                     this.storage.set(LocalStorageUsernameKey, username).then(() =>
                     {
+                        this.userName = username;
                         return this.storage.set(LocalStoragePasswordKey, password);
                     })
                         .then(() => resolve());
@@ -502,5 +516,35 @@ export class AppService
                 });
         });
     }
+
+    getLocalUserPreferenceShowSaveMessage()
+    {
+        return this.storage.get(LocalStorageShowSaveMessageKey);
+    }
+
+    setLocalUserPreferenceShowSaveMessage(value : boolean)
+    {
+        this.isNotShowSaveMessage = value;
+        this.storage.set(LocalStorageShowSaveMessageKey,value);
+    }
+
+    /*  Monitor server */
+    contactMonitorServer(action : string, form : string)
+    {
+        let url : string = "https://monitor.priority-software.com/monitor/b.aspx"
+                            + "?u=" + encodeURI(this.userName)
+                            + "&t=" + encodeURI(action)
+                            + "&f=" + encodeURI(form)
+                            + "&d=" + ""
+                            + "&e=" + ""
+                            + "&f=" + ""
+                            + "&c=" + ""
+                            + "&s=" + ""
+                            + "&m=" + ""
+                            + "&v=" + encodeURI(AppVersion);
+
+        this.http.get(encodeURI(url)).subscribe();
+    }
+
 
 }

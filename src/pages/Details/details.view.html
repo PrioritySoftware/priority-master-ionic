@@ -7,11 +7,14 @@
       </button>
     </ion-buttons>
     <ion-buttons end>
-      <button ion-button icon-only (click)="saveRow()" style="margin: auto 11px">
+      <button ion-button icon-only *ngIf="!isQueryForm()" (click)="saveRow()">
           <ion-icon name="checkmark"></ion-icon>
       </button>
-       <button ion-button icon-only *ngIf="!selectedItem.isNewRow" (click)="deleteRow()">
+      <button ion-button icon-only *ngIf="!selectedItem.isNewRow && !isQueryForm()" (click)="deleteRow()">
          <ion-icon name="trash"></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="refresh()">
+         <ion-icon name="refresh"></ion-icon>
       </button>
       <button ion-button icon-only *ngIf="!selectedItem.isNewRow" (click)="openDirectActivationsMenu($event)" class="more-button">
          <ion-icon name="md-more"></ion-icon>

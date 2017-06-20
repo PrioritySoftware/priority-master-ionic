@@ -1,4 +1,5 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { HttpModule } from '@angular/http';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { Storage, IonicStorageModule } from '@ionic/storage';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
@@ -41,6 +42,7 @@ import { PriorityIonicModule } from 'priority-ionic';
     AppsPage
   ],
   imports: [
+    HttpModule,
     IonicModule.forRoot(AppComponent),
     IonicStorageModule.forRoot(),
     PriorityIonicModule

@@ -63,7 +63,6 @@ export class AppComponent
       }
     });
   }
-
   /**Called from Priority API when all its files are ready.
    * Sets the language and the rootPage.
    */
@@ -142,6 +141,16 @@ export class AppComponent
         // });
       });
   }
+  
+  getAppName = () =>
+  {
+    return this.appService.currentApp.title 
+  }
+
+  getUserName = () =>
+  {
+    return this.appService.userName;
+  }
 
   logout = () =>
   {
@@ -153,6 +162,11 @@ export class AppComponent
   {
     this.appService.clearCurrentApp();
     this.nav.setRoot(AppsPage, {}, { animate: true, direction: 'forward' });
+  }
+
+  OpenDocument = (url : string) =>
+  {
+    window.open(encodeURI(url), "_blank");
   }
 
 

@@ -80,12 +80,32 @@ ion-header,.header-ios,.header-md {
 }
 
 ion-menu {
+
+    .toolbar {
+      min-height: 80px;
+    }
+
+    .button-inner {
+        text-transform: none;
+    }
+
     &[dir="rtl"] {
         .menu-inner {
             right: 0;
             left: auto;
         }
+
+        .user-name {
+            float: left;
+        }
     }
+
+    &[dir="ltr"] {
+        .user-name {
+            float: right;
+        }
+    }   
+
     ion-item[dir="rtl"] {
         padding-right: 16px;
         padding-left: 0;
@@ -159,6 +179,12 @@ body{
   border-left: 0.55px solid #dbdbdf;
   border-right: none;
 }
+
+.disabled{
+    .button-inner{
+        color: gray;
+    }
+  }
 
 .action-sheet-icon {
     .rtl & {

@@ -19,6 +19,10 @@ export class Strings
     logout: string;
     switchApp: string;
     newApp: string;
+    terms: string;
+    termsURL: string = "http://example.co.il";
+    policy: string = "Privacy policy";
+    policyURL: string = "http://example.co.il";
 
     /** Text */
     wait: string;
@@ -105,6 +109,7 @@ export class Strings
         this.logout = "התנתק";
         this.switchApp = "החלף יישומון";
         this.newApp = "הוסף יישומון";
+        this.terms = "תנאי שימוש";
 
         this.usrTitle = "שם משתמש";
         this.pswTitle = "סיסמא";
@@ -114,7 +119,7 @@ export class Strings
         this.warningTitle = "אזהרה";
         this.errorTitle = "שגיאה";
         this.changesSavedText = "הנתונים נשמרו בהצלחה!";
-        this.changesNotSavedText = "ישם שינויים שלא נשמרו. להמשיך?";
+        this.changesNotSavedText = "ישנם שינויים שלא נשמרו. להמשיך?";
         this.cannotGoToSubForm = "לא ניתן לבצע את הפעולה.אנא הכנס נתונים תחילה.";
         this.saveBeforeAttach = "ישנם שינויים שלא נשמרו. אנא שמור את הדיווח לפני צרוף נספחים.";
         this.loadData = "טוען נתונים...";
@@ -188,6 +193,7 @@ export class Strings
         this.logout = "Logout";
         this.switchApp = "Switch app";
         this.newApp = "New app";
+        this.terms = "Terms of use";
 
         this.usrTitle = "User name";
         this.pswTitle = "Password";
