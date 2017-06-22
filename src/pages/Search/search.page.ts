@@ -1,17 +1,18 @@
 import { Component } from "@angular/core";
-import { FormService, SearchResult } from 'priority-ionic';
+import { FormService, SearchResult, SearchAction, Form } from 'priority-ionic';
 import { ViewChild } from '@angular/core';;
 import { NavController, NavParams } from 'ionic-angular';
 import { Strings } from '../../app/app.config';
+import { AppService } from '../../services/app.service';
 
 @Component({
     templateUrl: 'search.view.html'
 })
 
-
 export class SearchPage
 {
     isShowWaitingDots: boolean;
+    isScrollEnabled: boolean;
     searchResults: SearchResult[] = null;
     chooseHeader1: string;
     chooseHeader2: string;
@@ -19,16 +20,18 @@ export class SearchPage
     fieldVal: string;
     title: string;
     placeholder: string;
-    form;
+    form: Form;
+    rowInd;
 
     dirByLang: string;
 
     @ViewChild('searchbar') searchBar;
 
-    constructor(private formService: FormService, 
-                private nav: NavController, 
-                private navParams: NavParams,
-                private strings:Strings)
+    constructor(private formService: FormService,
+        private nav: NavController,
+        private navParams: NavParams,
+        private strings: Strings,
+        private appService: AppService)
     {
         this.isSearch = false;
         this.isShowWaitingDots = false;
@@ -44,6 +47,8 @@ export class SearchPage
         this.fieldVal = this.navParams.data.value;
         this.title = this.navParams.data.column.title;
         this.form = this.navParams.data.form;
+        this.rowInd = this.navParams.data.rowInd;
+        this.isScrollEnabled = true;
     }
     ionViewDidEnter()
     {
@@ -84,15 +89,22 @@ export class SearchPage
                 this.isShowWaitingDots = false;
             });
     }
-    updateField(val, colName)
+    updateField(val, colName, isUpdateAfterError = true)
     {
-
-        this.formService.updateField(this.form, val, colName).then(
+        this.formService.updateField(this.form, this.rowInd, colName, val).then(
             result =>
             {
                 this.nav.pop();
 
-            }, reason => { });
+            }, reason =>
+            {
+                let colName = this.navParams.data.column.key;
+                this.formService.getFormRow(this.form, this.rowInd)[colName] = this.fieldVal;
+                if (isUpdateAfterError)
+                {
+                    this.updateField(this.fieldVal, colName, false);
+                }
+            });
     }
     selectItem(item)
     {
@@ -103,6 +115,29 @@ export class SearchPage
         else
             this.nav.pop();
 
+    }
+    doInfinite(infiniteScroll)
+    {
+        this.formService.search(this.form, this.fieldVal, SearchAction.Next)
+            .then((results: SearchResult[]) =>
+            {
+                if (results != null && results.length > 0)
+                {
+                    let slice = this.searchResults.slice(0, this.searchResults.length - 1);
+                    this.searchResults = slice.concat(results);
+                }
+                if (results != null && results.length < this.appService.RowsBatchSize)
+                {
+                    this.isScrollEnabled = false;
+                }
+
+                infiniteScroll.complete();
+
+            })
+            .catch(reason =>
+            {
+                infiniteScroll.complete();
+            });
     }
     leavePage = () =>
     {

@@ -7,7 +7,6 @@ import { AppService } from "../../services/app.service";
 import { Strings } from '../../app/app.config';
 import { ElementRef, Renderer } from '@angular/core';
 
-const RowsBatchSize = 115;
 
 @Component({
     selector: "list-page",
@@ -50,7 +49,7 @@ export class ListPage
         this.dirByLang = this.strings.dirByLang;
         this.searchPlaceholder = this.strings.search;
         this.scrollLoadingText = this.strings.scrollLoadingText;
-        this.infiniteScrollEnabled = Object.keys(this.form.rows).length == RowsBatchSize;
+        this.infiniteScrollEnabled = Object.keys(this.form.rows).length == this.appService.RowsBatchSize;
         this.listeners = new Array();
 
         let buttonsSideByLang = this.dirByLang == 'rtl' ? 'left' : 'right';
@@ -126,11 +125,8 @@ export class ListPage
 
     editRow = (item) => 
     {
-        this.formService.setActiveRow(this.form, item.key).then(
-            result =>
-            {
-                this.nav.push(DetailsPage, { form: this.form, rowInd: item.key, parentForm: this.parentForm });
-            }, reason => { });
+        this.nav.push(DetailsPage, { form: this.form, rowInd: item.key, parentForm: this.parentForm });
+        this.formService.setActiveRow(this.form, item.key).then(result => { }, reason => { });
     }
 
     deleteRow = (item) =>
@@ -236,7 +232,7 @@ export class ListPage
                 this.formService.newRow(this.form).then(
                     rowInd =>
                     {
-                        this.formService.updateField(this.form, result.file, "EXTFILENAME").then(
+                        this.formService.updateField(this.form, rowInd, "EXTFILENAME", result.file).then(
                             () =>
                             {
                                 this.formService.saveRow(this.form, rowInd, 0);
@@ -261,7 +257,7 @@ export class ListPage
             rows =>
             {
                 //enable infinite scroll when there are no more rows
-                if (Object.keys(rows).length != RowsBatchSize)
+                if (Object.keys(rows).length != this.appService.RowsBatchSize)
                 {
                     this.infiniteScrollEnabled = false;
                 }

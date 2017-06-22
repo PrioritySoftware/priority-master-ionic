@@ -157,6 +157,18 @@ file-uploader {
   height: 35px;
   margin: 0 4px;
 }
+ .waiting-spinner 
+  {
+      position: relative;
+      ion-spinner
+      {
+        position: static;
+      }
+  }
+[dir="rtl"] ion-spinner svg
+{
+    right: auto;
+}
 body{
     margin:0 !important;
 }

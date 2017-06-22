@@ -28,9 +28,9 @@ export class AppComponent
     private appService: AppService,
     private messageHandler: MessageHandler,
     private strings: Strings,
-    private statusBar:StatusBar,
-    private globalization:Globalization,
-    private splashScreen:SplashScreen)
+    private statusBar: StatusBar,
+    private globalization: Globalization,
+    private splashScreen: SplashScreen)
   {
     window['priorityReady'] = this.priorityReady;
     this.dirByLang = "";
@@ -46,11 +46,13 @@ export class AppComponent
         {
           if (language.value.startsWith('iw') || language.value.startsWith('he'))
           {
+            this.strings.deviceLang = "rtl";
             this.strings.setFirstRtlConstants();
             Constants.setRtlTranslations();
           }
           else
           {
+            this.strings.deviceLang = "ltr";
             this.strings.setFirstLtrConstants();
             Constants.setLtrTranslations();
           }
@@ -58,6 +60,7 @@ export class AppComponent
       }
       else
       {
+        this.strings.deviceLang = "ltr";
         this.strings.setFirstLtrConstants();
         Constants.setLtrTranslations();
       }

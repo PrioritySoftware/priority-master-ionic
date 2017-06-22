@@ -19,18 +19,19 @@ const AppVersion: string = "app_master_2"
 @Injectable()
 export class AppService
 {
-    userName : string = "";
+    userName: string = "";
     appsList: Array<any> = [];
     currentApp: any = {};
     entitiesData: Entity[];
     formsConfig: { [key: string]: FormConfig } = {};
-    isNotShowSaveMessage : boolean = false;
+    isNotShowSaveMessage: boolean = false;
+    RowsBatchSize: number = 115;
 
     constructor(private configService: ConfigurationService,
         private formService: FormService,
         private storage: Storage,
         private strings: Strings,
-        private device:Device,
+        private device: Device,
         private http: Http)
     {
         this.getAppsList().then(
@@ -50,10 +51,10 @@ export class AppService
         this.getLocalUserPreferenceShowSaveMessage().then(
             (showSaveMessage) =>
             {
-                if(showSaveMessage)
+                if (showSaveMessage)
                     this.isNotShowSaveMessage = true;
             },
-            () => {});
+            () => { });
     }
 
     // *************************************** JSON ********************************************
@@ -394,10 +395,10 @@ export class AppService
         }
     }
 
-    initProcConfig(parentForms, procedures:Entity[])
+    initProcConfig(parentForms, procedures: Entity[])
     {
         //sorts the procedures array so that procedures that have lower position will be first.
-        procedures=procedures.sort((ent1,ent2)=>ent1.pos-ent2.pos);
+        procedures = procedures.sort((ent1, ent2) => ent1.pos - ent2.pos);
 
         //loops over all procedures to determine which of them is a direct activation of one of the forms in formsConfig.
         for (let proc of procedures)
@@ -522,26 +523,26 @@ export class AppService
         return this.storage.get(LocalStorageShowSaveMessageKey);
     }
 
-    setLocalUserPreferenceShowSaveMessage(value : boolean)
+    setLocalUserPreferenceShowSaveMessage(value: boolean)
     {
         this.isNotShowSaveMessage = value;
-        this.storage.set(LocalStorageShowSaveMessageKey,value);
+        this.storage.set(LocalStorageShowSaveMessageKey, value);
     }
 
     /*  Monitor server */
-    contactMonitorServer(action : string, form : string)
+    contactMonitorServer(action: string, form: string)
     {
-        let url : string = "https://monitor.priority-software.com/monitor/b.aspx"
-                            + "?u=" + encodeURI(this.userName)
-                            + "&t=" + encodeURI(action)
-                            + "&f=" + encodeURI(form)
-                            + "&d=" + ""
-                            + "&e=" + ""
-                            + "&f=" + ""
-                            + "&c=" + ""
-                            + "&s=" + ""
-                            + "&m=" + ""
-                            + "&v=" + encodeURI(AppVersion);
+        let url: string = "https://monitor.priority-software.com/monitor/b.aspx"
+            + "?u=" + encodeURI(this.userName)
+            + "&t=" + encodeURI(action)
+            + "&f=" + encodeURI(form)
+            + "&d=" + ""
+            + "&e=" + ""
+            + "&f=" + ""
+            + "&c=" + ""
+            + "&s=" + ""
+            + "&m=" + ""
+            + "&v=" + encodeURI(AppVersion);
 
         this.http.get(encodeURI(url)).subscribe();
     }

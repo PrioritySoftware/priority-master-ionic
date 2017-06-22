@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, AfterViewChecked, ChangeDetectorRef, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { FormService, MessageHandler, FileUploader,Form, ItemOptions} from 'priority-ionic';
+import { FormService, MessageHandler, FileUploader, Form, ItemOptions } from 'priority-ionic';
 import { Strings } from '../../app/app.config';
 import { ObjToIterable } from "priority-ionic";
 import { TextPage } from "../../pages/Text/text.page";
@@ -22,14 +22,14 @@ export class SubList implements AfterViewChecked, OnInit
     editButton;
     openButton;
     deleteButton;
-    itemOptions: ItemOptions = {} as any;
+    itemOptions: ItemOptions = {};
     showAllItemsText = this.strings.showAllItems;
 
     isShowMoreText;
 
     subformConfig: FormConfig;
     @Input('ParentForm') parentForm: Form;
-    @Input('Subform') subform : Form
+    @Input('Subform') subform: Form
 
     @Output() expandList = new EventEmitter<Form>();
 
@@ -39,13 +39,12 @@ export class SubList implements AfterViewChecked, OnInit
     @ViewChild('textElement') textElement: ElementRef;
 
 
-    constructor(private nav: NavController, 
-                private formService: FormService, 
-                private messageHandler: MessageHandler, 
-                private cdRef: ChangeDetectorRef,
-                private strings:Strings,
-                private appService:AppService)
-
+    constructor(private nav: NavController,
+        private formService: FormService,
+        private messageHandler: MessageHandler,
+        private cdRef: ChangeDetectorRef,
+        private strings: Strings,
+        private appService: AppService)
     {
         this.iterablePipe = new ObjToIterable();
         this.editButton = {
@@ -79,7 +78,7 @@ export class SubList implements AfterViewChecked, OnInit
     {
         let show = this.showMoreText();
         if (show != this.isShowMoreText)
-        { 
+        {
             // check if it change, tell CD to update view
             this.isShowMoreText = show;
             this.cdRef.detectChanges();
@@ -97,7 +96,7 @@ export class SubList implements AfterViewChecked, OnInit
             this.itemOptions.slidingButtons = [this.deleteButton, this.editButton];
         }
         this.itemOptions.click = this.getSelectSubformRowFunc();
-        this.subformConfig = this.appService.getFormConfig(this.subform,this.parentForm);
+        this.subformConfig = this.appService.getFormConfig(this.subform, this.parentForm);
     }
 
     //return if to show the '...' in textforms
@@ -132,7 +131,7 @@ export class SubList implements AfterViewChecked, OnInit
     getRows()
     {
         let items = this.iterablePipe.transform(this.subform.rows);
-        if(items)
+        if (items)
         {
             return items.slice(0, 5);
         }
@@ -141,7 +140,7 @@ export class SubList implements AfterViewChecked, OnInit
 
     getAddNewOrEditIcon()
     {
-        if(this.subform.isquery == 1)
+        if (this.subform.isquery == 1)
             return "";
         if (this.subform.oneline == 1 || (this.isText() && this.getText() != ""))
             return "md-create";
@@ -169,10 +168,10 @@ export class SubList implements AfterViewChecked, OnInit
 
     viewExpandList()
     {
-        this.appService.contactMonitorServer("refreshHeader",this.subform.name);
+        this.appService.contactMonitorServer("refreshHeader", this.subform.name);
         this.expandList.emit(this.subform);
     }
-    
+
     editSubFormRow = (item) =>
     {
         let editFunc = () =>
@@ -215,15 +214,15 @@ export class SubList implements AfterViewChecked, OnInit
         {
             subformFunc = this.newRowUpload;
         }
-        else if(this.subform.oneline == 1 && Object.keys(this.subform.rows).length == 1)
+        else if (this.subform.oneline == 1 && Object.keys(this.subform.rows).length == 1)
         {
             subformFunc = () =>
             {
                 this.formService.setActiveSubformRow(this.parentForm, this.subform.name, 1).then(
-                result =>
-                {
-                    this.nav.push(DetailsPage, { form: this.subform, rowInd: 1, isSubform: true, parentForm: this.parentForm });
-                });
+                    result =>
+                    {
+                        this.nav.push(DetailsPage, { form: this.subform, rowInd: 1, isSubform: true, parentForm: this.parentForm });
+                    });
             };
         }
         else
@@ -272,25 +271,35 @@ export class SubList implements AfterViewChecked, OnInit
     /** upload a file in an EXTFILES subform */
     newRowUpload = () =>
     {
-        this.fileUploader.uploadFile().then(
-            result =>
+        let result;
+        this.fileUploader.uploadFile()
+            .then(uploadResult =>
             {
-                this.formService.addSubformRow(this.parentForm, "EXTFILES").then(
-                    rowInd =>
+                result = uploadResult;
+                return this.formService.addSubformRow(this.parentForm, "EXTFILES");
+            })
+            .then(rowInd =>
+            {
+                this.formService.updateField(this.subform, rowInd, "EXTFILENAME", result.file )
+                    .then(() =>
                     {
-                        this.formService.updateField(this.subform, result.file, "EXTFILENAME").then(
+                        this.cdRef.detectChanges();
+                        this.formService.saveRow(this.subform, rowInd, 0).then(
                             () =>
                             {
-                                this.cdRef.detectChanges();
-                                this.formService.saveRow(this.subform, rowInd, 0).then(
-                                    () =>
-                                    {
-                                        this.formService.endForm(this.subform);
-                                    });
-                            });
-                    });
+                                this.formService.endForm(this.subform);
+                            },
+                            () =>
+                            {
+                                this.formService.undoRow(this.subform).then(()=>this.formService.endForm(this.subform));
+                            })
+                    },
+                    () =>
+                    {
+                        this.formService.undoRow(this.subform).then(()=>this.formService.endForm(this.subform));
+                    }).catch(reason => { });;
             })
-            .catch(reason =>{});
+            .catch(reason => { });
     }
 
     openAttachRow = (item) =>

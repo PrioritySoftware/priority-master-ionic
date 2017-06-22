@@ -30,7 +30,6 @@ export class DetailsPage
 
     isSubform: boolean;
     isShowWaitingDots: boolean;
-    isLeaveWithoutCheckchanges: boolean;
     isLeave = true;
 
     dirByLang: string;
@@ -147,7 +146,7 @@ export class DetailsPage
             subform.name = subformName;
             this.subforms.push(subform);
         }
-        if(!this.selectedItem.isNewRow)// don't load subform for a new row
+        if (!this.selectedItem.isNewRow)// don't load subform for a new row
         {
             this.messageHandler.showTransLoading();
             this.formService.getSubforms(this.form, this.formConfig.subforms).then(
@@ -155,7 +154,10 @@ export class DetailsPage
                 {
                     this.messageHandler.hideLoading();
                 },
-                reason => { this.messageHandler.hideLoading(); });
+                reason =>
+                {
+                    this.messageHandler.hideLoading();
+                });
         }
     }
 
@@ -266,7 +268,6 @@ export class DetailsPage
         this.formService.openSearchOrChoose(this.form, column.key, value).then(
             (res: Search) =>
             {
-                this.isLeaveWithoutCheckchanges = true;
                 let searchResults = res.SearchLine == null ? res.ChooseLine : res.SearchLine;
                 if (searchResults != null && Object.keys(searchResults).length > 0)
                 {
@@ -276,7 +277,8 @@ export class DetailsPage
                             searchObj: res,
                             column: column,
                             value: value,
-                            form: this.form
+                            form: this.form,
+                            rowInd: this.rowInd
                         }
                     );
                 }
@@ -375,7 +377,7 @@ export class DetailsPage
         else
         {
             this.appService.contactMonitorServer("refreshBtn", this.form.name);
-            this.getSubForms();
+            this.getSubforms();
         }
 
     }

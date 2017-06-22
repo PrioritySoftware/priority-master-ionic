@@ -1,7 +1,8 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { IonicApp, IonicModule } from 'ionic-angular';
-import { Storage, IonicStorageModule } from '@ionic/storage';
+import { BrowserModule } from '@angular/platform-browser';
+import {  IonicStorageModule } from '@ionic/storage';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Camera } from '@ionic-native/camera';
 import { Device } from '@ionic-native/device';
@@ -43,6 +44,7 @@ import { PriorityIonicModule } from 'priority-ionic';
   ],
   imports: [
     HttpModule,
+    BrowserModule,
     IonicModule.forRoot(AppComponent),
     IonicStorageModule.forRoot(),
     PriorityIonicModule

@@ -5,7 +5,6 @@ import { NavController, NavParams } from 'ionic-angular';
 import { MainPage } from "../Main/main.page";
 import { Strings } from '../../app/app.config';
 import { MessageHandler } from 'priority-ionic';
-import { AppsPage } from '../Apps/apps.page';
 
 @Component({
     selector: 'login-page',

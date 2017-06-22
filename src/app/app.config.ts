@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class Strings
 {
-    lang: string;
+    deviceLang:string;
 
     /** First Launch */
     scanInstructions: string;
@@ -20,9 +20,9 @@ export class Strings
     switchApp: string;
     newApp: string;
     terms: string;
-    termsURL: string = "http://example.co.il";
+    termsURL: string = "https://s3.priority-software.com/terms/master_privacy_policy.pdf";
     policy: string = "Privacy policy";
-    policyURL: string = "http://example.co.il";
+    policyURL: string = "https://s3.priority-software.com/terms/master_privacy_policy.pdf";
 
     /** Text */
     wait: string;
@@ -47,8 +47,8 @@ export class Strings
     scrollLoadingText: string;
     cameraError: string;
     directActivationsTitle: string;
-
     noDirectActivations: string;
+    loadingSearchResults:string;
 
 
     /**Buttons text */
@@ -128,11 +128,12 @@ export class Strings
         this.isExitApp = "האם אתה בטוח שברצונך לצאת מהמערכת?";
         this.maxLengthForField = 'מספר התוים המקסימלי עבור השדה הוא: ';
         this.search = "חפש";
-        this.scrollLoadingText = "טוען רשומות...";
+        this.scrollLoadingText = "טוען רשומות";
         this.cameraError = "פתיחת מצלמה נכשלה";
         this.showAllItems = "הצג את כל הרשומות";
         this.directActivationsTitle = "הפעלות ישירות";
         this.noDirectActivations = "לא נבחרו הפעלות";
+        this.loadingSearchResults="טוען נתונים נוספים";
 
         this.loginBtn = "היכנס";
         this.loginHeader = "כניסה למערכת";
@@ -214,11 +215,12 @@ export class Strings
         this.maxLengthForField = 'Maximum length for this field is: ';
         this.search = " Search";
         this.searchError = "No search fields defined"
-        this.scrollLoadingText = "Loading more data...";
+        this.scrollLoadingText = "Loading more data";
         this.cameraError = "Failed to open camera";
         this.showAllItems = "Show all items";
         this.directActivationsTitle = "Direct Activations";
         this.noDirectActivations = "No activations were chosen";
+        this.loadingSearchResults="Loading more data";
 
         this.loginBtn = "Login";
         this.loginHeader = "";

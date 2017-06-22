@@ -15,7 +15,7 @@
 			   *ngIf="isSearch"
 			   dir="{{dirByLang}}"
 			   #searchbar></ion-searchbar>
-	<div id="waitingSpinner" class="waitingSpinner_search" *ngIf="isShowWaitingDots">
+	<div class="waiting-spinner" *ngIf="isShowWaitingDots">
 		<ion-spinner name="dots"></ion-spinner>
 	</div>
 	<ion-list id="searchGrid" dir="{{dirByLang}}">
@@ -34,4 +34,7 @@
 
 		</ion-item>
 	</ion-list>
+	  <ion-infinite-scroll [enabled]="isScrollEnabled" (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content dir={{dirByLang}} loadingSpinner="dots" loadingText="{{strings.loadingSearchResults}}"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
