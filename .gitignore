@@ -30,7 +30,7 @@ www/
 $RECYCLE.BIN/
 src/assets/gwt-unitCache/
 src/assets/js/priorityapp
-
+my-release-key.jks
 
 .DS_Store
 Thumbs.db
