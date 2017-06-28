@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
+import { Platform } from 'ionic-angular';
 
 @Injectable()
 export class Strings
 {
-    deviceLang:string;
+    deviceLang: string;
 
     /** First Launch */
     scanInstructions: string;
@@ -20,9 +21,9 @@ export class Strings
     switchApp: string;
     newApp: string;
     terms: string;
-    termsURL: string = "https://s3.priority-software.com/terms/master_privacy_policy.pdf";
-    policy: string = "Privacy policy";
-    policyURL: string = "https://s3.priority-software.com/terms/master_privacy_policy.pdf";
+    termsURL: string;
+    policy: string;
+    policyURL: string;
 
     /** Text */
     wait: string;
@@ -48,7 +49,7 @@ export class Strings
     cameraError: string;
     directActivationsTitle: string;
     noDirectActivations: string;
-    loadingSearchResults:string;
+    loadingSearchResults: string;
 
 
     /**Buttons text */
@@ -84,6 +85,16 @@ export class Strings
     numberValidErr: string;
     lengthValidErr: string;
 
+    constructor(platform: Platform)
+    {
+
+        this.policy = "Privacy policy";
+        this.policyURL = "https://s3.priority-software.com/terms/master_privacy_policy.pdf";
+        if (platform.is("ios"))
+            this.termsURL = "https://s3.priority-software.com/terms/master_termsofuse_appstore.pdf";
+        else
+            this.termsURL = "https://s3.priority-software.com/terms/master_termsofuse_googleplay.pdf";
+    }
     setFirstRtlConstants()
     {
         this.scanInstructions = "סרוק את הקוד QR כדי להתחיל";
@@ -133,7 +144,7 @@ export class Strings
         this.showAllItems = "הצג את כל הרשומות";
         this.directActivationsTitle = "הפעלות ישירות";
         this.noDirectActivations = "לא נבחרו הפעלות";
-        this.loadingSearchResults="טוען נתונים נוספים";
+        this.loadingSearchResults = "טוען נתונים נוספים";
 
         this.loginBtn = "היכנס";
         this.loginHeader = "כניסה למערכת";
@@ -220,7 +231,7 @@ export class Strings
         this.showAllItems = "Show all items";
         this.directActivationsTitle = "Direct Activations";
         this.noDirectActivations = "No activations were chosen";
-        this.loadingSearchResults="Loading more data";
+        this.loadingSearchResults = "Loading more data";
 
         this.loginBtn = "Login";
         this.loginHeader = "";

@@ -1434,7 +1434,7 @@
           "tabview": 1,
           "lineview": 1,
           "titlefield": 0,
-          "searchfield": 0,
+          "searchfield": 1,
           "special": "",
           "iskey": 0
         },

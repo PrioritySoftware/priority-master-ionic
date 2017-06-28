@@ -94,17 +94,18 @@ ion-menu {
             right: 0;
             left: auto;
         }
+    }
 
-        .user-name {
-            float: left;
+    .toolbar-title-md {
+        font-size: 1.8rem;
+    }
+    .user-name {
+        .toolbar-title-md {
+            font-size: 1.3rem;
+            margin-top: 3px;
         }
     }
 
-    &[dir="ltr"] {
-        .user-name {
-            float: right;
-        }
-    }   
 
     ion-item[dir="rtl"] {
         padding-right: 16px;
@@ -159,11 +160,10 @@ file-uploader {
 }
  .waiting-spinner 
   {
-      position: relative;
-      ion-spinner
-      {
-        position: static;
-      }
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    margin-left: -21px;
   }
 [dir="rtl"] ion-spinner svg
 {

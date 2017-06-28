@@ -15,7 +15,7 @@
 			   *ngIf="isSearch"
 			   dir="{{dirByLang}}"
 			   #searchbar></ion-searchbar>
-	<div class="waiting-spinner" *ngIf="isShowWaitingDots">
+	<div class="waiting-spinner search-spinner" *ngIf="isShowWaitingDots">
 		<ion-spinner name="dots"></ion-spinner>
 	</div>
 	<ion-list id="searchGrid" dir="{{dirByLang}}">
