@@ -169,7 +169,7 @@ export class AppComponent
 
   OpenDocument = (url : string) =>
   {
-    window.open(encodeURI(url), "_blank");
+    window.open(encodeURI(url), "_system");
   }
 
 

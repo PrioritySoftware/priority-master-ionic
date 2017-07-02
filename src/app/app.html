@@ -3,10 +3,10 @@
             side="right"
             *ngIf="strings.sideByLang==='right'"
             dir="{{strings.dirByLang}}">
-    <ion-header dir="{{strings.dirByLang}}">
-        <ion-toolbar color="dark">
-            <ion-title> {{getAppName()}} </ion-title>
-            <ion-title class="user-name"> {{getUserName()}} </ion-title>
+    <ion-header dir="{{strings.dirByLang}}"  mode="md">
+        <ion-toolbar color="dark"  mode="md">
+            <ion-title  mode="md"> {{getAppName()}} </ion-title>
+            <ion-title  mode="md" class="user-name"> {{getUserName()}} </ion-title>
         </ion-toolbar>
     </ion-header>
     <ion-content>

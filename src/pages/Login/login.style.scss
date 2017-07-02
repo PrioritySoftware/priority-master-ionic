@@ -1,7 +1,7 @@
 login-page{
 
   .toolbar-md, .toolbar-ios {
-    min-height: 180px;
+    min-height: 180px !important;
     .toolbar-background {
         background-color: rgba(31,155,209,0.99);
         background: -webkit-linear-gradient(-45deg, rgba(31,155,209,0.99) 0%, rgba(31,155,209,1) 0%, rgba(31,155,209,1) 46%, rgba(24,120,158,1) 100%);
@@ -34,9 +34,9 @@ login-page{
         }
 
   .login-content {
-    margin: 20px auto;
+    margin: auto;
     width:  70%;
-
+   
     ion-list-header {
 
       margin-top: 13px;
