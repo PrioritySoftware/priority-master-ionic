@@ -149,6 +149,16 @@ ion-menu {
         }
     }
 }
+.ios
+    {
+        .user-name, .app-name
+        {
+          padding-top: 0px !important;
+          height: auto !important;
+          min-height: auto!important;
+          margin-bottom:5px;
+        }
+    }
 
 file-uploader {
     display: none;
