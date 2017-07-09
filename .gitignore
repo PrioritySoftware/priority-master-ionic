@@ -29,7 +29,8 @@ plugins/ios.json
 www/
 $RECYCLE.BIN/
 src/assets/gwt-unitCache/
-src/assets/js/priorityapp
+src/assets/js
+ionic.config.json
 *.jks
 
 .DS_Store

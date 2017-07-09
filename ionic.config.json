@@ -6,20 +6,8 @@
   "proxies": [
     {
       "path": "/wcf",
-      "proxyUrl": "https://dev.eshbel.com/wcf",
+      "proxyUrl": "url/to/your/wcf",
       "rejectUnauthorized": false
-    },
-    {
-      "path": "/PriorityMobileApp",
-      "proxyUrl": "https://dev.eshbel.com/PriorityMobileApp"
-    },
-    {
-      "path": "/odata",
-      "proxyUrl": "https://dev.eshbel.com/odata"
-    },
-    {
-      "path": "/upgrades",
-      "proxyUrl": "https://cdn.priority-software.com/upgrades"
     }
   ]
 }
