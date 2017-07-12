@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { NavController, NavParams, Platform } from 'ionic-angular';
 import { AppService } from "../../services/app.service";
-import { PermissionsService, MessageHandler } from 'priority-ionic';
+import { PermissionsService, MessageHandler, ServerResponse } from 'priority-ionic';
 import { LoginPage } from '../Login/login.page';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Strings } from '../../app/app.config';
@@ -75,11 +75,11 @@ export class StartPage
                                     //go to login
                                     this.nav.setRoot(LoginPage);
                                 },
-                                reason =>
+                                (reason : ServerResponse) =>
                                 {
                                     this.showScan = true;
                                     this.showLoading = false;
-                                    this.messageHandler.showErrorOrWarning(true, reason);
+                                    this.messageHandler.showErrorOrWarning(true, reason.message);
                                 });
                         }
                     },

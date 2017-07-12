@@ -10,7 +10,8 @@
   </ion-navbar>
  </ion-header>
 <ion-content>
-  <div class="login-content">
+
+  <div class="login-content" *ngIf="!isChangePassword()">
     <ion-list (keypress)="eventHandler($event)" dir="{{strings.dirByLang}}">
       <ion-list-header *ngIf="!isShowApp">
         {{ strings.loginHeader }}
@@ -20,11 +21,13 @@
       </ion-list-header>
 
       <ion-item [style.direction]="strings.dirByLang">
-        <ion-input type="text" placeholder="{{strings.usrTitle}}" [(ngModel)]="usrValue"></ion-input>
+        <ion-label floating>{{strings.usrTitle}}</ion-label>
+        <ion-input type="text" [(ngModel)]="usrValue"></ion-input>
       </ion-item>
 
       <ion-item [style.direction]="strings.dirByLang">
-        <ion-input type="password" placeholder="{{strings.pswTitle}}" [(ngModel)]="pswValue"></ion-input>
+        <ion-label floating>{{ strings.pswTitle }}</ion-label>
+        <ion-input type="password" [(ngModel)]="pswValue"></ion-input>
       </ion-item>
 
     </ion-list>
@@ -32,6 +35,37 @@
     <ion-buttons>
       <button ion-button outline (click)="login()">
       {{ strings.loginBtn }}
+      </button>
+    </ion-buttons>
+  </div>
+
+  <!-- Change Password tamplate-->
+  <div class="login-content" *ngIf="isChangePassword()">
+    <ion-list (keypress)="eventHandler($event)" dir="{{strings.dirByLang}}">
+      <ion-list-header class="change-psw">
+        {{ strings.changePswHeader1 }} <br> {{strings.changePswHeader2}}
+      </ion-list-header>
+
+      <ion-item [style.direction]="strings.dirByLang">
+        <ion-label floating>{{ strings.oldPsw }}</ion-label>
+        <ion-input type="password" [(ngModel)]="oldPswValue"></ion-input>
+      </ion-item>
+
+      <ion-item [style.direction]="strings.dirByLang">
+        <ion-label floating>{{ strings.newPsw }}</ion-label>
+        <ion-input type="password" [(ngModel)]="newPswValue"></ion-input>
+      </ion-item>
+
+      <ion-item [style.direction]="strings.dirByLang">
+        <ion-label floating>{{ strings.confirmNewPsw }}</ion-label>
+        <ion-input type="password" [(ngModel)]="confirmPswValue"></ion-input>
+      </ion-item>
+
+    </ion-list>
+
+    <ion-buttons>
+      <button ion-button outline (click)="changePsw()">
+      {{ strings.changePswBtn }}
       </button>
     </ion-buttons>
   </div>

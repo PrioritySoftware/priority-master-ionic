@@ -50,7 +50,17 @@ login-page{
         text-align:  center;
         white-space: normal;
       }
+       
+    }
 
+    .change-psw {
+        
+        ion-label {
+          text-align: start;
+          font-size: 1.6rem;
+        }
+         
+        
     }
 
     .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus):last-child,.item-md.item-input.ng-valid.input-has-value:not(.input-has-focus) .item-inner {
@@ -70,6 +80,25 @@ login-page{
       .button[outline] {
         width: 150px;
         margin-top: 25px;
+      }
+    }
+
+    .label-md {
+      margin: 13px 0 0 0;
+    }
+
+    
+
+    [dir="rtl"] {
+      .label-md[floating] {
+        -webkit-transform-origin: right top;
+        transform-origin: right top;
+      }
+      .item-label-floating .text-input-md, .label-md[floating]{
+        // margin-right: 3px;
+      }
+      .list-header-md {
+        padding-right: 0;
       }
     }
   }

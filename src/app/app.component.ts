@@ -9,7 +9,7 @@ import { MainPage } from "../pages/Main/main.page";
 import { StartPage } from '../pages/Start/start.page';
 import { AppsPage } from '../pages/Apps/apps.page';
 import { Strings } from './app.config';
-import { MessageHandler, Constants } from 'priority-ionic';
+import { MessageHandler, Constants, ServerResponse } from 'priority-ionic';
 declare var window;
 
 @Component({
@@ -101,7 +101,7 @@ export class AppComponent
             this.messageHandler.hideLoading();
             this.splashScreen.hide();
           },
-          (reason) =>
+          (reason: ServerResponse) =>
           {
             //show start page to re-scan barcode if the json file is not valid.
             // this.nav.setRoot(StartPage,{},{animation: false}).then(() =>
@@ -120,13 +120,13 @@ export class AppComponent
               this.rootPage = StartPage;
               this.messageHandler.hideLoading();
               this.splashScreen.hide();
-              this.messageHandler.showErrorOrWarning(true, reason + this.strings.scanNewConfigurationFile);
+              this.messageHandler.showErrorOrWarning(true, reason.message + this.strings.scanNewConfigurationFile);
             }
           });
       },
       //show start page to scan barcode if url not found
       //or apps page, if user has already scanned apps
-      (reason) =>
+      (reason : ServerResponse) =>
       {
         if (this.appService.appsList.length)
         {

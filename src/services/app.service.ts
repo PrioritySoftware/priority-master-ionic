@@ -5,7 +5,7 @@ import { Storage } from '@ionic/storage';
 import { Strings } from "../app/app.config";
 import { Entity } from "../entities/entity.class";
 import { FormConfig } from "../entities/form.class";
-import { ConfigurationService, FormService, ServerResponse } from 'priority-ionic';
+import { ConfigurationService, FormService, ServerResponse, ServerResponseCode } from 'priority-ionic';
 
 const LocalJsonUrl: string = "assets/js/pridata.json";
 const LocalStorageJsonUrlKey: string = "prijsonurl";
@@ -26,6 +26,14 @@ export class AppService
     formsConfig: { [key: string]: FormConfig } = {};
     isNotShowSaveMessage: boolean = false;
     RowsBatchSize: number = 115;
+    loginExpired: boolean = false;
+    private reason : ServerResponse = {
+                            message: '',
+                            form: null,
+                            fatal: false,
+                            code: '',
+                            type: ''
+                        };
 
     constructor(private configService: ConfigurationService,
         private formService: FormService,
@@ -77,16 +85,15 @@ export class AppService
                         {
                             if (this.userName != null && password != null)
                             {
-                                this.configService.logIn(this.userName, password).then(
-                                    () =>
+                                this.logIn(this.userName,password).then(
+                                    ()=>
                                     {
                                         resolve(true);
                                     },
-                                    reason =>
+                                    (reason : ServerResponse)=>
                                     {
-                                        this.clearLogin();
                                         resolve(false);
-                                    })
+                                    });
                             }
                             else
                             {
@@ -95,7 +102,7 @@ export class AppService
                         })
                         .catch(() => resolve(false));
                 },
-                (reason: string) =>
+                (reason: ServerResponse) =>
                 {
                     reject(reason);
                 });
@@ -148,12 +155,14 @@ export class AppService
                             }
                             else
                             {
-                                reject(this.strings.failedToLoadJsonError);
-                            }
+                                this.reason.message = this.strings.failedToLoadJsonError;
+                                reject(this.reason);
+                            } 
                         },
                         error =>
                         {
-                            reject(this.strings.failedToLoadJsonError);
+                            this.reason.message = this.strings.failedToLoadJsonError;                            
+                            reject(this.reason);
                         });
                 })
         });
@@ -177,12 +186,14 @@ export class AppService
                             },
                             () =>
                             {
-                                reject(this.strings.failedToReadJsonError);
+                                this.reason.message =  this.strings.failedToReadJsonError;
+                                reject(this.reason);
                             });
                     }
                     else
                     {
-                        reject(this.strings.failedToLoadJsonError);
+                        this.reason.message =  this.strings.failedToLoadJsonError;
+                        reject(this.reason);
                     }
                 }
             };
@@ -491,27 +502,43 @@ export class AppService
     // /** Clear the values of username and password saved in local storage */
     clearLogin()
     {
+        this.loginExpired = false;
         this.storage.remove(LocalStorageUsernameKey);
-        this.storage.remove(LocalStoragePasswordKey);
         this.userName = "";
+        this.storage.remove(LocalStoragePasswordKey);
     }
 
-    logIn(username, password): Promise<any>
+    logIn(username: string, password: string): Promise<any>
     {
         return new Promise((resolve, reject) =>
         {
             this.configService.logIn(username, password).then(
                 () =>
                 {
-                    //save username and password in local storage
-                    this.storage.set(LocalStorageUsernameKey, username).then(() =>
-                    {
                         this.userName = username;
-                        return this.storage.set(LocalStoragePasswordKey, password);
-                    })
-                        .then(() => resolve());
+                        //save username and password in local storage
+                        this.storage.set(LocalStorageUsernameKey, username);
+                        this.storage.set(LocalStoragePasswordKey, password);
+                        resolve();
                 },
                 (reason: ServerResponse) =>
+                {
+                    this.loginExpired = (reason.code === ServerResponseCode.LoginExpired);
+                    reject(reason);
+                });
+        });
+    }
+
+    changePassword(newPwd, confirmNewPwd, oldPwd): Promise<any>
+    {
+        return new Promise((resolve, reject) =>
+        {
+            this.configService.changePassword(newPwd, confirmNewPwd, oldPwd).then(
+                (res : string) =>
+                {
+                    resolve(res);
+                },
+                (reason : ServerResponse) =>
                 {
                     reject(reason);
                 });
