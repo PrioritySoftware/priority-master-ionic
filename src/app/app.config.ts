@@ -56,6 +56,7 @@ export class Strings
     directActivationsTitle: string;
     noDirectActivations: string;
     loadingSearchResults: string;
+    forgotPassword:string;
 
 
     /**Buttons text */
@@ -158,6 +159,7 @@ export class Strings
         this.directActivationsTitle = "הפעלות ישירות";
         this.noDirectActivations = "לא נבחרו הפעלות";
         this.loadingSearchResults = "טוען נתונים נוספים";
+        this.forgotPassword="שכחת סיסמא?";
 
         this.loginBtn = "היכנס";
         this.loginHeader = "כניסה למערכת";
@@ -252,6 +254,7 @@ export class Strings
         this.directActivationsTitle = "Direct Activations";
         this.noDirectActivations = "No activations were chosen";
         this.loadingSearchResults = "Loading more data";
+        this.forgotPassword="Forgot password?";
 
         this.loginBtn = "Login";
         this.loginHeader = "";

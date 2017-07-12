@@ -20,6 +20,7 @@ const AppVersion: string = "app_master_2"
 export class AppService
 {
     userName: string = "";
+    jsonUrlString:string="";
     appsList: Array<any> = [];
     currentApp: any = {};
     entitiesData: Entity[];
@@ -244,6 +245,7 @@ export class AppService
             try
             {
                 let json = JSON.parse(jsonString);
+                this.jsonUrlString=json.url;
                 this.checkUrl(json.url).then(
                     (url) =>
                     {
@@ -573,6 +575,18 @@ export class AppService
 
         this.http.get(encodeURI(url)).subscribe();
     }
+    /*************************** Passwords **********************/
 
+/**
+ * Returns a link to a page where he user can restore his password.
+ * 
+ * @returns 
+ * @memberof AppService
+ */
+getForgotPasswordURL()
+{
+    let configuration=this.configService.configuration;
+    return this.jsonUrlString+"/priority/prihtml.dll?WWWCHPWD&_tabulaini="+configuration.tabulaini;
+}
 
 }

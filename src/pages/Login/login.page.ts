@@ -24,11 +24,11 @@ export class LoginPage
     isShowBack;
 
     constructor(private appService: AppService,
-                private nav: NavController,
-                private navParams: NavParams,
-                private platform: Platform,
-                private messageHandler: MessageHandler,
-                private strings:Strings)
+        private nav: NavController,
+        private navParams: NavParams,
+        private platform: Platform,
+        private messageHandler: MessageHandler,
+        private strings: Strings)
     {
         this.appName = this.appService.currentApp.title;
         this.isShowApp = this.appService.appsList.length > 1;
@@ -49,7 +49,7 @@ export class LoginPage
             res =>
             {
                 this.messageHandler.hideLoading();
-                this.nav.setRoot(MainPage,{}, {animate: true, direction: 'forward'});
+                this.nav.setRoot(MainPage, {}, { animate: true, direction: 'forward' });
             },
             (reason : ServerResponse) =>
             {
@@ -63,6 +63,11 @@ export class LoginPage
                     });
             }
         ).catch(() => { });
+    }
+
+    getForgotPasswordURL()
+    {
+        return this.appService.getForgotPasswordURL();
     }
 
     changePsw()
@@ -116,14 +121,14 @@ export class LoginPage
 
     leavePage = () =>
     {
-        if(this.nav.canGoBack())
+        if (this.nav.canGoBack())
         {
             this.nav.pop();
         }
         else
         {
-           this.platform.exitApp(); 
-       }
+            this.platform.exitApp();
+        }
     }
 
 }
