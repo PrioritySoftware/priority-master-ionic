@@ -5,7 +5,7 @@ import { NavController, NavParams, Platform } from 'ionic-angular';
 import { ListPage } from '../List/list.page';
 import { LoginPage } from '../Login/login.page';
 import { Strings } from '../../app/app.config';
-import {Entity} from'../../entities/entity.class';
+import { Entity } from '../../entities/entity.class';
 
 @Component({
   templateUrl: 'main.view.html',
@@ -39,9 +39,9 @@ export class MainPage
     return ent.fatname == ent.name || ent.fatname === undefined;
   }
 
-  entityChosen(ent:Entity)
+  entityChosen(ent: Entity)
   {
-    if (ent.type == 'P' || ent.type=='R')
+    if (ent.type == 'P' || ent.type == 'R')
     {
       this.messageHandler.showTransLoading();
       this.procService.startProcedure(ent.name, ent.type, this.configService.configuration.company)

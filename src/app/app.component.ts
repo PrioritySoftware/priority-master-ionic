@@ -32,7 +32,6 @@ export class AppComponent
     private globalization: Globalization,
     private splashScreen: SplashScreen)
   {
-    window['priorityReady'] = this.priorityReady;
     this.dirByLang = "";
 
     platform.ready().then(() =>
@@ -64,12 +63,13 @@ export class AppComponent
         this.strings.setFirstLtrConstants();
         Constants.setLtrTranslations();
       }
+      this.init();
     });
   }
-  /**Called from Priority API when all its files are ready.
+  /**
    * Sets the language and the rootPage.
    */
-  priorityReady = (json) =>
+  init = () =>
   {
     this.messageHandler.showTransLoading("hide");
     //fetch json url from localstorage or return localpath url if local json exists
