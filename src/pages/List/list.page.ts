@@ -235,7 +235,14 @@ export class ListPage
                         this.formService.updateField(this.form, rowInd, "EXTFILENAME", result.file).then(
                             () =>
                             {
-                                this.formService.saveRow(this.form, rowInd, 0);
+                                this.formService.saveRow(this.form, rowInd, 0).then(
+                                    ()=>{},
+                                    ()=>
+                                    {
+                                        this.formService.undoRow(this.form);
+                                        this.formService.deleteLastFormRow(this.form);
+                                    }
+                                );
                             });
                     });
             })
@@ -270,8 +277,10 @@ export class ListPage
 
     leavePage = () =>
     {
-        // if(this.isSubform)
-        // {
+        if(this.fileUploader && this.fileUploader.dismissActions())
+        {
+            return;
+        }
         this.formService.endForm(this.form).then(
             () =>
             {

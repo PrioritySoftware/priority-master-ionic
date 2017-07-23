@@ -20,6 +20,7 @@ export class Strings
     logout: string;
     switchApp: string;
     newApp: string;
+    switchCompany: string;
     terms: string;
     termsURL: string;
     policy: string;
@@ -128,6 +129,7 @@ export class Strings
         this.logout = "התנתק";
         this.switchApp = "החלף יישומון";
         this.newApp = "הוסף יישומון";
+        this.switchCompany = "החלף חברה";
         this.terms = "תנאי שימוש";
 
         this.usrTitle = "שם משתמש";
@@ -221,6 +223,7 @@ export class Strings
         this.logout = "Logout";
         this.switchApp = "Switch app";
         this.newApp = "New app";
+        this.switchCompany = "Switch company";
         this.terms = "Terms of use";
 
         this.usrTitle = "User name";

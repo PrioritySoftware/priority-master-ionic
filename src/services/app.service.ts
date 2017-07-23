@@ -5,29 +5,28 @@ import { Storage } from '@ionic/storage';
 import { Strings } from "../app/app.config";
 import { Entity } from "../entities/entity.class";
 import { FormConfig } from "../entities/form.class";
-import { ConfigurationService, FormService, ServerResponse, ServerResponseCode } from 'priority-ionic';
+import { LocalStorageUserData } from "../entities/localStorageUserData.class";
+import { ConfigurationService, FormService, MessagesService, ServerResponse, ServerResponseCode, ProfileConfig, Company, EnvProfile} from 'priority-ionic';
 
 const LocalJsonUrl: string = "assets/js/pridata.json";
-const LocalStorageJsonUrlKey: string = "prijsonurl";
-const LocalStorageAppsListKey: string = "priappslist";
-const LocalStorageUsernameKey: string = "priusername";
-const LocalStoragePasswordKey: string = "pripassword";
-const LocalStorageShowSaveMessageKey: string = "alwaysSave";
-const AppVersion: string = "app_master_2"
+const LocalStorageUserData: string = "userdata"
+const AppVersion: string = "app_master_2";
+const MasterMessagesEname : string = "MASTERMESSAGES";
+const MasterMessagesType : string = "C";
 
 
 @Injectable()
 export class AppService
 {
-    userName: string = "";
-    jsonUrlString:string="";
-    appsList: Array<any> = [];
     currentApp: any = {};
     entitiesData: Entity[];
     formsConfig: { [key: string]: FormConfig } = {};
-    isNotShowSaveMessage: boolean = false;
     RowsBatchSize: number = 115;
     loginExpired: boolean = false;
+    supportCompanySelection: boolean = true;
+    userData: LocalStorageUserData = null;
+    private jsonCompanyDname : string = "";
+    private jsonUrlString : string = "";
     private reason : ServerResponse = {
                             message: '',
                             form: null,
@@ -38,33 +37,12 @@ export class AppService
 
     constructor(private configService: ConfigurationService,
         private formService: FormService,
+        private messagesService: MessagesService,
         private storage: Storage,
         private strings: Strings,
         private device: Device,
         private http: Http)
-    {
-        this.getAppsList().then(
-            (apps) =>
-            {
-                if (apps)
-                {
-                    this.appsList = apps;
-
-                }
-                else
-                {
-                    this.appsList = [];
-                }
-            },
-            () => { });
-        this.getLocalUserPreferenceShowSaveMessage().then(
-            (showSaveMessage) =>
-            {
-                if (showSaveMessage)
-                    this.isNotShowSaveMessage = true;
-            },
-            () => { });
-    }
+    { }
 
     // *************************************** JSON ********************************************
 
@@ -76,38 +54,29 @@ export class AppService
             this.loadJson(jsonUrl).then(
                 () =>
                 {
-                    this.getLocalUsername()
-                        .then(username =>
+                    if (this.userData.userName != null && this.userData.password != null)
+                    {
+                        this.logIn(this.userData.userName, this.userData.password).then(
+                        ()=>
                         {
-                            this.userName = username;
-                            return this.getLocalPassword();
-                        })
-                        .then(password =>
+                        	resolve(true);
+                        },
+                        (reason : ServerResponse)=>
                         {
-                            if (this.userName != null && password != null)
-                            {
-                                this.logIn(this.userName,password).then(
-                                    ()=>
-                                    {
-                                        resolve(true);
-                                    },
-                                    (reason : ServerResponse)=>
-                                    {
-                                        resolve(false);
-                                    });
-                            }
-                            else
-                            {
-                                resolve(false);
-                            }
+                        	resolve(false);
                         })
-                        .catch(() => resolve(false));
+                        .catch(
+						() => resolve(false));
+					}
+                    else
+                    {
+                    	resolve(false);
+                    }   
                 },
                 (reason: ServerResponse) =>
                 {
                     reject(reason);
                 });
-
         });
     }
 
@@ -140,32 +109,27 @@ export class AppService
     {
         return new Promise((resolve, reject) =>
         {
-            this.localJsonExists().then(
-                exists =>
+            this.getLocalUserData().then(
+            ()=>
+            {
+                this.localJsonExists().then(
+                (exists) =>
                 {
                     resolve(LocalJsonUrl);
                 },
-                notexists =>
+                (notexists) =>
                 {
-                    this.storage.get(LocalStorageJsonUrlKey).then(
-                        (jsonUrl) =>
-                        {
-                            if (jsonUrl != null)
-                            {
-                                resolve(jsonUrl);
-                            }
-                            else
-                            {
-                                this.reason.message = this.strings.failedToLoadJsonError;
-                                reject(this.reason);
-                            } 
-                        },
-                        error =>
-                        {
-                            this.reason.message = this.strings.failedToLoadJsonError;                            
-                            reject(this.reason);
-                        });
-                })
+                    if (this.userData.jsonUrl)
+                    {
+                        resolve(this.userData.jsonUrl);
+                    }
+                    else
+                    {
+                        this.reason.message = this.strings.failedToLoadJsonError;
+                        reject(this.reason);
+                    }
+                }); 
+            });
         });
     }
     /** Loads the json file from the url */
@@ -249,10 +213,15 @@ export class AppService
                 this.checkUrl(json.url).then(
                     (url) =>
                     {
+                        this.jsonCompanyDname = json.dname;
+                        if(this.userData.companyName === null) //First time or in selecting apps without support for companies selection
+                        {
+                            this.userData.profile.company = json.dname;
+                        }   
                         let config = {
                             appname: json.appname,
                             url: url,
-                            company: json.dname,
+                            profileConfig: this.userData.profile,
                             language: json.lang,
                             tabulaini: json.tabulaini,
                             devicename: this.device.uuid
@@ -296,7 +265,8 @@ export class AppService
     /** Set json url in local storage */
     setJsonUrl(jsonUrl: string)
     {
-        this.storage.set(LocalStorageJsonUrlKey, jsonUrl);
+        this.userData.jsonUrl = jsonUrl;
+        this.setLocalUserData();
     }
 
     // ********************************* Forms Config **************************************
@@ -341,7 +311,8 @@ export class AppService
             {
                 formConfig.detailsColumnsOptions[column.name].subtype = "phone";
             }
-            if (column.searchfield == 1)
+            //Treatment searching by date currently not supported will be treated as part of the development of filters
+            if (column.searchfield == 1 && column.type !== "DATE" && column.type !== "TIME")
             {
                 formConfig.searchColumns.push(column.name);
             }
@@ -452,12 +423,12 @@ export class AppService
     setApp(appTitle: string, jsonUrl: string)
     {
         let app;
-        for (var ind in this.appsList)
+        for (var ind in this.userData.applist)
         {
-            if (this.appsList[ind].jsonUrl == jsonUrl)
+            if (this.userData.applist[ind].jsonUrl == jsonUrl)
             {
-                app = this.appsList[ind];
-                this.appsList[ind].title = appTitle;
+                app = this.userData.applist[ind];
+                this.userData.applist[ind].title = appTitle;
             }
         }
         if (app === undefined)//if this app does not exist in apps list add it to the list
@@ -466,48 +437,33 @@ export class AppService
                 title: appTitle,
                 jsonUrl: jsonUrl
             }
-            this.appsList.push(app);
+            this.userData.applist.push(app);
         }
-        this.storage.set(LocalStorageAppsListKey, this.appsList);
         this.currentApp = app;
-    }
-
-    getAppsList()
-    {
-        return this.storage.get(LocalStorageAppsListKey);
     }
 
     clearCurrentApp()
     {
-        this.storage.remove(LocalStorageJsonUrlKey);
+        this.userData.jsonUrl = null;
+        this.setLocalUserData();
     }
 
     deleteApp(app)
     {
-        var index = this.appsList.indexOf(app);
-        this.appsList.splice(index, 1);
-        this.storage.set(LocalStorageAppsListKey, this.appsList);
+        var index = this.userData.applist.indexOf(app);
+        this.userData.applist.splice(index, 1);
+        this.setLocalUserData();
     }
 
     // ********************************* Login **************************************
 
-    /** Returns the username value saved in local storage */
-    getLocalUsername()
-    {
-        return this.storage.get(LocalStorageUsernameKey);
-    }
-    /** Returns the password value save in local storage */
-    getLocalPassword()
-    {
-        return this.storage.get(LocalStoragePasswordKey);
-    }
     // /** Clear the values of username and password saved in local storage */
     clearLogin()
     {
         this.loginExpired = false;
-        this.storage.remove(LocalStorageUsernameKey);
-        this.userName = "";
-        this.storage.remove(LocalStoragePasswordKey);
+        this.userData.userName = null;
+        this.userData.password = null;
+        this.setLocalUserData();
     }
 
     logIn(username: string, password: string): Promise<any>
@@ -517,11 +473,40 @@ export class AppService
             this.configService.logIn(username, password).then(
                 () =>
                 {
-                        this.userName = username;
-                        //save username and password in local storage
-                        this.storage.set(LocalStorageUsernameKey, username);
-                        this.storage.set(LocalStoragePasswordKey, password);
-                        resolve();
+                    //save username and password in local storage
+                    this.userData.userName = username;
+                    this.userData.password = password;
+                    this.messagesService.setMessages(MasterMessagesEname, MasterMessagesType, 1, 1000);
+                    if(this.supportCompanySelection)
+                    {
+                        this.getCompanies().then(
+                            (companies : Company[])=>
+                            {
+                                if(companies)
+                                {
+                                    this.setProfile(companies);
+                                    this.setLocalUserData();
+                                    resolve();
+                                }
+                                else
+                                {
+                                    this.reason.message = this.messagesService.getMessage(MasterMessagesEname, MasterMessagesType, 3);
+                                    reject(this.reason);
+                                }
+                                
+                            },
+                            (reason)=>
+                            {
+                                this.setLocalUserData();
+                                resolve();
+                            }
+                        );
+                    }
+                    else
+                    {
+                        this.setLocalUserData();
+                        resolve();   
+                    }
                 },
                 (reason: ServerResponse) =>
                 {
@@ -547,22 +532,144 @@ export class AppService
         });
     }
 
-    getLocalUserPreferenceShowSaveMessage()
+
+    /********* Profiles  **********************/
+    setProfileConfig(profile: ProfileConfig,  companyName : string, groupName: string)
     {
-        return this.storage.get(LocalStorageShowSaveMessageKey);
+        this.configService.setProfileConfiguration(profile);
+        this.userData.profile = profile;
+        this.userData.companyName = companyName;
+        this.userData.groupName = groupName;
+        this.setLocalUserData();
+    }
+
+    getCompanies() : Promise<any>
+    {
+        return new Promise((resolve, reject) =>
+        {
+            this.configService.getCompanies()
+                .then(
+                    (companies : Company[])=>
+                    {
+                        resolve(companies);
+                    },
+                    (reason : ServerResponse)=>
+                    {
+                        if(reason.code === ServerResponseCode.NotSupport )
+                        {
+                            this.supportCompanySelection = false;
+                        }
+                        reject(reason);
+                    }
+                ).catch((reason)=>{reject(reason)});
+        });
+    }
+
+    setProfile(companies : Company[])
+    {
+        let storageCompany : string = this.userData.profile.company;
+        let storageGroup : number = this.userData.profile.group;
+        this.userData.companyName = null;
+        this.userData.groupName = null;
+        this.userData.profile.company = this.jsonCompanyDname;
+        this.userData.profile.group = 0;
+        let company : Company = null;
+        let companyFilter : Company[] = companies.filter(comp=> comp.dname === storageCompany);
+        if(companyFilter.length)
+        {
+            company = companyFilter[0];
+        }
+        else //company in storage isn't in companues list 
+        {
+            companyFilter = companies.filter(comp=> comp.dname === this.jsonCompanyDname);
+            if(companyFilter.length)
+            {
+                company = companyFilter[0];
+            }
+        }
+        if(company) 
+        {
+            this.userData.profile.company = company.dname; 
+            this.userData.companyName = company.title;
+
+            //profiles
+            if(company.EnvProfile)
+            {
+                let envProfile : EnvProfile = null;
+                if(storageGroup > 0)
+                {
+                    let envProfileFilter : EnvProfile[];
+                    envProfileFilter = company.EnvProfile.filter(prof=> prof.profile === storageGroup);
+                    if(envProfileFilter.length)
+                    {
+                        envProfile = envProfileFilter[0];
+                    }
+                }
+
+                if(!envProfile)
+                {
+                    envProfile = company.EnvProfile[0];
+                }
+
+                this.userData.profile.group = envProfile.profile;
+                this.userData.groupName = envProfile.profilename;
+            }
+        }
+    }
+
+    getLocalUserData(): Promise<any>
+    {
+        return new Promise((resolve, reject)=>{
+            
+            if(this.userData)
+            {
+                resolve();
+                return;
+            }
+            
+            this.userData = {
+                jsonUrl: null,
+                applist: [],
+                userName: null,
+                password: null,
+                companyName: null,
+                groupName: null,
+                notShowSaveMessage: false,
+                profile: {company: null, group: 0 }
+            };
+            
+            this.storage.get(LocalStorageUserData)
+                .then((storageData: LocalStorageUserData)=>
+                {
+                    if(storageData)
+                    {    
+                        this.userData = storageData;
+                    }
+                    resolve();
+                })
+                .catch(()=>
+                {
+                    resolve();
+                });
+        });
+    }
+
+    setLocalUserData()
+    {
+        this.storage.set(LocalStorageUserData, this.userData);
     }
 
     setLocalUserPreferenceShowSaveMessage(value: boolean)
     {
-        this.isNotShowSaveMessage = value;
-        this.storage.set(LocalStorageShowSaveMessageKey, value);
+        this.userData.notShowSaveMessage = value;
+        this.setLocalUserData();
     }
 
     /*  Monitor server */
     contactMonitorServer(action: string, form: string)
     {
         let url: string = "https://monitor.priority-software.com/monitor/b.aspx"
-            + "?u=" + encodeURI(this.userName)
+            + "?u=" + encodeURI(this.userData.userName)
             + "&t=" + encodeURI(action)
             + "&f=" + encodeURI(form)
             + "&d=" + ""

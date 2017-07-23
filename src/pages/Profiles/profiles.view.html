@@ -1,0 +1,29 @@
+<ion-header dir="{{dirByLang}}">
+  <ion-navbar hideBackButton="true">
+    <ion-title>{{pageTitle}}</ion-title>
+    <ion-buttons start>
+      <button ion-button icon-only (click)="leavePage()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+
+  <ion-list dir="{{dirByLang}}">
+    <ion-item *ngFor="let company of companiesList" (click)="selectCompany(company)">
+      <!--<ion-thumbnail item-start>-->
+        <!--<img src="img/thumbnail-totoro.png">-->
+      <!--</ion-thumbnail>-->
+      <h2>{{company.title}}</h2>
+    </ion-item>
+  </ion-list>
+
+  <ion-list inset dir="{{dirByLang}}">
+    <button ion-item *ngFor="let profile of envProfileList"  (click)="selectProfile(profile)">
+      {{ profile.profilename }}
+    </button> 
+  </ion-list>
+
+ 
+</ion-content>

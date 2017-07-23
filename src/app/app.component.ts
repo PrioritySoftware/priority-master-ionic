@@ -8,6 +8,7 @@ import { LoginPage } from '../pages/Login/login.page';
 import { MainPage } from "../pages/Main/main.page";
 import { StartPage } from '../pages/Start/start.page';
 import { AppsPage } from '../pages/Apps/apps.page';
+import { ProfilesPage } from '../pages/Profiles/profiles.page';
 import { Strings } from './app.config';
 import { MessageHandler, Constants, ServerResponse } from 'priority-ionic';
 declare var window;
@@ -109,7 +110,7 @@ export class AppComponent
             //   this.splashScreen.hide();
             //   this.messageHandler.showErrorOrWarning(true, reason + this.strings.scanNewConfigurationFile);
             // });
-            if (this.appService.appsList.length > 1)
+            if (this.appService.userData.applist.length > 1)
             {
               this.rootPage = AppsPage;
               this.messageHandler.hideLoading();
@@ -128,7 +129,7 @@ export class AppComponent
       //or apps page, if user has already scanned apps
       (reason : ServerResponse) =>
       {
-        if (this.appService.appsList.length)
+        if (this.appService.userData.applist.length)
         {
           this.rootPage = AppsPage;
         }
@@ -152,7 +153,20 @@ export class AppComponent
 
   getUserName = () =>
   {
-    return this.appService.userName;
+    return this.appService.userData.userName;
+  }
+
+  getSupportCompanySelection = () =>
+  {
+    return this.appService.supportCompanySelection;
+  }
+
+  getCompanyName = () =>
+  {
+    if(!this.appService.userData.companyName)
+      return null;
+    let groupName : string = (this.appService.userData.groupName ? " - " + this.appService.userData.groupName : '');
+    return this.appService.userData.companyName + groupName;
   }
 
   logout = () =>
@@ -165,6 +179,11 @@ export class AppComponent
   {
     this.appService.clearCurrentApp();
     this.nav.setRoot(AppsPage, {}, { animate: true, direction: 'forward' });
+  }
+
+  switchProfile = () =>
+  {
+    this.nav.push(ProfilesPage, {}, { animate: true});
   }
 
   OpenDocument = (url : string) =>

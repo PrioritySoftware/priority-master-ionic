@@ -31,7 +31,7 @@ export class LoginPage
         private strings: Strings)
     {
         this.appName = this.appService.currentApp.title;
-        this.isShowApp = this.appService.appsList.length > 1;
+        this.isShowApp = this.appService.userData.applist.length > 1;
         this.isShowBack = navParams.data.isShowBack;
     }
 
@@ -76,7 +76,7 @@ export class LoginPage
         this.appService.changePassword(this.newPswValue, this.confirmPswValue, this.oldPswValue).then(
             (res : string) =>
             {
-                let username = this.usrValue.trim() ? this.usrValue.trim() : this.appService.userName;
+                let username = this.usrValue.trim() ? this.usrValue.trim() : this.appService.userData.userName;
                 this.appService.logIn(username, this.newPswValue).then(
                     (res) =>
                     {

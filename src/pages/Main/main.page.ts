@@ -44,7 +44,7 @@ export class MainPage
     if (ent.type == 'P' || ent.type == 'R')
     {
       this.messageHandler.showTransLoading();
-      this.procService.startProcedure(ent.name, ent.type, this.configService.configuration.company)
+      this.procService.startProcedure(ent.name, ent.type, this.configService.configuration.profileConfig)
         .then(() =>
         {
           this.messageHandler.hideLoading();
@@ -59,7 +59,7 @@ export class MainPage
     {
 
       this.messageHandler.showLoading(this.strings.wait);
-      this.formService.startFormAndGetRows(ent.name, this.configService.configuration.company).then(
+      this.formService.startFormAndGetRows(ent.name, this.configService.configuration.profileConfig).then(
         form =>
         {
           this.messageHandler.hideLoading();

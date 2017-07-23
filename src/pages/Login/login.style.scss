@@ -90,12 +90,9 @@ login-page{
     
 
     [dir="rtl"] {
-      .label-md[floating] {
+      .label-md[floating], .label-ios[floating] {
         -webkit-transform-origin: right top;
         transform-origin: right top;
-      }
-      .item-label-floating .text-input-md, .label-md[floating]{
-        // margin-right: 3px;
       }
       .list-header-md {
         padding-right: 0;

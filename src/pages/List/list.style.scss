@@ -3,7 +3,19 @@ list-page {
         .toolbar-background-md {
             background: transparent;
         }
+
     }
+
+    .toolbar-content-md
+    {
+        position: absolute;
+        width: 100%;
+    }
+
+    ion-title.title.title-ios {
+        padding: 0;
+    }
+
     .search-dots {
         position: fixed;
         z-index: 1;
@@ -64,4 +76,5 @@ list-page {
             }
         }
     }
+
 }
