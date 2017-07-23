@@ -14,4 +14,23 @@ details-page
   {
     font-size: inherit !important;
   }
+
+  .title-ios
+  {
+    padding: 0;
+    position: relative;
+  }
+
+  ion-title:not([style*="text-align: center"])
+  {
+    .toolbar-title-ios
+    {
+      text-align: start;
+      -webkit-padding-start: 12px;
+    }
+  }
+
+  .bar-button-ios {
+    width: 30px;
+  }
 }

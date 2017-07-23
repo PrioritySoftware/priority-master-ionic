@@ -1,14 +1,15 @@
 import { NavController, PopoverController, NavParams, Popover } from 'ionic-angular';
-import { Component } from '@angular/core';
+import { Component, ViewChildren, QueryList, ViewChild } from '@angular/core';
 import { ListPage } from '../List/list.page';
 import { SearchPage } from '../Search/search.page';
 import { Strings } from '../../app/app.config';
-import { FormService, MessageHandler, MenuPopup } from 'priority-ionic';
+import { FormService, MessageHandler, MenuPopup, ItemInputOpts } from 'priority-ionic';
 import { Search, Form, Column, ButtonOptions } from 'priority-ionic';
 import { FormConfig } from "../../entities/form.class";
 import { AppService } from "../../services/app.service";
 import { DirectActivation } from "../../entities/direct-activation.class";
 import { TextPage } from "../Text/text.page";
+import { SubList } from "../../components/SubList/subList.component";
 declare var window;
 
 
@@ -19,6 +20,9 @@ declare var window;
 
 export class DetailsPage
 {
+    @ViewChildren(SubList) subListComponents: QueryList<SubList>;
+    @ViewChild(ItemInputOpts) itemInputOpts : ItemInputOpts;
+
     selectedItem;
     form: Form;
     parentForm: Form;
@@ -71,6 +75,21 @@ export class DetailsPage
         {
             this.activationsPopover.dismiss();
             return;
+        }
+        if(this.itemInputOpts.dismissAttachClicked())
+        {
+            return;
+        }
+        if(this.subListComponents)
+        {
+            let arraySubLists : Array<SubList> = this.subListComponents.toArray();
+            for(let i=0; i < arraySubLists.length; i++)
+            {
+                if (arraySubLists[i].dismissActions())
+                {
+                    return;
+                }
+            }
         }
         if (this.isLeave)//Maybe backbutton was pressed for other functionality, then we shouldn't leave the page (isLeave = false)
         {
@@ -136,29 +155,38 @@ export class DetailsPage
     // ****************** Subforms ***************************
 
     /** Get subform rows for current item */
-    getSubforms()
+    getSubforms() : Promise<any>
     {
-        this.subforms = [];
-        for (var ind in this.formConfig.subforms)
+        return new Promise((resolve, reject) =>
         {
-            let subformName = this.formConfig.subforms[ind];
-            let subform = this.formService.getForm(subformName, this.form);
-            subform.name = subformName;
-            this.subforms.push(subform);
-        }
-        if (!this.selectedItem.isNewRow)// don't load subform for a new row
-        {
-            this.messageHandler.showTransLoading();
-            this.formService.getSubforms(this.form, this.formConfig.subforms).then(
-                () =>
-                {
-                    this.messageHandler.hideLoading();
-                },
-                reason =>
-                {
-                    this.messageHandler.hideLoading();
-                });
-        }
+            this.subforms = [];
+            for (var ind in this.formConfig.subforms)
+            {
+                let subformName = this.formConfig.subforms[ind];
+                let subform = this.formService.getForm(subformName, this.form);
+                subform.name = subformName;
+                this.subforms.push(subform);
+            }
+            if (!this.selectedItem.isNewRow)// don't load subform for a new row
+            {
+                this.messageHandler.showTransLoading();
+                this.formService.getSubforms(this.form, this.formConfig.subforms).then(
+                    () =>
+                    {
+                        this.messageHandler.hideLoading();
+                        resolve();
+                    },
+                    reason =>
+                    {
+                        this.messageHandler.hideLoading();
+                        resolve();
+                    });
+            }
+            else
+            {
+                resolve();
+            }
+        });
     }
 
     /** Clears subform rows of a specific item.*/
@@ -176,7 +204,7 @@ export class DetailsPage
      */
     showSaveAndAskAlert(continueFunc)
     {
-        if (this.appService.isNotShowSaveMessage)
+        if (this.appService.userData.notShowSaveMessage)
         {
             this.saveRow(continueFunc);
         }
@@ -299,7 +327,12 @@ export class DetailsPage
                 this.isShowWaitingDots = false;
                 if (afterSaveFunc != null)
                 {
-                    afterSaveFunc();
+                    this.getSubforms().then(
+                        ()=>
+                        {
+                            afterSaveFunc();
+                        }
+                    );
                 }
                 else
                 {

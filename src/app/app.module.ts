@@ -22,6 +22,7 @@ import { SearchPage } from '../pages/Search/search.page';
 import { StartPage } from '../pages/Start/start.page';
 import { TextPage } from '../pages/Text/text.page';
 import { AppsPage } from '../pages/Apps/apps.page';
+import { ProfilesPage } from '../pages/Profiles/profiles.page';
 
 import { SubList } from "../components/SubList/subList.component";
 import { DirectActivations } from "../components/DirectActivations/direct-activations.component";
@@ -40,7 +41,8 @@ import { PriorityIonicModule } from 'priority-ionic';
     SearchPage,
     DetailsPage,
     StartPage,
-    AppsPage
+    AppsPage,
+    ProfilesPage
   ],
   imports: [
     HttpModule,
@@ -61,7 +63,8 @@ import { PriorityIonicModule } from 'priority-ionic';
     DirectActivations,
     SearchPage,
     DetailsPage,
-    AppsPage
+    AppsPage,
+    ProfilesPage
   ],
   providers: [
     Strings,

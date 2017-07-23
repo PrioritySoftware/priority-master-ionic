@@ -8,8 +8,9 @@ import { LoginPage } from '../pages/Login/login.page';
 import { MainPage } from "../pages/Main/main.page";
 import { StartPage } from '../pages/Start/start.page';
 import { AppsPage } from '../pages/Apps/apps.page';
+import { ProfilesPage } from '../pages/Profiles/profiles.page';
 import { Strings } from './app.config';
-import { MessageHandler, Constants } from 'priority-ionic';
+import { MessageHandler, Constants, ServerResponse } from 'priority-ionic';
 declare var window;
 
 @Component({
@@ -32,7 +33,6 @@ export class AppComponent
     private globalization: Globalization,
     private splashScreen: SplashScreen)
   {
-    window['priorityReady'] = this.priorityReady;
     this.dirByLang = "";
 
     platform.ready().then(() =>
@@ -64,12 +64,13 @@ export class AppComponent
         this.strings.setFirstLtrConstants();
         Constants.setLtrTranslations();
       }
+      this.init();
     });
   }
-  /**Called from Priority API when all its files are ready.
+  /**
    * Sets the language and the rootPage.
    */
-  priorityReady = (json) =>
+  init = () =>
   {
     this.messageHandler.showTransLoading("hide");
     //fetch json url from localstorage or return localpath url if local json exists
@@ -101,7 +102,7 @@ export class AppComponent
             this.messageHandler.hideLoading();
             this.splashScreen.hide();
           },
-          (reason) =>
+          (reason: ServerResponse) =>
           {
             //show start page to re-scan barcode if the json file is not valid.
             // this.nav.setRoot(StartPage,{},{animation: false}).then(() =>
@@ -109,7 +110,7 @@ export class AppComponent
             //   this.splashScreen.hide();
             //   this.messageHandler.showErrorOrWarning(true, reason + this.strings.scanNewConfigurationFile);
             // });
-            if (this.appService.appsList.length > 1)
+            if (this.appService.userData.applist.length > 1)
             {
               this.rootPage = AppsPage;
               this.messageHandler.hideLoading();
@@ -120,15 +121,15 @@ export class AppComponent
               this.rootPage = StartPage;
               this.messageHandler.hideLoading();
               this.splashScreen.hide();
-              this.messageHandler.showErrorOrWarning(true, reason + this.strings.scanNewConfigurationFile);
+              this.messageHandler.showErrorOrWarning(true, reason.message + this.strings.scanNewConfigurationFile);
             }
           });
       },
       //show start page to scan barcode if url not found
       //or apps page, if user has already scanned apps
-      (reason) =>
+      (reason : ServerResponse) =>
       {
-        if (this.appService.appsList.length)
+        if (this.appService.userData.applist.length)
         {
           this.rootPage = AppsPage;
         }
@@ -152,7 +153,20 @@ export class AppComponent
 
   getUserName = () =>
   {
-    return this.appService.userName;
+    return this.appService.userData.userName;
+  }
+
+  getSupportCompanySelection = () =>
+  {
+    return this.appService.supportCompanySelection;
+  }
+
+  getCompanyName = () =>
+  {
+    if(!this.appService.userData.companyName)
+      return null;
+    let groupName : string = (this.appService.userData.groupName ? " - " + this.appService.userData.groupName : '');
+    return this.appService.userData.companyName + groupName;
   }
 
   logout = () =>
@@ -165,6 +179,11 @@ export class AppComponent
   {
     this.appService.clearCurrentApp();
     this.nav.setRoot(AppsPage, {}, { animate: true, direction: 'forward' });
+  }
+
+  switchProfile = () =>
+  {
+    this.nav.push(ProfilesPage, {}, { animate: true});
   }
 
   OpenDocument = (url : string) =>

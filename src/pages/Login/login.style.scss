@@ -50,7 +50,17 @@ login-page{
         text-align:  center;
         white-space: normal;
       }
+       
+    }
 
+    .change-psw {
+        
+        ion-label {
+          text-align: start;
+          font-size: 1.6rem;
+        }
+         
+        
     }
 
     .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus):last-child,.item-md.item-input.ng-valid.input-has-value:not(.input-has-focus) .item-inner {
@@ -72,5 +82,27 @@ login-page{
         margin-top: 25px;
       }
     }
+
+    .label-md {
+      margin: 13px 0 0 0;
+    }
+
+    
+
+    [dir="rtl"] {
+      .label-md[floating], .label-ios[floating] {
+        -webkit-transform-origin: right top;
+        transform-origin: right top;
+      }
+      .list-header-md {
+        padding-right: 0;
+      }
+    }
+  }
+  .forgot-password
+  {
+    text-align: center;
+    width: 100%;
+    position: absolute;
   }
 }

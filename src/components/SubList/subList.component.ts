@@ -308,4 +308,9 @@ export class SubList implements AfterViewChecked, OnInit
         window.open(encodeURI(this.formService.getFileUrl(this.subform, url)), "_system");
     }
 
+    dismissActions()
+    {
+        return this.fileUploader && this.fileUploader.dismissActions();
+    }
+
 }

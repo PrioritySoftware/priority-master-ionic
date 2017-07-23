@@ -21,7 +21,7 @@ export class AppsPage
         private messageHandler: MessageHandler,
         private strings: Strings)
     {
-        this.appsList = this.appService.appsList;
+        this.appsList = this.appService.userData.applist;
     }
 
     selectApp(app)

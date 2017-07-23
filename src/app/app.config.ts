@@ -20,6 +20,7 @@ export class Strings
     logout: string;
     switchApp: string;
     newApp: string;
+    switchCompany: string;
     terms: string;
     termsURL: string;
     policy: string;
@@ -29,6 +30,12 @@ export class Strings
     wait: string;
     usrTitle: string;
     pswTitle: string;
+    changePswHeader1 : string;
+    changePswHeader2 : string;
+    changePswMessageOk : string;
+    oldPsw : string;
+    newPsw : string;
+    confirmNewPsw : string;
     errors: string;
     fatalErrorMsg: string;
     warningTitle: string;
@@ -50,11 +57,13 @@ export class Strings
     directActivationsTitle: string;
     noDirectActivations: string;
     loadingSearchResults: string;
+    forgotPassword:string;
 
 
     /**Buttons text */
     loginBtn: string;
     loginHeader: string;
+    changePswBtn : string;
     ok: string;
     cancel: string;
     defaultMsgTitle: string;
@@ -120,10 +129,17 @@ export class Strings
         this.logout = "התנתק";
         this.switchApp = "החלף יישומון";
         this.newApp = "הוסף יישומון";
+        this.switchCompany = "החלף חברה";
         this.terms = "תנאי שימוש";
 
         this.usrTitle = "שם משתמש";
         this.pswTitle = "סיסמא";
+        this.changePswHeader1 = "סיסמתך אינה בתוקף.";
+        this.changePswHeader2 = "לפני כניסה למערכת עליך להחליפה.";
+        this.changePswMessageOk = "הסיסמה שונתה בהצלחה.";
+        this.oldPsw = "סיסמא קודמת";
+        this.newPsw = "סיסמא חדשה";
+        this.confirmNewPsw = "אישור סיסמא";
         this.wait = "אנא המתן...";
         this.errors = 'דו"ח שגיאות';
         this.fatalErrorMsg = "ארעה תקלה אנא פנה למנהל המערכת: \n";
@@ -145,9 +161,11 @@ export class Strings
         this.directActivationsTitle = "הפעלות ישירות";
         this.noDirectActivations = "לא נבחרו הפעלות";
         this.loadingSearchResults = "טוען נתונים נוספים";
+        this.forgotPassword="שכחת סיסמא?";
 
         this.loginBtn = "היכנס";
         this.loginHeader = "כניסה למערכת";
+        this.changePswBtn = "החלף";
         this.ok = "אישור";
         this.cancel = "ביטול";
         this.defaultMsgTitle = "הודעה";
@@ -205,10 +223,17 @@ export class Strings
         this.logout = "Logout";
         this.switchApp = "Switch app";
         this.newApp = "New app";
+        this.switchCompany = "Switch company";
         this.terms = "Terms of use";
 
         this.usrTitle = "User name";
         this.pswTitle = "Password";
+        this.changePswHeader1 = "Your password is no longer valid.";
+        this.changePswHeader2 = "You must change your password.";
+        this.changePswMessageOk = "A new password has been assigned.";
+        this.oldPsw = "Previous password";
+        this.newPsw = "New password";
+        this.confirmNewPsw = "Confirm password";
         this.wait = "Please wait...";
         this.errors = "Error report";
         this.fatalErrorMsg = "An error Occurred. Please contact your system administrator.";
@@ -232,9 +257,11 @@ export class Strings
         this.directActivationsTitle = "Direct Activations";
         this.noDirectActivations = "No activations were chosen";
         this.loadingSearchResults = "Loading more data";
+        this.forgotPassword="Forgot password?";
 
         this.loginBtn = "Login";
         this.loginHeader = "";
+        this.changePswBtn = "Change"
         this.ok = "OK";
         this.cancel = "Cancel";
         this.defaultMsgTitle = "Message";

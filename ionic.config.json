@@ -1,13 +1,12 @@
 {
   "name": "PriorityApp",
   "app_id": "0321dfb6",
-  "v2": true,
-  "typescript": true,
   "proxies": [
     {
       "path": "/wcf",
       "proxyUrl": "url/to/your/wcf",
       "rejectUnauthorized": false
     }
-  ]
+  ],
+  "type": "ionic-angular"
 }
