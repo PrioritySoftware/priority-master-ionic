@@ -2,12 +2,12 @@
   <ion-navbar hideBackButton="true">
     <ion-title [style.textAlign]="selectedItem.isNewRow ? 'center' : dirByLang=='rtl'? 'right' : 'left'">{{form.title}}</ion-title>
     <ion-buttons start>
-      <button ion-button icon-only (click)="leavePage()">
+      <button ion-button icon-only (click)="leavePageBtn()">
         <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
     <ion-buttons end>
-      <button ion-button icon-only *ngIf="!isQueryForm()" (click)="saveRow()">
+      <button ion-button icon-only *ngIf="!isQueryForm()" (click)="saveRowBtn()">
           <ion-icon name="checkmark"></ion-icon>
       </button>
       <button ion-button icon-only *ngIf="!selectedItem.isNewRow && !isQueryForm()" (click)="deleteRow()">

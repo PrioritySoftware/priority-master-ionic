@@ -17,8 +17,10 @@ details-page
 
   .title-ios
   {
-    padding: 0;
     position: relative;
+    padding: 0 !important;
+    min-height: 0 !important;
+    height: inherit !important;
   }
 
   ion-title:not([style*="text-align: center"])

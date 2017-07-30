@@ -167,16 +167,17 @@ ion-menu {
         }
     }
 }
-// .ios
-//     {
-//         .user-name, .app-name
-//         {
-//           padding-top: 0px !important;
-//           height: auto !important;
-//           min-height: auto!important;
-//           margin-bottom:5px;
-//         }
-//     }
+
+.ios
+    {
+        .user-name, .app-name, .company-name
+        {
+          padding-top: 0px !important;
+          height: auto !important;
+          min-height: auto!important;
+          margin-bottom:5px;
+        }
+    }
 
 file-uploader {
     display: none;
@@ -211,7 +212,7 @@ body{
 .center {
     text-align: center;
 }
-.rtl .alert-head
+.rtl.alert-md .alert-head
 {
   text-align: right !important;
 }
