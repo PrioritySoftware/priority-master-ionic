@@ -1,4 +1,4 @@
-import { NavController, PopoverController, NavParams, Popover } from 'ionic-angular';
+import { NavController, PopoverController, NavParams, Popover, Platform } from 'ionic-angular';
 import { Component, ViewChildren, QueryList, ViewChild } from '@angular/core';
 import { ListPage } from '../List/list.page';
 import { SearchPage } from '../Search/search.page';
@@ -40,14 +40,19 @@ export class DetailsPage
     dirOpposite: string;
     title: string;
 
+    private isIos : boolean;
+
     constructor(private appService: AppService,
         private formService: FormService,
         private nav: NavController,
         private navParams: NavParams,
         private popoverCtrl: PopoverController,
         private messageHandler: MessageHandler,
-        private strings: Strings)
+        private strings: Strings,
+        private platform : Platform)
     {
+        //platform
+        this.isIos = platform.is("ios");
         //data
         this.form = this.navParams.data.form;
         this.parentForm = this.navParams.data.parentForm;
@@ -69,6 +74,19 @@ export class DetailsPage
 
 
     // ****************** Page Leaving ***************************
+    leavePageBtn = () =>
+    {
+        if(this.isIos )
+        {
+            // Solution to problem: ios doesn't always catch the change input event. 
+            setTimeout(()=>{this.leavePage()},500);
+        }
+        else
+        {
+            this.leavePage();
+        }
+    }
+
     leavePage = () =>
     {
         if (this.activationsPopover && this.activationsPopover.isOverlay)
@@ -317,6 +335,19 @@ export class DetailsPage
 
     // ****************** Row Functions ***************************
 
+    saveRowBtn()
+    {
+        if (this.isIos)
+        {
+            // Solution to problem: ios doesn't always catch the change input event. 
+            setTimeout(() => { this.saveRow(); }, 500);
+        }
+        else
+        {
+            this.saveRow();
+        }
+    }
+    
     /**Saves current row */
     saveRow = (afterSaveFunc = null) =>
     {
