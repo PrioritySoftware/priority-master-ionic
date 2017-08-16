@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { FormService, SearchResult, SearchAction, Form } from 'priority-ionic';
+import { FormService, SearchResult, SearchAction, Form,Search } from 'priority-ionic';
 import { ViewChild } from '@angular/core';;
 import { NavController, NavParams } from 'ionic-angular';
 import { Strings } from '../../app/app.config';
@@ -78,12 +78,13 @@ export class SearchPage
     getItemsBySearchText(ev)
     {
         this.isShowWaitingDots = true;
+        this.isScrollEnabled=true;
         this.formService.search(this.form, this.fieldVal).then(
-            res =>
+            (res:Search) =>
             {
                 this.isShowWaitingDots = false;
 
-                this.searchResults = res;
+                this.searchResults = res.SearchLine;
             }, reason =>
             {
                 this.isShowWaitingDots = false;
@@ -119,20 +120,19 @@ export class SearchPage
     doInfinite(infiniteScroll)
     {
         this.formService.search(this.form, this.fieldVal, SearchAction.Next)
-            .then((results: SearchResult[]) =>
+            .then((result:Search) =>
             {
+                let results=result.SearchLine;
                 if (results != null && results.length > 0)
                 {
                     let slice = this.searchResults.slice(0, this.searchResults.length - 1);
                     this.searchResults = slice.concat(results);
                 }
-                if (results != null && results.length < this.appService.RowsBatchSize)
+                if (result.next<=0)
                 {
                     this.isScrollEnabled = false;
                 }
-
                 infiniteScroll.complete();
-
             })
             .catch(reason =>
             {
