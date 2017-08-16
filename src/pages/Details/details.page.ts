@@ -21,7 +21,7 @@ declare var window;
 export class DetailsPage
 {
     @ViewChildren(SubList) subListComponents: QueryList<SubList>;
-    @ViewChild(ItemInputOpts) itemInputOpts : ItemInputOpts;
+    @ViewChild(ItemInputOpts) itemInputOpts: ItemInputOpts;
 
     selectedItem;
     form: Form;
@@ -40,7 +40,7 @@ export class DetailsPage
     dirOpposite: string;
     title: string;
 
-    private isIos : boolean;
+    private isIos: boolean;
 
     constructor(private appService: AppService,
         private formService: FormService,
@@ -49,7 +49,7 @@ export class DetailsPage
         private popoverCtrl: PopoverController,
         private messageHandler: MessageHandler,
         private strings: Strings,
-        private platform : Platform)
+        private platform: Platform)
     {
         //platform
         this.isIos = platform.is("ios");
@@ -76,10 +76,10 @@ export class DetailsPage
     // ****************** Page Leaving ***************************
     leavePageBtn = () =>
     {
-        if(this.isIos )
+        if (this.isIos)
         {
             // Solution to problem: ios doesn't always catch the change input event. 
-            setTimeout(()=>{this.leavePage()},500);
+            setTimeout(() => { this.leavePage() }, 500);
         }
         else
         {
@@ -94,14 +94,14 @@ export class DetailsPage
             this.activationsPopover.dismiss();
             return;
         }
-        if(this.itemInputOpts.dismissAttachClicked())
+        if (this.itemInputOpts.dismissAttachClicked())
         {
             return;
         }
-        if(this.subListComponents)
+        if (this.subListComponents)
         {
-            let arraySubLists : Array<SubList> = this.subListComponents.toArray();
-            for(let i=0; i < arraySubLists.length; i++)
+            let arraySubLists: Array<SubList> = this.subListComponents.toArray();
+            for (let i = 0; i < arraySubLists.length; i++)
             {
                 if (arraySubLists[i].dismissActions())
                 {
@@ -173,7 +173,7 @@ export class DetailsPage
     // ****************** Subforms ***************************
 
     /** Get subform rows for current item */
-    getSubforms() : Promise<any>
+    getSubforms(): Promise<any>
     {
         return new Promise((resolve, reject) =>
         {
@@ -220,8 +220,9 @@ export class DetailsPage
      * @param {any} continueFunc The function that should be executed after save or after undo.
      * @memberof DetailsPage
      */
-    showSaveAndAskAlert(continueFunc)
+    showSaveAndAskAlert(continueFunc, undoFunc = null)
     {
+        undoFunc = undoFunc ? undoFunc : continueFunc;
         if (this.appService.userData.notShowSaveMessage)
         {
             this.saveRow(continueFunc);
@@ -239,7 +240,7 @@ export class DetailsPage
                 },
                 () =>
                 {
-                    this.undoRow(true, continueFunc);
+                    this.undoRow(true, undoFunc);
                 });
 
         }
@@ -285,12 +286,13 @@ export class DetailsPage
                 })
                 .catch(reason => { });
         };
-
         // check if there are some unsaved changes and show the 'save-changes' alert if there are.
         if (!this.getIsChangesSaved())
-            this.showSaveAndAskAlert(editFunc);
-        else
+            this.showSaveAndAskAlert(editFunc, this.leavePage);
+        else if (!this.selectedItem.isNewRow)
             editFunc();
+        else //in case of a new row show a toast saying that some changes need to be made in order to navigate to the subform.
+            this.messageHandler.showToast(this.strings.cannotGoToSubForm, 3000);
     }
     sortSubforms = (subform1: FormConfig, subform2: FormConfig) =>
     {
@@ -347,7 +349,7 @@ export class DetailsPage
             this.saveRow();
         }
     }
-    
+
     /**Saves current row */
     saveRow = (afterSaveFunc = null) =>
     {
@@ -359,7 +361,7 @@ export class DetailsPage
                 if (afterSaveFunc != null)
                 {
                     this.getSubforms().then(
-                        ()=>
+                        () =>
                         {
                             afterSaveFunc();
                         }
