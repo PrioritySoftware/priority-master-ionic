@@ -6,13 +6,13 @@ import { Strings } from "../app/app.config";
 import { Entity } from "../entities/entity.class";
 import { FormConfig } from "../entities/form.class";
 import { LocalStorageUserData } from "../entities/localStorageUserData.class";
-import { ConfigurationService, FormService, MessagesService, ServerResponse, ServerResponseCode, ProfileConfig, Company, EnvProfile} from 'priority-ionic';
+import { ConfigurationService, FormService, MessagesService, ServerResponse, ServerResponseCode, ProfileConfig, Company, EnvProfile } from 'priority-ionic';
 
 const LocalJsonUrl: string = "assets/js/pridata.json";
 const LocalStorageUserData: string = "userdata"
 const AppVersion: string = "app_master_2";
-const MasterMessagesEname : string = "MASTERMESSAGES";
-const MasterMessagesType : string = "C";
+const MasterMessagesEname: string = "MASTERMESSAGES";
+const MasterMessagesType: string = "C";
 
 
 @Injectable()
@@ -25,15 +25,15 @@ export class AppService
     loginExpired: boolean = false;
     supportCompanySelection: boolean = true;
     userData: LocalStorageUserData = null;
-    private jsonCompanyDname : string = "";
-    private jsonUrlString : string = "";
-    private reason : ServerResponse = {
-                            message: '',
-                            form: null,
-                            fatal: false,
-                            code: '',
-                            type: ''
-                        };
+    private jsonCompanyDname: string = "";
+    private jsonUrlString: string = "";
+    private reason: ServerResponse = {
+        message: '',
+        form: null,
+        fatal: false,
+        code: '',
+        type: ''
+    };
 
     constructor(private configService: ConfigurationService,
         private formService: FormService,
@@ -57,21 +57,21 @@ export class AppService
                     if (this.userData.userName != null && this.userData.password != null)
                     {
                         this.logIn(this.userData.userName, this.userData.password).then(
-                        ()=>
-                        {
-                        	resolve(true);
-                        },
-                        (reason : ServerResponse)=>
-                        {
-                        	resolve(false);
-                        })
-                        .catch(
-						() => resolve(false));
-					}
+                            () =>
+                            {
+                                resolve(true);
+                            },
+                            (reason: ServerResponse) =>
+                            {
+                                resolve(false);
+                            })
+                            .catch(
+                            () => resolve(false));
+                    }
                     else
                     {
-                    	resolve(false);
-                    }   
+                        resolve(false);
+                    }
                 },
                 (reason: ServerResponse) =>
                 {
@@ -110,26 +110,26 @@ export class AppService
         return new Promise((resolve, reject) =>
         {
             this.getLocalUserData().then(
-            ()=>
-            {
-                this.localJsonExists().then(
-                (exists) =>
+                () =>
                 {
-                    resolve(LocalJsonUrl);
-                },
-                (notexists) =>
-                {
-                    if (this.userData.jsonUrl)
-                    {
-                        resolve(this.userData.jsonUrl);
-                    }
-                    else
-                    {
-                        this.reason.message = this.strings.failedToLoadJsonError;
-                        reject(this.reason);
-                    }
-                }); 
-            });
+                    this.localJsonExists().then(
+                        (exists) =>
+                        {
+                            resolve(LocalJsonUrl);
+                        },
+                        (notexists) =>
+                        {
+                            if (this.userData.jsonUrl)
+                            {
+                                resolve(this.userData.jsonUrl);
+                            }
+                            else
+                            {
+                                this.reason.message = this.strings.failedToLoadJsonError;
+                                reject(this.reason);
+                            }
+                        });
+                });
         });
     }
     /** Loads the json file from the url */
@@ -151,13 +151,13 @@ export class AppService
                             },
                             () =>
                             {
-                                this.reason.message =  this.strings.failedToReadJsonError;
+                                this.reason.message = this.strings.failedToReadJsonError;
                                 reject(this.reason);
                             });
                     }
                     else
                     {
-                        this.reason.message =  this.strings.failedToLoadJsonError;
+                        this.reason.message = this.strings.failedToLoadJsonError;
                         reject(this.reason);
                     }
                 }
@@ -209,15 +209,15 @@ export class AppService
             try
             {
                 let json = JSON.parse(jsonString);
-                this.jsonUrlString=json.url;
+                this.jsonUrlString = json.url;
                 this.checkUrl(json.url).then(
                     (url) =>
                     {
                         this.jsonCompanyDname = json.dname;
-                        if(this.userData.companyName === null) //First time or in selecting apps without support for companies selection
+                        if (this.userData.companyName === null) //First time or in selecting apps without support for companies selection
                         {
                             this.userData.profile.company = json.dname;
-                        }   
+                        }
                         let config = {
                             appname: json.appname,
                             url: url,
@@ -325,6 +325,7 @@ export class AppService
     {
         let procedures = [];
         let parentForms = {};
+        this.formsConfig = {};
         //loop on entities and add the parent forms to the parentForms object
         for (let ind in entities)
         {
@@ -477,12 +478,12 @@ export class AppService
                     this.userData.userName = username;
                     this.userData.password = password;
                     this.messagesService.setMessages(MasterMessagesEname, MasterMessagesType, 1, 1000);
-                    if(this.supportCompanySelection)
+                    if (this.supportCompanySelection)
                     {
                         this.getCompanies().then(
-                            (companies : Company[])=>
+                            (companies: Company[]) =>
                             {
-                                if(companies)
+                                if (companies)
                                 {
                                     this.setProfile(companies);
                                     this.setLocalUserData();
@@ -493,9 +494,9 @@ export class AppService
                                     this.reason.message = this.messagesService.getMessage(MasterMessagesEname, MasterMessagesType, 3);
                                     reject(this.reason);
                                 }
-                                
+
                             },
-                            (reason)=>
+                            (reason) =>
                             {
                                 this.setLocalUserData();
                                 resolve();
@@ -505,7 +506,7 @@ export class AppService
                     else
                     {
                         this.setLocalUserData();
-                        resolve();   
+                        resolve();
                     }
                 },
                 (reason: ServerResponse) =>
@@ -521,11 +522,11 @@ export class AppService
         return new Promise((resolve, reject) =>
         {
             this.configService.changePassword(newPwd, confirmNewPwd, oldPwd).then(
-                (res : string) =>
+                (res: string) =>
                 {
                     resolve(res);
                 },
-                (reason : ServerResponse) =>
+                (reason: ServerResponse) =>
                 {
                     reject(reason);
                 });
@@ -534,7 +535,7 @@ export class AppService
 
 
     /********* Profiles  **********************/
-    setProfileConfig(profile: ProfileConfig,  companyName : string, groupName: string)
+    setProfileConfig(profile: ProfileConfig, companyName: string, groupName: string)
     {
         this.configService.setProfileConfiguration(profile);
         this.userData.profile = profile;
@@ -543,70 +544,70 @@ export class AppService
         this.setLocalUserData();
     }
 
-    getCompanies() : Promise<any>
+    getCompanies(): Promise<any>
     {
         return new Promise((resolve, reject) =>
         {
             this.configService.getCompanies()
                 .then(
-                    (companies : Company[])=>
+                (companies: Company[]) =>
+                {
+                    resolve(companies);
+                },
+                (reason: ServerResponse) =>
+                {
+                    if (reason.code === ServerResponseCode.NotSupport)
                     {
-                        resolve(companies);
-                    },
-                    (reason : ServerResponse)=>
-                    {
-                        if(reason.code === ServerResponseCode.NotSupport )
-                        {
-                            this.supportCompanySelection = false;
-                        }
-                        reject(reason);
+                        this.supportCompanySelection = false;
                     }
-                ).catch((reason)=>{reject(reason)});
+                    reject(reason);
+                }
+                ).catch((reason) => { reject(reason) });
         });
     }
 
-    setProfile(companies : Company[])
+    setProfile(companies: Company[])
     {
-        let storageCompany : string = this.userData.profile.company;
-        let storageGroup : number = this.userData.profile.group;
+        let storageCompany: string = this.userData.profile.company;
+        let storageGroup: number = this.userData.profile.group;
         this.userData.companyName = null;
         this.userData.groupName = null;
         this.userData.profile.company = this.jsonCompanyDname;
         this.userData.profile.group = 0;
-        let company : Company = null;
-        let companyFilter : Company[] = companies.filter(comp=> comp.dname === storageCompany);
-        if(companyFilter.length)
+        let company: Company = null;
+        let companyFilter: Company[] = companies.filter(comp => comp.dname === storageCompany);
+        if (companyFilter.length)
         {
             company = companyFilter[0];
         }
         else //company in storage isn't in companues list 
         {
-            companyFilter = companies.filter(comp=> comp.dname === this.jsonCompanyDname);
-            if(companyFilter.length)
+            companyFilter = companies.filter(comp => comp.dname === this.jsonCompanyDname);
+            if (companyFilter.length)
             {
                 company = companyFilter[0];
             }
         }
-        if(company) 
+        if (company) 
         {
-            this.userData.profile.company = company.dname; 
+            this.userData.profile.company = company.dname;
             this.userData.companyName = company.title;
 
             //profiles
-            if(company.EnvProfile)
+            if (company.EnvProfile)
             {
-                let envProfile : EnvProfile = null;
-                if(storageGroup > 0)
+                let envProfile: EnvProfile = null;
+                if (storageGroup > 0)
                 {
-                    let envProfileFilter : EnvProfile[];
-                    envProfileFilter = company.EnvProfile.filter(prof=> prof.profile === storageGroup);
-                    if(envProfileFilter.length)
+                    let envProfileFilter: EnvProfile[];
+                    envProfileFilter = company.EnvProfile.filter(prof => prof.profile === storageGroup);
+                    if (envProfileFilter.length)
                     {
                         envProfile = envProfileFilter[0];
                     }
                 }
 
-                if(!envProfile)
+                if (!envProfile)
                 {
                     envProfile = company.EnvProfile[0];
                 }
@@ -619,14 +620,15 @@ export class AppService
 
     getLocalUserData(): Promise<any>
     {
-        return new Promise((resolve, reject)=>{
-            
-            if(this.userData)
+        return new Promise((resolve, reject) =>
+        {
+
+            if (this.userData)
             {
                 resolve();
                 return;
             }
-            
+
             this.userData = {
                 jsonUrl: null,
                 applist: [],
@@ -635,19 +637,19 @@ export class AppService
                 companyName: null,
                 groupName: null,
                 notShowSaveMessage: false,
-                profile: {company: null, group: 0 }
+                profile: { company: null, group: 0 }
             };
-            
+
             this.storage.get(LocalStorageUserData)
-                .then((storageData: LocalStorageUserData)=>
+                .then((storageData: LocalStorageUserData) =>
                 {
-                    if(storageData)
-                    {    
+                    if (storageData)
+                    {
                         this.userData = storageData;
                     }
                     resolve();
                 })
-                .catch(()=>
+                .catch(() =>
                 {
                     resolve();
                 });
@@ -684,16 +686,16 @@ export class AppService
     }
     /*************************** Passwords **********************/
 
-/**
- * Returns a link to a page where he user can restore his password.
- * 
- * @returns 
- * @memberof AppService
- */
-getForgotPasswordURL()
-{
-    let configuration=this.configService.configuration;
-    return this.jsonUrlString+"/priority/prihtml.dll?WWWCHPWD&_tabulaini="+configuration.tabulaini;
-}
+    /**
+     * Returns a link to a page where he user can restore his password.
+     * 
+     * @returns 
+     * @memberof AppService
+     */
+    getForgotPasswordURL()
+    {
+        let configuration = this.configService.configuration;
+        return this.jsonUrlString + "/priority/prihtml.dll?WWWCHPWD&_tabulaini=" + configuration.tabulaini;
+    }
 
 }
