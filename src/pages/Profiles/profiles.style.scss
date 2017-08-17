@@ -1,13 +1,8 @@
 profiles-page {
  
-    .toolbar-content, .toolbar-content-md {
+    .toolbar-content-md {
         position: absolute;
         width: 100%;
-    }
-
-    .toolbar-content.toolbar-content-ios {
-        position: relative;
-    }
-    
+    }   
 
 }
