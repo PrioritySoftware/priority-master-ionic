@@ -42,7 +42,9 @@ main-page {
             background-position: 50%;
             &.toolbar-content
             {
-              background-image: url('../assets/img/brand_white.png');
+              background-image: url(../assets/img/brand_white.svg);
+              background-size: 50% 45%;
+              background-position: 53%;
               &.toolbar-content-ios
               {
                   background-position: 30% 20%;
