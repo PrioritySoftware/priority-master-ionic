@@ -112,11 +112,7 @@ ion-menu {
             margin-top: 6px;
         }
     }
-    [name="log-out"]+ion-label
-    {
-        margin-bottom: 2px !important;
-        padding-bottom: 13px;
-    }
+   
     .title-ios
     {
         padding: 0;
@@ -145,6 +141,11 @@ ion-menu {
 
     ion-item 
     {
+         ion-icon+ion-label
+         {
+          margin-bottom: 2px !important;
+          padding-bottom: 13px;
+         }
         .button-md, .button-ios {
             padding: 0;
 
