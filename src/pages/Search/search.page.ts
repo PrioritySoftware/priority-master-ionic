@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { FormService, SearchResult, SearchAction, Form,Search } from 'priority-ionic';
 import { ViewChild } from '@angular/core';;
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams,Searchbar } from 'ionic-angular';
 import { Strings } from '../../app/app.config';
 import { AppService } from '../../services/app.service';
 
@@ -25,7 +25,7 @@ export class SearchPage
 
     dirByLang: string;
 
-    @ViewChild('searchbar') searchBar;
+    @ViewChild('searchbar') searchBar:Searchbar;
 
     constructor(private formService: FormService,
         private nav: NavController,

@@ -7,14 +7,16 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-</ion-header>
-<ion-content>
-	<ion-searchbar (ionInput)="getItemsBySearchText($event)"
+	<ion-toolbar *ngIf="isSearch">
+  	<ion-searchbar (ionInput)="getItemsBySearchText($event)"
 			   [(ngModel)]="fieldVal"
 			   placeholder= {{placeholder}}
-			   *ngIf="isSearch"
 			   dir="{{dirByLang}}"
-			   #searchbar></ion-searchbar>
+			   #searchbar>
+	 </ion-searchbar>
+	</ion-toolbar>
+</ion-header>
+<ion-content>
 	<div class="waiting-spinner search-spinner" *ngIf="isShowWaitingDots">
 		<ion-spinner name="dots"></ion-spinner>
 	</div>
