@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-packageName="com.priority_software.template" android-versionCode="4" ios-CFBundleIdentifier="com.prioritySoftware.master" version="4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-packageName="com.priority_software.template" android-versionCode="5" ios-CFBundleIdentifier="com.prioritySoftware.master" version="5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Priority Master</name>
     <description>Priority Master App</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
